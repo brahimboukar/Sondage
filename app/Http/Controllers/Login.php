@@ -18,7 +18,7 @@ class Login extends Controller
     {
         Validator::make($request->all(),[
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required|min:5'
         ])->validate();
 
         if(!Auth::attempt($request->only('email','password'))){
@@ -30,11 +30,12 @@ class Login extends Controller
         $request->session()->regenerate();
         
         if(auth()->user()->type == 'admin'){
-            return redirect()->route('admin/home');
+            return redirect()->route('admin');
         }
         else{
             return redirect()->route('home');
         }
+
 
     }
 }

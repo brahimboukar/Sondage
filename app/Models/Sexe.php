@@ -12,4 +12,9 @@ class Sexe extends Model
     protected $fillable = [
         'libelle',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'id');
+    }
 }

@@ -23,4 +23,14 @@ class FonctionController extends Controller
             'data' => $fonction
         ],201);
     }
+
+    public function list ()
+    {
+        $fonction = Fonction::all();
+
+        return response([
+            'msg' => 'list des Fonction :',
+            'data' => $fonction
+        ]);
+    }
 }

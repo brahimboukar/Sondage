@@ -4,11 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class User extends Authenticatable
 {
@@ -55,5 +56,17 @@ class User extends Authenticatable
         return new Attribute(
             get: fn ($value) =>  ["user", "admin"][$value],
         );
+    }
+    public function sexes(){
+        return $this->hasMany('App\Models\Sexe','id','id_sexe');
+    }
+    public function regions(){
+        return $this->hasMany('App\Models\Region','id','id_region');
+    }
+    public function fonctions(){
+        return $this->hasMany('App\Models\Fonction','id','id_fonction');
+    }
+    public function fonctionsDetails(){
+        return $this->hasMany('App\Models\FonctionDetaile','id','id_fonction_details');
     }
 }

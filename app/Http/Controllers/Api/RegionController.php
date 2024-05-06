@@ -23,4 +23,13 @@ class RegionController extends Controller
             'data' => $region
         ],201);
     }
+
+    public function list()
+    {
+        $region = Region::all();
+        return response([
+            'msg' => 'List de Region',
+            'data' => $region 
+        ]);
+    }
 }

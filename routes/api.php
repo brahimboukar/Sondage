@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +23,7 @@ Route::post('sexe' , [\App\Http\Controllers\Api\SexeController::class, 'add']);
 Route::post('region' , [\App\Http\Controllers\Api\RegionController::class , 'add']);
 Route::post('fonction' , [\App\Http\Controllers\Api\FonctionController::class , 'add']);
 Route::post('fonctionDetails' , [\App\Http\Controllers\Api\FonctionDetailsContoller::class , 'add']);
+Route::get('region' , [\App\Http\Controllers\Api\RegionController::class , 'list']);
+Route::get('fonction' , [\App\Http\Controllers\Api\FonctionController::class , 'list']);
+Route::post('register' , [RegisterController::class, 'register']);
+Route::post('login' , [LoginController::class, 'login']);
