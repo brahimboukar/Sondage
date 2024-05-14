@@ -139,7 +139,7 @@
                   class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin')}}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-view-dashboard"></i
+                  ><i class="me-2 mdi mdi-view-dashboard"></i
                   ><span class="hide-menu">Dashboard</span></a
                 >
               </li>
@@ -168,6 +168,15 @@
                   aria-expanded="false"
                   ><i class="me-2 bi bi-clipboard2-pulse-fill"></i
                   ><span class="hide-menu">Gestion Des Etudes</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.eduteCible')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
+                  <span class="hide-menu">Gestion Des Etudes Cible</span></a
                 >
               </li>
               
@@ -271,7 +280,7 @@
     <option value="2">Femme</option>
   </select>
 </div>
-<div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 235px;">
+<div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 238px;">
   <label>Region</label>
   <select class="form-select form-select-sm" name="id_region" aria-label="Small select example" required>
     <option selected disabled></option>
@@ -300,7 +309,11 @@
   <label>Password</label>
 <input type="password" class="form-control" name="password" placeholder="Saisir Password" required>
 </div>
-<button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 230px;">AJOUTER</button>
+<div class="form-group" id="age" style="width: 40%;position: relative;left: 400px;bottom: 310px;">
+  <label>Age</label>
+<input type="number" class="form-control" name="age" placeholder="Saisir Age" required>
+</div>
+<button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 300px;width: 100%;">AJOUTER</button>
         </form>
       </div>
      
@@ -315,6 +328,7 @@
                         <th scope="col">Nom</th>
                         <th scope="col">Prenom</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Age</th>
                         <th scope="col">Telephone</th>
                         <th scope="col">Point</th>
                         <th scope="col">Sexe</th>
@@ -331,6 +345,7 @@
                             <td>{{$us->nom}}</td>
                             <td>{{$us->prenom}}</td>
                             <td>{{$us->email}}</td>
+                            <td>{{$us->age}}</td>
                             <td>{{$us->telephone}}</td>
                             <td>{{$us->points}}</td>
                             <td>{{$us->sexes[0]->libelle}}</td>
@@ -381,7 +396,7 @@
     
     
 </script>
-    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="{{ asset('assets/js/scriptAdminUser.js') }}"></script>
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset('assets/admin/asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

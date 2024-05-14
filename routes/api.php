@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CategorieRecomponseController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Http\Request;
@@ -27,3 +28,5 @@ Route::get('region' , [\App\Http\Controllers\Api\RegionController::class , 'list
 Route::get('fonction' , [\App\Http\Controllers\Api\FonctionController::class , 'list']);
 Route::post('register' , [RegisterController::class, 'register']);
 Route::post('login' , [LoginController::class, 'login']);
+
+Route::post('CategorieRecomponse', [CategorieRecomponseController::class, 'add']);

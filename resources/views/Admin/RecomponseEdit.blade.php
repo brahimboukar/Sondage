@@ -9,12 +9,13 @@
       name="keywords"
       content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Matrix lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Matrix admin lite design, Matrix admin lite dashboard bootstrap 5 dashboard template"
     />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta
       name="description"
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <meta name="robots" content="noindex,nofollow" />
     <title>Admin</title>
     <!-- Favicon icon -->
@@ -43,15 +44,9 @@
       data-header-position="absolute"
       data-boxed-layout="full"
     >
-      <!-- ============================================================== -->
-      <!-- Topbar header - style you can find in pages.scss -->
-      <!-- ============================================================== -->
       <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
           <div class="navbar-header" data-logobg="skin5">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
             <a class="navbar-brand">
               <!-- Logo icon -->
               <b class=" logo-icon ">
@@ -62,33 +57,13 @@
                   width="185" 
                 />
               </b>
-              <!--End Logo icon -->
-              <!-- Logo text -->
-              
-              <!-- Logo icon -->
-              <!-- <b class="logo-icon"> -->
-              <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-              <!-- Dark Logo icon -->
-              <!-- <img src="../assets/images/logo-text.png" alt="homepage" class="light-logo" /> -->
-
-              <!-- </b> -->
-              <!--End Logo icon -->
             </a>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Toggle which is visible on mobile only -->
-            <!-- ============================================================== -->
             <a
               class="nav-toggler waves-effect waves-light d-block d-md-none"
               href="javascript:void(0)"
               ><i class="ti-menu ti-close"></i
             ></a>
           </div>
-          <!-- ============================================================== -->
-          <!-- End Logo -->
-          <!-- ============================================================== -->
           <div
             class="navbar-collapse collapse"
             id="navbarSupportedContent"
@@ -162,8 +137,8 @@
             <ul id="sidebarnav" class="pt-4">
               <li class="sidebar-item">
                 <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link active"
-                  href="#"
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin')}}"
                   aria-expanded="false"
                   ><i class="me-2 mdi mdi-view-dashboard"></i
                   ><span class="hide-menu">Dashboard</span></a
@@ -180,7 +155,7 @@
               </li>
               <li class="sidebar-item">
                 <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  class="sidebar-link waves-effect waves-dark sidebar-link active"
                   href="{{route('admin.recomponse')}}"
                   aria-expanded="false"
                   ><i class="me-2 fa-solid fa-award"></i>
@@ -215,87 +190,74 @@
         </div>
         <!-- End Sidebar scroll-->
       </aside>
-      <!-- ============================================================== -->
-      <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-      <!-- ============================================================== -->
-      <!-- ============================================================== -->
-      <!-- Page wrapper  -->
-      <!-- ============================================================== -->
       <div class="page-wrapper">
-        <!-- ============================================================== -->
-        <!-- Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">Dashboard</h4>
+              <h4 class="page-title">Modifier  Récomponse</h4>
             </div>
           </div>
         </div>
-        <!-- ============================================================== -->
-        <!-- End Bread crumb and right sidebar toggle -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Container fluid  -->
-        <!-- ============================================================== -->
         <div class="container-fluid">
-          <!-- ============================================================== -->
-          <!-- Start Page Content -->
-          <!-- ============================================================== -->
           <div class="row">
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-              <div class="card card-hover">
-                <div class="box bg-cyan text-center">
-                  <h1 class="font-light text-white">
-                    <i class="mdi mdi-account fs-3 mb-1 font-16"></i>
-                  </h1>
-                  <h6 class="text-white">Total Des Utilisateurs</h6>
-                  <h2 class="text-white">{{$user}}</h2>
+            <div class="col-12">
+                
+                <form method="POST" action="/recomponse/{{ $recomponse->id }}/update" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                  <div class="form-group" style="width: 40%">
+                    <label>Libelle</label>
+                  <input type="text" name="libelle" value="{{ $recomponse->libelle }}"  class="form-control" placeholder="Saisir Libelle" required>
                 </div>
+                <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
+                  <label>Categorie</label>
+                  <select class="form-select form-select-sm" name="id_categorie" aria-label="Small select example" required>
+                    <option selected value="{{$recomponse->id_categorie}}">{{$recomponse->categorie_recomponse[0]->libelle}}</option>
+                    @foreach($cat as $row)
+                    <option value="{{$row->id}}">{{$row->libelle}}</option>
+                    @endforeach
+                  </select>
               </div>
+              <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
+                <label>Point</label>
+              <input type="number" name="points" value="{{$recomponse->points}}" class="form-control" placeholder="Saisir Point" required>
             </div>
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-              <div class="card card-hover">
-                <div class="box bg-cyan text-center">
-                  <h1 class="font-light text-white">
-                    <i class="mdi mdi-plus fs-3 font-16"></i>
-                  </h1>
-                  <h6 class="text-white">Nouveaux Des Utilisateurs</h6>
-                  <h2 class="text-white">{{$nouveauxUtilisateurs}}</h2>
-                </div>
-              </div>
+            <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
+              <label>Status</label>
+                  <select class="form-select form-select-sm" name="status"  aria-label="Small select example" required>
+                    @if($recomponse->status ==1 )
+                    <option  value="1">En Stock</option>
+                    <option value="0">Rupture De Stock</option>
+                    @endif
+                    @if($recomponse->status ==0)
+                    <option value="0">Rupture De Stock</option>
+                    <option  value="1">En Stock</option>
+                    @endif
+                  </select>
+          </div>
+          <!-- image -->
+          <label style="position: relative;bottom: 150px;">Image</label>
+          <div class="containner">
+            <div class="img-area">
+              <i class="bi bi-cloud-plus-fill icon"></i>
+              <h3>Inserer Image</h3>
+              <p>Image size must be less than <span>2MB</span></p>
             </div>
-            <!-- Column -->
-            <!-- Column -->
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-              <div class="card card-hover">
-                <div class="box bg-info text-center">
-                  <h1 class="font-light text-white">
-                    <i class="me-2 fa-solid fa-award"></i>
-                  </h1>
-                  <h6 class="text-white">Nombre Des Récomponses</h6>
-                  <h2 class="text-white">{{$recomponse}}</h2>
-                </div>
-              </div>
+            <div class="file btn btn-lg btn-primary" style=" position: relative;width: 210px;overflow: hidden;bottom: 105px;">
+              <i class="bi bi-cloud-arrow-up-fill icon"></i> Choissir Image
+              <input class="select-image" name="img" value="{{$recomponse->img}}" style="position: absolute;font-size: 100px;opacity: 0;right: 0;top: 0;" type="file" id="img"/>
             </div>
-            <div class="col-md-6 col-lg-3 col-xlg-3">
-              <div class="card card-hover">
-                <div class="box bg-warning text-center">
-                  <h1 class="font-light text-white">
-                    <i class="me-2 bi bi-clipboard2-pulse-fill"></i>
-                  </h1>
-                  <h6 class="text-white">Nombre Des Etudes</h6>
-                  <h2 class="text-white">{{$etude}}</h2>
-                </div>
-              </div>
+          </div>
+          <button type="submit" id="modifier" class="btn btn-success" style="position: relative;bottom: 100px;width: 90%;left: 20px;">Modifier</button>
+                  </form>
+                 
             </div>
-            
           </div>
         
       </div>
+      
     </div>
+    
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset('assets/admin/asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

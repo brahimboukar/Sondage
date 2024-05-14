@@ -40,12 +40,21 @@ Route::middleware(['auth'])->group(function (){
     Route::post('save', [AdminController::class , 'utilisateurSave'])->name('admin.utilisateurAdd');
     Route::delete('admin.utilisateurSupp/{id}', [AdminController::class , 'utilisateurSupp'])->name('admin.utilisateurSupp');
     Route::get('/search' , [AdminController::class , 'search'])->name('searchUtilisateur');
-    // Route Recomponse
+// Route Recomponse
     Route::get('/admin/recomponse', [AdminController::class , 'recomponse'])->name('admin.recomponse');
+    Route::post('add', [AdminController::class , 'createRecomponse'])->name('admin.createRecomponse');
+    Route::delete('admin.recomponseSupp/{id}', [AdminController::class , 'recomponseSupp'])->name('admin.recomponseSupp');
+    Route::get('recomponse/{id}/edit',[AdminController::class , 'recomponsedit']);
+    Route::put('recomponse/{id}/update',[AdminController::class , 'updateReco']);
 
-
-    // Route Edute
+// Route Edute
     Route::get('/admin/etude', [AdminController::class , 'edute'])->name('admin.edute');
+    Route::post('addEdute', [AdminController::class , 'createEdute'])->name('admin.createEdute');
+    Route::delete('admin.etudeSupp/{id}', [AdminController::class , 'eduteSupp'])->name('admin.etudeSupp');
+    Route::put('etude/{id}/update', [AdminController::class , 'updateEtude']);
+
+// Route Edute Cible
+Route::get('/admin/EtudeCible', [AdminController::class , 'eduteCible'])->name('admin.eduteCible');
 });
 
 //Route User

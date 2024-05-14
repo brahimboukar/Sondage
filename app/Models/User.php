@@ -24,6 +24,7 @@ class User extends Authenticatable
         'nom',
         'prenom',
         'email',
+        'age',
         'telephone',
         'id_sexe',
         'id_region',

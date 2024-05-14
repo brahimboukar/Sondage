@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta
       name="description"
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
@@ -139,7 +140,7 @@
                   class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin')}}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-view-dashboard"></i
+                  ><i class="me-2 mdi mdi-view-dashboard"></i
                   ><span class="hide-menu">Dashboard</span></a
                 >
               </li>
@@ -170,6 +171,15 @@
                   ><span class="hide-menu">Gestion Des Etudes</span></a
                 >
               </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.eduteCible')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
+                  <span class="hide-menu">Gestion Des Etudes Cible</span></a
+                >
+              </li>
               
               
               
@@ -186,7 +196,29 @@
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Gestion Des Récomponse</h4>
             </div>
-                    
+            @if(Session::get('success'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('success') }}
+            </div>
+            @endif
+
+            @if(Session::has('fail'))
+            <div class="alert alert-danger" role="alert">
+                {{ Session::get('fail') }}
+            </div>
+            @endif
+            <!-- suppresion -->
+            @if(Session::get('succe'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('succe') }}
+            </div>
+            @endif
+            <!-- End suppresion -->
+            @if(Session::get('status'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('status') }}
+            </div>
+            @endif
           </div>
         </div>
         <div class="container-fluid">
@@ -196,8 +228,21 @@
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
     <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Récomponse
   </button>
-
-<!-- Modal -->
+  <form method="GET" action="{{url('admin/recomponse')}}">
+    <div class="col-md-3">
+    <select class="form-select form-select-sm" style="position: relative;left:400px;bottom: 35px;" name="id_categorie" id="categorie" aria-label="Small select example" required>
+            <option selected disabled>--- Filter By Categorie ---</option>
+            @foreach($cat as $row)
+            <option value="{{$row->id}}">{{$row->libelle}}</option>
+            @endforeach
+          </select>
+    </div>
+    <div class="col-md-3" style="position: relative;left:650px;bottom: 68px;">
+      <button type="submit" class="btn btn-primary">Filter</button>
+    </div>
+  </form>
+  <hr style="position: relative;bottom: 70px;">
+<!-- ajoute Modal -->
 <div class="modal fade" id="exampleModal" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -206,7 +251,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form method="POST" action="">
+          <form method="POST" action="{{route('admin.createRecomponse')}}" enctype="multipart/form-data">
             @csrf
           <div class="form-group" style="width: 40%">
             <label>Libelle</label>
@@ -214,26 +259,90 @@
         </div>
         <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
           <label>Categorie</label>
-          <select class="form-select form-select-sm" aria-label="Small select example" required>
+          <select class="form-select form-select-sm" name="id_categorie" aria-label="Small select example" required>
             <option selected disabled></option>
+            @foreach($cat as $row)
+            <option value="{{$row->id}}">{{$row->libelle}}</option>
+            @endforeach
           </select>
       </div>
       <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
-        <label>Prix</label>
-      <input type="number" name="prix" class="form-control" placeholder="Saisir Prix" required>
+        <label>Point</label>
+      <input type="number" name="points" class="form-control" placeholder="Saisir Point" required>
     </div>
     <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
       <label>Status</label>
-    <input type="text" name="status" class="form-control" placeholder="Saisir Status" required>
+          <select class="form-select form-select-sm" name="status" aria-label="Small select example" required>
+            <option selected disabled></option>
+            <option value="1">En Stock</option>
+            <option value="0">Rupture De Stock</option>
+          </select>
   </div>
-  <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 160px;">AJOUTER</button>
+  <!-- image -->
+  <label style="position: relative;bottom: 150px;">Image</label>
+  <div class="containner">
+    <div class="img-area">
+      <i class="bi bi-cloud-plus-fill icon"></i>
+      <h3>Inserer Image</h3>
+      <p>Image size must be less than <span>2MB</span></p>
+    </div>
+    <div class="file btn btn-lg btn-primary" style=" position: relative;width: 210px;overflow: hidden;bottom: 105px;">
+      <i class="bi bi-cloud-arrow-up-fill icon"></i> Choissir Image
+      <input class="select-image" style="position: absolute;font-size: 100px;opacity: 0;right: 0;top: 0;" type="file" id="img" name="img" required/>
+    </div>
+  </div>
+  <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 100px;width: 90%;left: 20px;">AJOUTER</button>
           </form>
         </div>
        
       </div>
     </div>
   </div>
-                
+  <div class="table-responsive" style="position: relative;bottom: 90px;">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Image</th>
+            <th scope="col">Libelle</th>
+            <th scope="col">Categorie</th>
+            <th scope="col">Point</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+            @foreach($recomponse as $rec)
+            <tr>           
+                <th scope="row">{{$rec->id}}</th>
+                <td><img src="{{ asset($rec->img) }}" style="width: 70px;height: 70px;" alt="Img"/></td>
+                <td>{{$rec->libelle}}</td>
+                <td>{{$rec->categorie_recomponse[0]->libelle}}</td>
+                <td>{{$rec->points}}</td>
+                {{-- <td>{{$rec->status}}</td> --}}
+                <td>
+                  @if($rec->status ==1)
+                  <span class="badge bg-success" style="font-size: 15px;">En Stock</span>
+                  @endif
+                  @if($rec->status ==0)
+                  <span class="badge bg-danger" style="font-size: 15px;">Epuisé</span>
+                  @endif
+                </td>
+                <td>
+                    <form method="POST" action="{{route('admin.recomponseSupp',$rec->id)}}"  onsubmit="return confirm('Supprimer?')" class="float-right text-red-800">
+                      @csrf
+                      @method('DELETE')
+                      <button><i class="bi bi-x-lg"></i></button>
+                    </form>
+                    <a href="{{url ('recomponse/'.$rec->id.'/edit')}}" style="position: relative;left: 40px;bottom: 33px;font-size: 27px;"><i class="bi bi-pencil-square" style="color: darkolivegreen"></i></a>
+                    
+                </td>
+              </tr>
+          @endforeach
+        </tbody>
+      </table>
+      {{$recomponse->links()}}
+    </div>
                   
             </div>
           </div>
@@ -241,6 +350,8 @@
       </div>
       
     </div>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
+    {{-- <script src="{{ asset('assets/js/filterScript.js') }}"></script> --}}
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset('assets/admin/asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

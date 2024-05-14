@@ -139,7 +139,7 @@
                   class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin')}}"
                   aria-expanded="false"
-                  ><i class="mdi mdi-view-dashboard"></i
+                  ><i class="me-2 mdi mdi-view-dashboard"></i
                   ><span class="hide-menu">Dashboard</span></a
                 >
               </li>
@@ -164,10 +164,19 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link active"
-                  href="#{{route('admin.edute')}}"
+                  href="#"
                   aria-expanded="false"
                   ><i class="me-2 bi bi-clipboard2-pulse-fill"></i
                   ><span class="hide-menu">Gestion Des Etudes</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.eduteCible')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
+                  <span class="hide-menu">Gestion Des Etudes Cible</span></a
                 >
               </li>
               
@@ -186,28 +195,150 @@
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Gestion Des Etudes</h4>
             </div>
-                    
+            @if(Session::get('success'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('success') }}
+            </div>
+            @endif
+
+            @if(Session::has('fail'))
+            <div class="alert alert-danger" role="alert">
+                {{ Session::get('fail') }}
+            </div>
+            @endif
+              <!-- suppresion -->
+              @if(Session::get('succe'))
+              <div class="alert alert-success" role="alert" >
+                  {{ Session::get('succe') }}
+              </div>
+              @endif
+              <!-- End suppresion -->
+              @if(Session::get('status'))
+              <div class="alert alert-success" role="alert" >
+                  {{ Session::get('status') }}
+              </div>
+              @endif
           </div>
         </div>
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              
-{{-- <div class="input-group" style="position: absolute;left: 500px;top: 62px;">
-  <form method="POST" role="search" action="{{route('searchUtilisateur')}}">
-    {{csrf_field() }}
-  <div class="form-outline" data-mdb-input-init>
-    <input type="search" id="form1" name="query" class="form-control" placeholder="Chercher Par Nom" />
-    <button type="submit" style="position: relative;left: 182px;bottom: 35px;" class="btn btn-primary" data-mdb-ripple-init>
-      <i class="fas fa-search"></i>
-    </button>
-  </div>
-</form>
-</div> --}}
-
-<!-- Modal -->
-
-                
+               <!-- Button trigger modal -->
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Etude
+              </button>
+              <hr style="position: relative;bottom: 5px;">
+              <!-- Ajouter -->
+              <div class="modal fade" id="exampleModal" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Ajouter Un Nouvaux Etude</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="POST" action="{{route('admin.createEdute')}}">
+                        @csrf
+                      <div class="form-group" style="width: 40%">
+                        <label>Libelle</label>
+                      <input type="text" name="libelle" class="form-control" placeholder="Saisir Libelle" required>
+                    </div>
+                    <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
+                      <label>Description</label>
+                      <textarea type="" name="description" class="form-control" placeholder="Saisir Description" required></textarea>
+                  </div>
+                  <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
+                    <label>Durré</label>
+                  <input type="number" name="durré" class="form-control" placeholder="Saisir La Durré" required>
+                </div>
+                <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
+                  <label>Nombre de Point</label>
+                  <input type="number" name="point" class="form-control" placeholder="Saisir Le Nombre de Point" required>
+              </div>
+             
+              <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 100px;width: 90%;left: 20px;">AJOUTER</button>
+                      </form>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+              <!-- End Ajouter -->
+              <!-- modification -->
+              @foreach($etude as $etu)
+              <div class="modal fade" id="modificationModal{{$etu->id}}" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Modifier Un Etude</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form method="POST" action="/etude/{{ $etu->id }}/update" >
+                        @csrf
+                        @method('PUT')
+                      <div class="form-group" style="width: 40%">
+                        <label>Libelle</label>
+                      <input type="text" name="libelle" value="{{$etu->libelle}}" class="form-control" placeholder="Saisir Libelle" required>
+                    </div>
+                    <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
+                      <label>Description</label>
+                      <textarea  name="description" class="form-control"  >{{$etu->description}}</textarea>
+                  </div>
+                  <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
+                    <label>Durré</label>
+                  <input type="number" name="durré" value="{{$etu->durré}}" class="form-control" placeholder="Saisir La Durré" required>
+                </div>
+                <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
+                  <label>Nombre de Point</label>
+                  <input type="number" name="point" value="{{$etu->point}}" class="form-control" placeholder="Saisir Le Nombre de Point" required>
+              </div>
+             
+              <button type="submit" id="add" class="btn btn-success" style="position: relative;bottom: 100px;width: 90%;left: 20px;">Modifier</button>
+                      </form>
+                    </div>
+                   
+                  </div>
+                </div>
+              </div>
+              @endforeach
+              <!-- End modification -->
+              <div class="table-responsive" style="position: relative;bottom: 30px;">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Libelle</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Durré</th>
+                    <th scope="col">Point</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    @foreach($etude as $etu)
+                    <tr>           
+                        <th scope="row">{{$etu->id}}</th>
+                        <td>{{$etu->libelle}}</td>
+                        <td>{{$etu->description}}</td>
+                        <td>{{$etu->durré}} Min</td>
+                        <td>{{$etu->point}}</td>
+                        <td>
+                            <form method="POST" action="{{route('admin.etudeSupp',$etu->id)}}"  onsubmit="return confirm('Supprimer?')" class="float-right text-red-800">
+                              @csrf
+                              @method('DELETE')
+                              <button><i class="bi bi-x-lg"></i></button>
+                            </form>
+                            <a href="" data-bs-toggle="modal" data-bs-target="#modificationModal{{$etu->id}}" style="position: relative;left: 40px;bottom: 33px;font-size: 27px;"><i class="bi bi-pencil-square" style="color: darkolivegreen"></i></a>
+                            
+                        </td>
+                      </tr>
+                  @endforeach
+                </tbody>
+              </table>
+              {{$etude->links()}}
+              </div>
+            </div>
                   
             </div>
           </div>

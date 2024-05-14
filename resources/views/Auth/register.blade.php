@@ -55,6 +55,14 @@
                 <input type="email" name="email" id="email">
             </div>
         </div>
+        <div class="row-1">
+            <div class="row row-2">
+                <span id="card-inner">Votre Age : </span>
+            </div>
+            <div class="row row-2">
+                <input type="number" name="age" id="age" required>
+            </div>
+        </div>
         @error('telephone')
         <div class="alert alert-danger" role="alert">
             <span class="text-red-600">{{$message}}</span>
