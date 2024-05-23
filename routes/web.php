@@ -23,6 +23,8 @@ Route::get('/', function () {
 });
 Route::get('/register',[\App\Http\Controllers\Register::class , 'register'])->name('register');
 Route::post('/getfonctionDetails', [FonctionDetailsContoller::class , 'getfonctionDetails']);
+Route::get('/getfonctionDetailscheck', [FonctionDetailsContoller::class , 'getfonctionDetailscheck']);
+//Route::get('/get-data', [FonctionDetailsContoller::class , 'getData']);
 
 //Route Inscription
 Route::post('register' , [Register::class, 'registerSave'])->name('register.save');
@@ -40,6 +42,16 @@ Route::middleware(['auth'])->group(function (){
     Route::post('save', [AdminController::class , 'utilisateurSave'])->name('admin.utilisateurAdd');
     Route::delete('admin.utilisateurSupp/{id}', [AdminController::class , 'utilisateurSupp'])->name('admin.utilisateurSupp');
     Route::get('/search' , [AdminController::class , 'search'])->name('searchUtilisateur');
+    Route::get('/users/{id}/block', [AdminController::class, 'blockUser'])->name('users.block');
+    Route::get('/users/{id}/unblock', [AdminController::class, 'unblockUser'])->name('users.unblock');
+
+
+// Route Catégorie
+    Route::get('/categorieRecomponse' , [AdminController::class , 'categorieRecomponse'])->name('admin.categorieRecomponse');
+    Route::post('/addcategorieRecomponse' , [AdminController::class , 'addcategorieRecomponse'])->name('admin.addcategorieRecomponse');
+    Route::delete('admin.categorieRecomponseSupp/{id}', [AdminController::class , 'categorieRecomponseSupp'])->name('admin.categorieRecomponseSupp');
+    Route::put('categorieRecomponse/{id}/update', [AdminController::class , 'updateCategorieRecomponse']);
+
 // Route Recomponse
     Route::get('/admin/recomponse', [AdminController::class , 'recomponse'])->name('admin.recomponse');
     Route::post('add', [AdminController::class , 'createRecomponse'])->name('admin.createRecomponse');
@@ -54,7 +66,9 @@ Route::middleware(['auth'])->group(function (){
     Route::put('etude/{id}/update', [AdminController::class , 'updateEtude']);
 
 // Route Edute Cible
-Route::get('/admin/EtudeCible', [AdminController::class , 'eduteCible'])->name('admin.eduteCible');
+    Route::get('/admin/EtudeCible', [AdminController::class , 'eduteCible'])->name('admin.eduteCible');
+    Route::post('/admin/addeduteCible', [AdminController::class , 'addeduteCible'])->name('admin.addeduteCible');
+    Route::delete('admin.suppEduteCible/{id}', [AdminController::class , 'suppEduteCible'])->name('admin.suppEduteCible');
 });
 
 //Route User

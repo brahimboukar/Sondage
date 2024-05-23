@@ -155,6 +155,15 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.categorieRecomponse')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa-sharp fa-solid fa-list"></i>
+                  <span class="hide-menu">Gestion Des Catégories</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin.recomponse')}}"
                   aria-expanded="false"
                   ><i class="me-2 fa-solid fa-award"></i>
@@ -331,6 +340,7 @@
                         <th scope="col">Age</th>
                         <th scope="col">Telephone</th>
                         <th scope="col">Point</th>
+                        <th scope="col">Etat</th>
                         <th scope="col">Sexe</th>
                         <th scope="col">Region</th>
                         <th scope="col">Fonction</th>
@@ -348,6 +358,13 @@
                             <td>{{$us->age}}</td>
                             <td>{{$us->telephone}}</td>
                             <td>{{$us->points}}</td>
+                            <td>
+                              @if($us->blocked)
+                              <a href="{{ route('users.unblock', ['id' => $us->id]) }}"><span class="badge bg-danger" style="font-size: 15px;">Bloqué</span></a>         
+                          @else
+                              <a href="{{ route('users.block', ['id' => $us->id]) }}"><span class="badge bg-success" style="font-size: 15px;">Débloquer</span></a>
+                          @endif
+                            </td>
                             <td>{{$us->sexes[0]->libelle}}</td>
                             <td>{{$us->regions[0]->libelle}}</td>
                             <td>{{$us->fonctions[0]->libelle}}</td>

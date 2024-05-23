@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Region extends Model
+class Etude_sexe extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'libelle',
+        'id_etude',
+        'id_sexe',
     ];
-
-
-    public function etudes()
-    {
-        return $this->belongsToMany(Etude::class, 'etude_regions');
-    }
 }

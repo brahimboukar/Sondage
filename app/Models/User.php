@@ -26,6 +26,8 @@ class User extends Authenticatable
         'email',
         'age',
         'telephone',
+        'points',
+        'blocked',
         'id_sexe',
         'id_region',
         'id_fonction',
@@ -69,5 +71,15 @@ class User extends Authenticatable
     }
     public function fonctionsDetails(){
         return $this->hasMany('App\Models\FonctionDetaile','id','id_fonction_details');
+    }
+
+    public function block()
+    {
+        $this->update(['blocked' => true]);
+    }
+
+    public function unblock()
+    {
+        $this->update(['blocked' => false]);
     }
 }

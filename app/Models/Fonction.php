@@ -12,4 +12,10 @@ class Fonction extends Model
     protected $fillable = [
         'libelle',
     ];
+
+
+    public function etudes()
+    {
+        return $this->belongsToMany(Etude::class, 'etude_fonctions');
+    }
 }

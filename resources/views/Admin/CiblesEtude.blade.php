@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <meta
       name="description"
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
@@ -25,6 +26,7 @@
     />
     <!-- Custom CSS -->
     <link href="{{asset('assets/admin/dist/css/style.min.css')}}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
   </head>
 
   <body>
@@ -95,12 +97,7 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <img
-                    src="{{asset('assets/admin/asset/images/users/1.jpg')}}"
-                    alt="user"
-                    class="rounded-circle"
-                    width="31"
-                  />
+                  <i class="fa fa-user-circle fa-stack-2x" style="position: relative;top: 10px;" aria-hidden="true" ></i>
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-end user-dd animated"
@@ -155,6 +152,15 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.categorieRecomponse')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa-sharp fa-solid fa-list"></i>
+                  <span class="hide-menu">Gestion Des Catégories</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin.recomponse')}}"
                   aria-expanded="false"
                   ><i class="me-2 fa-solid fa-award"></i>
@@ -195,6 +201,11 @@
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Gestion Des Etudes Cible</h4>
             </div>
+            @if(Session::has('error'))
+            <div class="alert alert-danger" role="alert">
+                {{ Session::get('error') }}
+            </div>
+            @endif
           </div>
         </div>
         <div class="container-fluid">
@@ -214,17 +225,85 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form method="POST" action="">
+                      <form method="POST" action="{{route('admin.addeduteCible')}}">
                         @csrf
-                        <div class="form-group" style="width: 40%">
-                          <label>List Des Etudes</label>
-                          <select class="form-select form-select-sm" name="id_categorie" aria-label="Small select example" required>
-                            <option selected disabled></option>
-                            @foreach($etude as $etu)
-                            <option value="{{$etu->id}}">{{$etu->libelle}}</option>
-                            @endforeach
-                      </div>
-             
+                          <div class="form-group" style="width: 40%;position: relative;left: 260px;">
+                            <label>List Des Etudes</label>
+                            <select class="form-select form-select-sm" name="id_etude" aria-label="Small select example" required>
+                              <option selected disabled></option>
+                              @foreach($etudelist as $etu)
+                              <option value="{{$etu->id}}">{{$etu->libelle}}</option>
+                              @endforeach
+                            </select>
+                        </div>
+                      <div class="container">
+                        <fieldset class="border rounded-5 p-5" style="height: 100%; max-height: 500px;">
+                            <legend class="float-none w-auto px-3" >Cible</legend>
+                            <label style="position: relative;bottom: 60px;right: 40px;font-size: 17px;">Sexe</label>
+                            <div class="form-check" style="position: relative;right: 40px;bottom: 60px;">
+                              @foreach($sexes as $sex)
+                              <input class="form-check-input" type="checkbox" name="sexes[]" value="{{$sex->id}}" id="flexCheckIndeterminate">
+                              
+                                {{$sex->libelle}}<br>
+                             
+                              @endforeach
+                            </div>
+                            <label for="" style="position: relative;bottom: 138px;left: 35px;font-size: 17px;">Region</label>
+                            <div class="form-check" style="position: relative;left: 35px;bottom: 136px;">
+                              @foreach($regions as $reg)
+                              <input class="form-check-input" type="checkbox" name="regions[]" value="{{$reg->id}}" id="flexCheckIndeterminate">
+                              
+                                {{$reg->libelle}}<br>
+                             
+                              @endforeach
+                            </div>
+                            <div class="row-1" id="theSelect">
+                              <label for="" style="position: relative;bottom: 450px;left: 330px;font-size: 17px;">Fonction</label>
+                            <div class="form-check" style="position: relative;left: 330px;bottom: 445px;">
+                              @foreach($fonctions as $fon)
+                                  @if($fon->id == 1 || $fon->id == 2)
+                                    <input class="form-check-input fcd-show" name="fonctions[]" type="checkbox" value="{{$fon->id}}" >
+                                
+                                    {{$fon->libelle}}<br>
+                              
+                                  @else
+                                    <input class="form-check-input fcd-hide" name="fonctions[]" type="checkbox" value="{{$fon->id}}" >
+                                
+                                    {{$fon->libelle}}<br>
+                                  @endif
+                                  
+                              @endforeach
+                            </div>
+                            </div>
+                            <div id="fonctionDetails">
+                              <label for="" style="position: relative;bottom: 445px;left: 310px;font-size: 17px;">Fonction Détailer</label>
+                              <div class="form-check" style="position: relative;left: 310px;bottom: 455px;">
+                                @foreach($foncDe as $fond)
+                                  <input class="form-check-input" name="fonctionDetailes[]" type="checkbox" value="{{$fond->id}}" >
+                                  
+                                  {{$fond->libelle}}<br>
+                                  
+                        
+                              @endforeach
+                              </div>
+                            </div>
+
+                            <div>
+                              <label for="" id="age" style="position: relative;bottom: 320px;left: 35px;font-size: 17px;">Age</label>
+                              <div class="form-check" id="listage" style="position: relative;bottom: 330px;left: 35px;">
+                                @foreach($age as $ag)
+                                  <input class="form-check-input" name="ages[]" type="checkbox" value="{{$ag->id}}" >
+                                  
+                                  {{$ag->libelle}}<br>
+                                  
+                        
+                              @endforeach
+                              </div>
+                            </div>
+                            
+                        </fieldset>
+                    </div>
+                    <button type="submit" id="add" class="btn btn-primary" style="position: relative;width: 90%;left: 20px;top: 10px;">AJOUTER</button>
                       </form>
                     </div>
                    
@@ -232,6 +311,65 @@
                 </div>
               </div>
               <!-- End Ajouter -->
+              <!-- resources/views/etudes/index.blade.php -->
+              <div class="table-responsive" style="position: relative;bottom: 30px;">
+<table class="table table-striped">
+  <thead>
+      <tr>
+          <th>ID</th>
+          <th >Libellé</th>
+          <th>Sexes</th>
+          <th>Ages</th>
+          <th>Régions</th>
+          <th>Fonctions</th>
+          <th>Fonctions Detailes</th>
+          <th>Action</th>
+      </tr>
+  </thead>
+  <tbody>
+      @foreach($etudes as $etude)
+      <tr>
+          <td>{{ $etude->id }}</td>
+          <td>{{ $etude->libelle }}</td>
+          <td>
+              @foreach($etude->sexes as $sexe)
+                  {{ $sexe->libelle }},
+              @endforeach
+          </td>
+          <td>
+            @foreach($etude->ages as $age)
+                {{ $age->libelle }},
+            @endforeach
+        </td>
+          <td>
+              @foreach($etude->regions as $region)
+                  {{ $region->libelle }},
+              @endforeach
+          </td>
+          <td>
+              @foreach($etude->fonctions as $fonction)
+                  {{ $fonction->libelle }},
+              @endforeach
+          </td>
+          <td>
+            @foreach($etude->fonctionDetailes  as $fonctionDetailes )
+                {{ $fonctionDetailes->libelle }},
+            @endforeach
+        </td>
+        <td>
+          <form method="POST" action="{{ route('admin.suppEduteCible', $etude->id) }}"  onsubmit="return confirm('Vous-Voullez Supprimer Etude {{$etu->libelle}}')" class="float-right text-red-800">
+            @csrf
+            @method('DELETE')
+            <button><i class="bi bi-x-lg"></i></button>
+          </form>
+          {{-- <a href="" data-bs-toggle="modal" data-bs-target="#modificationModal{{$etu->id}}" style="position: relative;left: 40px;bottom: 33px;font-size: 27px;"><i class="bi bi-pencil-square" style="color: darkolivegreen"></i></a> --}}
+        </td>
+      </tr>
+      @endforeach
+  </tbody>
+</table>
+              </div>
+              {{$etudes->links()}}
             </div>
                   
             </div>
@@ -240,6 +378,42 @@
       </div>
       
     </div>
+
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+     jQuery(document).ready(function (){
+        jQuery('.fcd-show').click(function(){
+            
+          jQuery('#fonctionDetails').show();
+          const age = document.getElementById("age");
+          const listage = document.getElementById("listage");
+          age.style.position = "relative";
+          age.style.bottom = "480px";
+
+          listage.style.position = "relative";
+          listage.style.bottom = "490px";
+
+        });
+
+        jQuery('.fcd-hide').click(function(){
+            
+            jQuery('#fonctionDetails').hide();
+            const age = document.getElementById("age");
+            const listage = document.getElementById("listage");
+            age.style.position = "relative";
+            age.style.bottom = "320px";
+
+            listage.style.position = "relative";
+            listage.style.bottom = "330px";
+          });
+
+        
+    });
+
+    
+</script>
+    <script src="{{ asset('assets/js/script.js') }}"></script>
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset('assets/admin/asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

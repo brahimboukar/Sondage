@@ -155,6 +155,15 @@
               </li>
               <li class="sidebar-item">
                 <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.categorieRecomponse')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa-sharp fa-solid fa-list"></i>
+                  <span class="hide-menu">Gestion Des Catégories</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
                   class="sidebar-link waves-effect waves-dark sidebar-link active"
                   href="{{route('admin.recomponse')}}"
                   aria-expanded="false"

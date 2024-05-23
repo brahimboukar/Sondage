@@ -11,6 +11,7 @@
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta
       name="description"
       content="Matrix Admin Lite Free Version is powerful and clean admin dashboard template, inpired from Bootstrap Framework"
@@ -154,8 +155,8 @@
               </li>
               <li class="sidebar-item">
                 <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link"
-                  href="{{route('admin.categorieRecomponse')}}"
+                  class="sidebar-link waves-effect waves-dark sidebar-link active"
+                  href="#"
                   aria-expanded="false"
                   ><i class="me-2 fa-sharp fa-solid fa-list"></i>
                   <span class="hide-menu">Gestion Des Catégories</span></a
@@ -172,8 +173,8 @@
               </li>
               <li class="sidebar-item">
                 <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link active"
-                  href="#"
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.edute')}}"
                   aria-expanded="false"
                   ><i class="me-2 bi bi-clipboard2-pulse-fill"></i
                   ><span class="hide-menu">Gestion Des Etudes</span></a
@@ -202,152 +203,113 @@
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">Gestion Des Etudes</h4>
+              <h4 class="page-title">Gestion Des Catégories De Récomponse</h4>
             </div>
             @if(Session::get('success'))
             <div class="alert alert-success" role="alert" >
                 {{ Session::get('success') }}
             </div>
             @endif
-
-            @if(Session::has('fail'))
-            <div class="alert alert-danger" role="alert">
-                {{ Session::get('fail') }}
+            <!-- suppresion -->
+            @if(Session::get('succe'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('succe') }}
             </div>
             @endif
-              <!-- suppresion -->
-              @if(Session::get('succe'))
-              <div class="alert alert-success" role="alert" >
-                  {{ Session::get('succe') }}
-              </div>
-              @endif
-              <!-- End suppresion -->
-              @if(Session::get('status'))
-              <div class="alert alert-success" role="alert" >
-                  {{ Session::get('status') }}
-              </div>
-              @endif
+            <!-- End suppresion -->
+             @if(Session::get('status'))
+             <div class="alert alert-success" role="alert" >
+                 {{ Session::get('status') }}
+             </div>
+             @endif
           </div>
         </div>
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-               <!-- Button trigger modal -->
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Etude
-              </button>
-              <hr style="position: relative;bottom: 5px;">
-              <!-- Ajouter -->
-              <div class="modal fade" id="exampleModal" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Ajouter Un Nouvaux Etude</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form method="POST" action="{{route('admin.createEdute')}}">
-                        @csrf
-                      <div class="form-group" style="width: 40%">
-                        <label>Libelle</label>
-                      <input type="text" name="libelle" class="form-control" placeholder="Saisir Libelle" required>
-                    </div>
-                    <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
-                      <label>Description</label>
-                      <textarea type="" name="description" class="form-control" placeholder="Saisir Description" required></textarea>
-                  </div>
-                  <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
-                    <label>Durré</label>
-                  <input type="number" name="durré" class="form-control" placeholder="Saisir La Durré" required>
-                </div>
-                <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
-                  <label>Nombre de Point</label>
-                  <input type="number" name="point" class="form-control" placeholder="Saisir Le Nombre de Point" required>
-              </div>
-             
-              <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 100px;width: 90%;left: 20px;">AJOUTER</button>
-                      </form>
-                    </div>
-                   
-                  </div>
-                </div>
-              </div>
-              <!-- End Ajouter -->
-              <!-- modification -->
-              @foreach($etude as $etu)
-              <div class="modal fade" id="modificationModal{{$etu->id}}" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Modifier Un Etude</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form method="POST" action="/etude/{{ $etu->id }}/update" >
-                        @csrf
-                        @method('PUT')
-                      <div class="form-group" style="width: 40%">
-                        <label>Libelle</label>
-                      <input type="text" name="libelle" value="{{$etu->libelle}}" class="form-control" placeholder="Saisir Libelle" required>
-                    </div>
-                    <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
-                      <label>Description</label>
-                      <textarea  name="description" class="form-control"  >{{$etu->description}}</textarea>
-                  </div>
-                  <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
-                    <label>Durré</label>
-                  <input type="number" name="durré" value="{{$etu->durré}}" class="form-control" placeholder="Saisir La Durré" required>
-                </div>
-                <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
-                  <label>Nombre de Point</label>
-                  <input type="number" name="point" value="{{$etu->point}}" class="form-control" placeholder="Saisir Le Nombre de Point" required>
-              </div>
-             
-              <button type="submit" id="add" class="btn btn-success" style="position: relative;bottom: 100px;width: 90%;left: 20px;">Modifier</button>
-                      </form>
-                    </div>
-                   
-                  </div>
-                </div>
-              </div>
-              @endforeach
-              <!-- End modification -->
-              <div class="table-responsive" style="position: relative;bottom: 30px;">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Libelle</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Durré</th>
-                    <th scope="col">Point</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    @foreach($etude as $etu)
-                    <tr>           
-                        <th scope="row">{{$etu->id}}</th>
-                        <td>{{$etu->libelle}}</td>
-                        <td>{{$etu->description}}</td>
-                        <td>{{$etu->durré}} Min</td>
-                        <td>{{$etu->point}}</td>
-                        <td>
-                            <form method="POST" action="{{route('admin.etudeSupp',$etu->id)}}"  onsubmit="return confirm('Supprimer?')" class="float-right text-red-800">
-                              @csrf
-                              @method('DELETE')
-                              <button><i class="bi bi-x-lg"></i></button>
-                            </form>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#modificationModal{{$etu->id}}" style="position: relative;left: 40px;bottom: 33px;font-size: 27px;"><i class="bi bi-pencil-square" style="color: darkolivegreen"></i></a>
-                            
-                        </td>
-                      </tr>
-                  @endforeach
-                </tbody>
-              </table>
-              {{$etude->links()}}
-              </div>
-            </div>
+                 <!-- Button trigger modal -->
+                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Catégories De Récomponse
+                  </button>
+  <hr style="position: relative;bottom: 10px;">
+<!-- ajoute Modal -->
+<div class="modal fade" id="exampleModal" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" style="position: relative;left: 200px;" id="exampleModalLabel">Ajouter Un Nouvaux Catégories De Récomponse</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{{route('admin.addcategorieRecomponse')}}">
+            @csrf
+          <div class="form-group" style="width: 40%">
+            <label>Libelle</label>
+          <input type="text" name="libelle" class="form-control" placeholder="Saisir Libelle" required>
+        </div>
+  <button type="submit" id="add" class="btn btn-primary" style="position: relative;width: 40%;">AJOUTER</button>
+          </form>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <!-- End Ajoute -->
+  <!-- modification -->
+  @foreach($categorieRecomponse as $catre)
+  <div class="modal fade" id="modificationModal{{$catre->id}}" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Modifier Un Etude</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="/categorieRecomponse/{{ $catre->id }}/update">
+            @csrf
+            @method('PUT')
+          <div class="form-group" style="width: 40%">
+            <label>Libelle</label>
+          <input type="text" name="libelle" value="{{$catre->libelle}}" class="form-control" placeholder="Saisir Libelle" required>
+        </div>
+ 
+  <button type="submit" id="add" class="btn btn-success" style="position: relative;width: 90%;left: 20px;">Modifier</button>
+          </form>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  @endforeach
+  <!-- End modification -->
+  <div class="table-responsive" style="position: relative;bottom: 30px;">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Libelle</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+            @foreach($categorieRecomponse as $catre)
+            <tr>           
+                <th scope="row">{{$catre->id}}</th>
+                <td>{{$catre->libelle}}</td>
+                <td>
+                  <form method="POST" action="{{route('admin.categorieRecomponseSupp',$catre->id)}}"  onsubmit="return confirm('Supprimer?')" class="float-right text-red-800">
+                    @csrf
+                    @method('DELETE')
+                    <button><i class="bi bi-x-lg"></i></button>
+                  </form>
+                  <a href="" data-bs-toggle="modal" data-bs-target="#modificationModal{{$catre->id}}" style="position: relative;left: 40px;bottom: 33px;font-size: 27px;"><i class="bi bi-pencil-square" style="color: darkolivegreen"></i></a>
+                </td>
+              </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+    {{$categorieRecomponse->links()}}
                   
             </div>
           </div>
@@ -355,6 +317,8 @@
       </div>
       
     </div>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
+    {{-- <script src="{{ asset('assets/js/filterScript.js') }}"></script> --}}
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset('assets/admin/asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

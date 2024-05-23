@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Age;
 use App\Models\Categorie_recomponse;
 use App\Models\Etude;
+use App\Models\Etude_fonction;
+use App\Models\Etude_region;
+use App\Models\Etude_sexe;
 use App\Models\Fonction;
+use App\Models\FonctionDetaile;
 use App\Models\Recomponse;
 use App\Models\Region;
 use App\Models\Sexe;
@@ -89,6 +94,19 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admin.utilisateur')->with('succe','Utlisateur Supprimer avec succès');
     }
+    public function blockUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->block();
+        return redirect()->route('admin.utilisateur')->with('successbloque', 'Utilisateur bloqué avec succès');
+    }
+
+    public function unblockUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->unblock();
+        return redirect()->route('admin.utilisateur')->with('successunbloque', 'Utilisateur débloqué avec succès');
+    }
 
     public function search(Request $request){
         // $search = $request->search;
@@ -121,6 +139,50 @@ class AdminController extends Controller
                         }
                         return view('Admin/utilisateur')->with("message", "aucun résultat trouvé !");            
         }
+    }
+
+    public function categorieRecomponse()
+    {
+        $categorieRecomponse = Categorie_recomponse::paginate(3);
+        return view('Admin/RecomponseCategorie',[
+            'categorieRecomponse' => $categorieRecomponse,
+        ]);
+    }
+
+    public function addcategorieRecomponse(Request $request)
+    {
+        $request->validate([
+            'libelle' => 'required',
+        ]);
+        $categorieRecomponse = Categorie_recomponse::create([
+            'libelle' => $request->libelle,
+        ]);
+        if($categorieRecomponse){
+            return redirect()->route('admin.categorieRecomponse')->with('success','Catégorie créé avec succès');
+        }
+        else{
+            return back()->with('fail','Sommething wrong try again');
+        }
+    }
+    public function categorieRecomponseSupp(string $id)
+    {
+        $categorieRecomponse = Categorie_recomponse::findOrFail($id);
+        $categorieRecomponse->delete();
+        return redirect()->route('admin.categorieRecomponse')->with('succe','Catégorie Supprimer avec succès');
+    }
+
+    public function updateCategorieRecomponse(Request $request, int $id)
+    {
+        $request->validate([
+            'libelle' => 'required',
+        ]);
+
+            $categorieRecomponse = Categorie_recomponse::where('id',$id)->first();
+            $categorieRecomponse->libelle = $request->libelle;      
+            $categorieRecomponse->save();
+            return redirect()->route('admin.categorieRecomponse')->with('status','Catégorie Modifier avec succès');
+
+
     }
     public function recomponse(Request $request){
         $categorie = Categorie_recomponse::orderBy('libelle')->get();
@@ -312,9 +374,123 @@ class AdminController extends Controller
 
     public function eduteCible()
     {
-        $etude = Etude::all();
+        $etudelist =  Etude::all(); 
+        $etude = Etude::paginate(3);
+        $sexe = Sexe::all();
+        $region = Region::all();
+        $fonction = Fonction::all();
+        $foncDe = FonctionDetaile::take(6)->get();
+        $age = Age::all();
+        //$etudeCible = Etude::paginate(2);
         return view('Admin/CiblesEtude',[
-            'etude' => $etude,
+            'etudes' => $etude,
+            'sexes' => $sexe,
+            'regions' => $region,
+            'fonctions' => $fonction,
+            'foncDe' => $foncDe,
+            'etudelist' => $etudelist,
+            'age' => $age,
         ]);
+    }
+
+    public function addeduteCible(Request $request)
+    {
+        // $request->validate([
+        //     'id_etude' => 'required',
+        //     'id_sexe' => 'required',
+        //     'id_region' => 'required',
+        //     'id_fonction' => 'required',
+        // ]);
+
+        // $etudeSexe = Etude_sexe::create([
+        //     'id_etude' => $request->id_etude,
+        //     'id_sexe' => $request->id_sexe,
+        // ]);
+
+        // $etudeRegion = Etude_region::create([
+        //     'id_etude' => $request->id_etude,
+        //     'id_region' => $request->id_region,
+        // ]);
+
+        // $etudeFonction = Etude_fonction::create([
+        //     'id_etude' => $request->id_etude,
+        //     'id_fonction' => $request->id_fonction,
+        // ]);
+
+        // if($etudeSexe && $etudeRegion && $etudeFonction){
+        //     return redirect()->route('admin.eduteCible')->with('success','Etude Cible Ajouter avec succès');
+        // }
+        $etude = Etude::find($request->input('id_etude'));
+        if ($etude) {
+            if ($request->has('sexes')) {
+                $etude->sexes()->sync($request->input('sexes'));
+            }
+            if ($request->has('ages')) {
+                $etude->ages()->sync($request->input('ages'));
+            }
+    
+            if ($request->has('regions')) {
+                $etude->regions()->sync($request->input('regions'));
+            }
+            //$fonctionss = $request->input('fonctions');
+            if ($request->has('fonctions')) {
+                // if($fonctionss == '3'){
+                //     DB::table('etude_fonction_detailes')->insert([
+                //         'fonction_detaile_id' => 13,
+                //         'etude_id' => $etude
+                //     ]);
+                //     $etude->fonctionDetailes()->sync($request->input('fonctionDetailes'));
+                // }
+                $etude->fonctions()->sync($request->input('fonctions'));
+            }
+            $fonctionDetailes = $request->input('fonctionDetailes', []);
+            //si id fonction = 3
+            if (in_array(3, $request->input('fonctions', []))) {
+                $fonctionDetailes[] = 13;
+                $etude->fonctionDetailes()->sync($fonctionDetailes);
+            }
+            //si id fonction = 4
+            if (in_array(4, $request->input('fonctions', []))) {
+                $fonctionDetailes[] = 14;
+                $etude->fonctionDetailes()->sync($fonctionDetailes);
+            }
+            //si id fonction = 5
+            if (in_array(5, $request->input('fonctions', []))) {
+                $fonctionDetailes[] = 14;
+                $etude->fonctionDetailes()->sync($fonctionDetailes);
+            }
+            //si id fonction = 6
+            if (in_array(6, $request->input('fonctions', []))) {
+                $fonctionDetailes[] = 14;
+                $etude->fonctionDetailes()->sync($fonctionDetailes);
+            }
+            //si id fonction = 7
+            if (in_array(7, $request->input('fonctions', []))) {
+                $fonctionDetailes[] = 14;
+                $etude->fonctionDetailes()->sync($fonctionDetailes);
+            }
+
+
+
+            if ($request->has('fonctionDetailes')) {
+                $etude->fonctionDetailes()->sync($request->input('fonctionDetailes'));
+
+                // 
+            }
+            return redirect()->route('admin.eduteCible')->with('success','Etude Cible Ajouter avec succès');
+        }
+       
+            return redirect()->route('admin.eduteCible')->with('error', 'Etude not found');
+
+    }
+    public function suppEduteCible($id)
+    {
+        $etude = Etude::findOrFail($id);
+        $etude->sexes()->detach();
+        $etude->regions()->detach();
+        $etude->fonctions()->detach();
+        $etude->fonctionDetailes()->detach();
+        //$etude->delete();
+        return redirect()->route('admin.eduteCible')->with('succ', 'Etude Cible supprimée avec succès');
     }
 }

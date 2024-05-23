@@ -28,6 +28,10 @@ class Login extends Controller
             return back()->with('fail','Email Ou Password Incorect');
         }
         $request->session()->regenerate();
+
+        if(auth()->user()->blocked == true){
+            return back()->with('fail','Votre Compte à été Bloquer');
+        }
         
         if(auth()->user()->type == 'admin'){
             return redirect()->route('admin');

@@ -12,4 +12,9 @@ class FonctionDetaile extends Model
         'libelle',
         'fonction_id'
     ];
+
+    public function etudes()
+    {
+        return $this->belongsToMany(Etude::class, 'etude_fonction_detailes');
+    }
 }

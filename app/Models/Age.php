@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sexe extends Model
+class Age extends Model
 {
     use HasFactory;
 
@@ -13,13 +13,10 @@ class Sexe extends Model
         'libelle',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo('App\Models\User', 'id');
-    }
-
     public function etudes()
     {
-        return $this->belongsToMany(Etude::class, 'etude_sexes');
+        return $this->belongsToMany(Etude::class, 'etude_ages');
     }
+
+    
 }

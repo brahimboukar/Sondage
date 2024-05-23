@@ -15,4 +15,29 @@ class Etude extends Model
         'durré',
         'point',
     ];
+
+    public function sexes()
+    {
+        return $this->belongsToMany(Sexe::class, 'etude_sexes');
+    }
+
+    public function regions()
+    {
+        return $this->belongsToMany(Region::class, 'etude_regions');
+    }
+    public function ages()
+    {
+        return $this->belongsToMany(Age::class, 'etude_ages');
+    }
+
+    public function fonctions()
+    {
+        return $this->belongsToMany(Fonction::class, 'etude_fonctions');
+    }
+    public function fonctionDetailes()
+    {
+        return $this->belongsToMany(FonctionDetaile::class, 'etude_fonction_detailes');
+    }
+
+    
 }

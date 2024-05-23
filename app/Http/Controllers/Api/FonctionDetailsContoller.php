@@ -40,4 +40,24 @@ class FonctionDetailsContoller extends Controller
          }
          echo $html;
     }
+
+    public function getfonctionDetailscheck(Request $request)
+    {
+         $fon = $request->post('fon');
+         //$fonD = DB::table('fonction_detailes')->where('fonction_id ',$fon)->orderBy('fonction_id','asc')->get();
+         $data = FonctionDetaile::select()->where('fonction_id',$fon)->take(100)->get();
+        //  $html = '<option selected disabled>
+        //  --- Choissir votre fonction Details ---</option>';
+        $html = '';
+         foreach($data as $list){
+
+            if($list->id == 1 || $list->id == 2){
+                $html.= '<input class="form-check-input fcd" type="checkbox" value="{{'.$list->id.'}}">{{'.$list->libelle.'}}<br>';   
+            }
+            else{
+                $html.= '<input class="form-check-input" type="checkbox" value="{{'.$list->id.'}}">{{'.$list->libelle.'}}<br>';   
+            }
+         }
+         echo $html;
+    }
 }
