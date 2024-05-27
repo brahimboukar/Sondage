@@ -74,4 +74,5 @@ Route::middleware(['auth'])->group(function (){
 //Route User
 Route::middleware(['auth','user-access:user'])->group(function (){
     Route::get('/home', [UserController::class , 'user'])->name('home');
+    Route::get('produitDetailer/{id}',[UserController::class , 'produitDetailer'])->name('produitDetailer');
 });
