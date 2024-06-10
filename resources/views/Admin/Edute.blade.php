@@ -188,6 +188,16 @@
                   <span class="hide-menu">Gestion Des Etudes Cible</span></a
                 >
               </li>
+
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.DemandeRecomponse')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
+                  <span class="hide-menu">Gestion Des Demandes</span></a
+                >
+              </li>
               
               
               

@@ -23,4 +23,9 @@ class CategorieRecomponseController extends Controller
             'data' => $categorie
         ],201);
     }
+    public function list()
+    {
+        $categories = Categorie_recomponse::all();
+        return response()->json($categories);
+    }
 }

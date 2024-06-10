@@ -145,7 +145,7 @@
                     Setting</a
                   >
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
+                  <a class="dropdown-item" href="{{ url('/logout') }}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
                   >
                 </ul>
@@ -212,6 +212,16 @@
                   aria-expanded="false"
                   ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
                   <span class="hide-menu">Gestion Des Etudes Cible</span></a
+                >
+              </li>
+
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.DemandeRecomponse')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
+                  <span class="hide-menu">Gestion Des Demandes</span></a
                 >
               </li>
               

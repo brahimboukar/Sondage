@@ -82,4 +82,9 @@ class User extends Authenticatable
     {
         $this->update(['blocked' => false]);
     }
+
+    public function demandesRecomponses()
+    {
+        return $this->hasMany(Demande_recomponses::class);
+    }
 }

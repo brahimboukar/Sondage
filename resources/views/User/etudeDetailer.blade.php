@@ -22,7 +22,69 @@
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/nouislider/nouislider.css')}}">
-    
+    <style>
+        a{
+    text-decoration: none;
+}
+ul{
+    list-style: none;
+}
+#blog{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 40px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.blog-heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.blog-heading span {
+    color: #f33c3c;
+}
+.blog-heading h3 {
+    font-size: 7.4rem;
+    color: #2b2b2b;
+    font-weight: 900;
+}
+.blog-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0px;
+    flex-wrap: wrap;
+}
+.blog-box{
+    width: 800px;
+    height: 100%;
+    bottom: 50px;
+    background-color: #ffffff;
+    border: 1px solid #ececec;
+    margin: 20px;
+}
+.blog-text{
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+.blog-text span{
+    color: #f33c3c;
+    font-size: 1.8rem;
+}
+.blog-text .blog-title{
+    font-size: 2.9rem;
+    font-weight: 500;
+    color: #272727;
+}
+.blog-text .blog-title:hover{
+    color: #f33c3c;
+    transition: all ease 0.3s;
+}
+    </style>
 </head>
 
 <body>
@@ -39,10 +101,10 @@
 
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
-                                <li class="megamenu-container active">
-                                    <a href="#" >Liste Des Produits</a>
-                                </li>
                                 <li>
+                                    <a href="{{route('home')}}" >Liste Des Produits</a>
+                                </li>
+                                <li class="megamenu-container active">
                                     <a href="#" >Liste Des Etudes</a>
                                 </li>
                             </ul><!-- End .menu -->
@@ -75,85 +137,23 @@
         </header><!-- End .header -->
         <main class="main">
             <div class="page-content">
-                <div class="container">
-                    <div class="product-details-top">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="product-gallery product-gallery-vertical">
-                                    <div class="row">
-                                        <figure class="product-main-image" style="position: relative;right: 150px;">
-                                            <img id="product-zoom" src="{{ asset($recomponse->img) }}" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
-                                        </figure><!-- End .product-main-image -->
-                                    </div><!-- End .row -->
-                                </div><!-- End .product-gallery -->
-                            </div><!-- End .col-md-6 -->
+        
+                <section id="blog">
 
-                            <div class="col-md-6">
-                                <div class="product-details" style="position: relative;top:40px;right: 40px;">
-                                    <h1 class="product-title">{{$recomponse->libelle}}</h1><!-- End .product-title -->
-
-                                    <div class="product-price">
-                                        <i class="me-2 fa-solid fa-award" style="position: relative;right: 3px;"></i> {{$recomponse->points}}
-                                    </div><!-- End .product-price -->
-
-                                    
-
-                                    <div class="details-filter-row details-row-size">
-                                        <label for="qty">Status:</label>
-                                        <div class="product-details-quantity">
-                                            @if($recomponse->status ==1)
-                                                <span class="badge bg-success" style="font-size: 15px;color: wheat;">En Stock</span>
-                                            @endif
-                                             @if($recomponse->status ==0)
-                                                <span class="badge bg-danger" style="font-size: 15px;color: wheat;">Epuisé</span>
-                                            @endif
-                                        </div><!-- End .product-details-quantity -->
-                                    </div><!-- End .details-filter-row -->
-
-                                    <div class="product-details-action">
-                                        @if($recomponse->status == 1)
-    <span style="position: relative; font-size: 20px; bottom: 20px;">
-        <i class="fa-solid fa-circle-check" style="color: #BFD641;"></i> Disponible
-    </span>
-
-    @if($recomponse->points > $user->points)
-        <button disabled class="btn btn-primary btn-round btn-shadow" style="position: relative; top: 20px; cursor: not-allowed;">Demander</button>
-    @else
-    <form action="{{route('DemandeRecomponse')}}" method="POST">
-        @csrf
-        <input type="hidden" name="user_id" value="{{$user->id}}" />
-        <input type="hidden" name="recomponse_id" value="{{$recomponse->id}}" />
-        <button type="submit" class="btn btn-primary btn-round btn-shadow" id="btn1" style="position: relative; top: 20px; right: 130px;">Demander</button>
-    </form>
-    @endif
-@endif
-
-                                        @if($recomponse->status ==0)
-                                        <span style="position: relative;font-size: 20px;bottom: 20px;"><i class="fa-regular fa-circle-xmark" style="color: #D20103"></i> Non Disponible</span>
-                                        <button hidden class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 20px;">Demander</button>
-                                        
-                                        @endif
-
-                                       
-                                    </div><!-- End .product-details-action -->
-
-                                    <div class="product-details-footer">
-                                        <div class="product-cat">
-                                            <span>Category:</span>
-                                            <span>{{$recomponse->categorie_recomponse[0]->libelle}}</span>
-                                        </div><!-- End .product-cat -->
-                                    </div><!-- End .product-details-footer -->
-                                </div><!-- End .product-details -->
-                            </div><!-- End .col-md-6 -->
-                        </div><!-- End .row -->
-                    </div><!-- End .product-details-top -->
-
+                    <div class="blog-container">
+                        <div class="blog-box">
+                            <div class="blog-text">
+                                <a href="#" class="blog-title">{{$etude->libelle}}</a>
+                                <span>{{$etude->description}}</span>
+                                <span><i class="fa-solid fa-stopwatch"></i> {{$etude->durré}}min  <i class="me-2 fa-solid fa-award" style="left:100px;position: relative;"></i> <span style="left:100px;position: relative;">{{$etude->point}}</span></span>
+                                <a href=""  class="btn btn-primary btn-round btn-shadow" style="position: relative;top:10px;">Passer</a>
+                            </div>
+                           
+                        </div>
+                    </div>
                     
-
-                    
-
-                    
-                </div><!-- End .container -->
+                </section>
+                  
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 

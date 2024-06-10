@@ -25,6 +25,8 @@ class AgeRequest extends FormRequest
     {
         return [
             'libelle' => 'required|string',
+            'age_Min' => 'required|integer',
+            'age_Max' => 'required|integer',
         ];
     }
 }

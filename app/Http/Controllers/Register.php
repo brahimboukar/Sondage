@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Validator;
 
 class Register extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
     public function register()
     {
         $regionData = Region::all();

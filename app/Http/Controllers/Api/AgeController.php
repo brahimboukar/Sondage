@@ -15,6 +15,8 @@ class AgeController extends Controller
 
         $ageData = [
             'libelle' => $request->libelle,
+            'age_Min' => $request->age_Min,
+            'age_Max' => $request->age_Max,
         ];
 
         $age = Age::create($ageData);

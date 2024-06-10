@@ -12,6 +12,7 @@
     <meta name="description" content="Molla - Bootstrap eCommerce Template">
     <meta name="author" content="p-themes">
     <meta name="theme-color" content="#ffffff">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{{asset('assets/user/css/bootstrap.min.css')}}">
@@ -32,7 +33,7 @@
                 <div class="container">
                     <div class="header-left">
 
-                        <a href="index.html" class="logo">
+                        <a href="#" class="logo">
                             <img src="{{asset('assets/admin/asset/images/terrain360.png')}}" alt="Molla Logo" width="105" height="25">
                         </a>
 
@@ -42,7 +43,7 @@
                                     <a href="#" >Liste Des Produits</a>
                                 </li>
                                 <li>
-                                    <a href="#" >Liste Des Etudes</a>
+                                    <a href="{{route('etude')}}" >Liste Des Etudes</a>
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -50,19 +51,20 @@
 
                     <div class="header-right">
                         <div class="dropdown compare-dropdown">
-                            <a href="#" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Profile" aria-label="Compare Products">
-                                <i class="bi bi-person"></i><h6 style="position: relative;top:8px;">BOUKAR BRAHIM</h6>
+                            <a href="#" class="dropdown-toggle" style="position: relative;right: 60px;" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-display="static" title="Profile" aria-label="Compare Products">
+                                <i class="bi bi-person"></i><h6 style="position: relative;top:8px;">{{ $user->nom }} {{ $user->prenom }}</h6>
                             </a>
-
+                            
+                                <i class="me-2 fa-solid fa-award"></i><h6 style="position: relative;top:8px;left: 2px;"> {{ $user->points }} </h6>
+                          
                             <div class="dropdown-menu dropdown-menu-right">
                                 <ul class="compare-products">
                                     <li class="compare-product">
-                                        <a href="#"  title="Remove Product"></a>
-                                        <h4 class="compare-product-title"><a href="product.html">Consulter Votre Profil</a></h4>
+                                        <h4 class="compare-product-title"><a href="{{route('profile')}}">Consulter Votre Profil</a></h4>
                                     </li>
                                     <li class="compare-product">
-                                        <a href="#"  title="Remove Product"></a>
-                                        <h4 class="compare-product-title"><a href="product.html">Logout</a></h4>
+                                        
+                                        <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
                                 </ul>
                             </div><!-- End .dropdown-menu -->
@@ -75,6 +77,11 @@
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('{{('assets/user/images/page-header-bg.jpg')}}')">
         		<div class="container">
+                    @if(Session::get('succ'))
+                                <div class="alert alert-success" role="alert" >
+                                    {{ Session::get('succ') }}
+                                </div>
+                                @endif
         			<h1 class="page-title">Liste Des Produits<span>Boutique</span></h1>
                     {{-- <img src="{{ asset($recomponse->img) }}" alt="Product image" class="product-image"> --}}
         		</div><!-- End .container -->
@@ -87,20 +94,36 @@
                 			<div class="toolbox">
                 				<div class="toolbox-left">
                 					<div class="toolbox-info">
-                						Affichage de <span>12 sur {{$recomponseCount}}</span> Produits
+                						Affichage de <span>{{$recomponseCount}} sur {{$recomponseCount}}</span>
                 					</div><!-- End .toolbox-info -->
                 				</div><!-- End .toolbox-left -->
 
                 				<div class="toolbox-right">
                 					<div class="toolbox-sort">
-                						<label for="sortby">Sort by:</label>
+                						{{-- <label for="sortby">Sort by:</label>
                 						<div class="select-custom">
 											<select  class="form-control">
 												<option value="popularity" selected="selected">Most Popular</option>
 												<option value="rating">Most Rated</option>
 												<option value="date">Date</option>
 											</select>
-										</div>
+										</div> --}}
+                                        {{-- ['point' => $rec->points] --}}
+                                        
+                                        {{-- <a href="{{url('/home?sortBy=points&order=asc')}}"><button type="button" class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px;">De - aux + Point</button></a>
+                                        <a href="{{url('/home?sortBy=points&order=desc')}}"><button class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px;left: 20px;">De + aux - Point</button></a>
+                                        <a href="{{url('/home?sortBy=created_at&order=desc')}}"><button class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px;left: 30px;">Le Plus Récent</button></a>
+                                        <a href=""><button class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px; left: 40px;">Le Plus Demander</button></a> --}}
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                              Dropdown button
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                              <li><a href="{{url('/home?sortBy=points&order=asc')}}">De - aux + Point</a></li>
+                                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            </ul>
+                                          </div>
                 					</div><!-- End .toolbox-sort -->
                 				</div><!-- End .toolbox-right -->
                 			</div><!-- End .toolbox -->
@@ -137,21 +160,54 @@
                                     @endforeach
                                 </div><!-- End .row -->
                             </div><!-- End .products -->
+                            {{-- @if(isset($recomponses))
+                            <div class="products mb-3">
+                                <div class="row justify-content-center">
+                                   @foreach($recomponse as $rec)
+                                    <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                        <div class="product product-7 text-center">
+                                            <figure class="product-media">
+                                                @if($rec->status ==0)
+                                                <span class="product-label label-out">En rupture de stock</span>
+                                                @endif
+                                                <a href="{{url ('produitDetailer/'.$rec->id.'')}}">
+                                                    <img src="{{ asset($rec->img) }}" alt="Product image" class="product-image">
+                                                </a>
 
+                                                <div class="product-action">
+                                                    <a href="{{url ('produitDetailer/'.$rec->id.'')}}" class="btn-product "><span><i class="bi bi-eye"> </i>Consulter Le Produit</span></a>
+                                                </div><!-- End .product-action -->
+                                            </figure><!-- End .product-media -->
+
+                                            <div class="product-body">
+                                                <div class="product-cat">
+                                                    <a>{{$rec->categorie_recomponse[0]->libelle}}</a>
+                                                </div><!-- End .product-cat -->
+                                                <h3 class="product-title"><a >{{$rec->libelle}}</a></h3><!-- End .product-title -->
+                                                <div class="product-price">
+                                                <i class="me-2 fa-solid fa-award" style="position: relative;right: 3px;"></i> {{$rec->points}} 
+                                                </div><!-- End .product-price -->
+                                            </div><!-- End .product-body -->
+                                        </div><!-- End .product -->
+                                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                                    @endforeach
+                                </div><!-- End .row -->
+                            </div><!-- End .products -->
+                            @endif --}}
 
                 			<nav aria-label="Page navigation">
-							    <ul class="pagination justify-content-center">
+							    {{-- <ul class="pagination justify-content-center">
 							        {{$recomponse->links()}}
-							    </ul>
+							    </ul> --}}
 							</nav>
                 		</div><!-- End .col-lg-9 -->
                 		<aside class="col-lg-3 order-lg-first">
                 			<div class="sidebar sidebar-shop">
                 				<div class="widget widget-clean">
                 					<label>Filtrer Par :</label>
-                					<a href="#" class="sidebar-filter-clear">Clean All</a>
+                					{{-- <a href="{{ route('profile') }}" class="sidebar-filter-clear">Nettoie tout</a> --}}
+                                    <a href="{{url ('/produit')}}">Nettoie tout</a>
                 				</div><!-- End .widget widget-clean -->
-
                 				<div class="widget widget-collapsible">
     								<h3 class="widget-title">
 									    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
@@ -164,18 +220,43 @@
 											<div class="filter-items filter-items-count">
                                                 
 												<div class="filter-item">
+                                                    <ul>
                                                     @foreach($CatReco as $cat)
 													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input" id="{{$cat->libelle}}" value="{{$cat->id}}">
-														<label class="custom-control-label" for="{{$cat->libelle}}">{{$cat->libelle}}</label>
+                                                        <li><a href="{{route('home', ['id_categorie' => $cat->id]) }}">{{$cat->libelle}}</a></li>
+														{{-- <input type="checkbox" class="custom-control-input" name="categorie_ids[]" id="{{$cat->libelle}}" value="{{$cat->id}}">
+														<label class="custom-control-label" for="{{$cat->libelle}}">{{$cat->libelle}}</label> --}}
+                                                        <span class="item-count" style="position: absolute;left: 250px;">{{$cat->recompenses->count()}}</span>
 													</div><!-- End .custom-checkbox -->
 													{{-- <span class="item-count">3</span> --}}
                                                     @endforeach
+                                                    </ul>
 												</div><!-- End .filter-item -->
 			
 											</div><!-- End .filter-items -->
 										</div><!-- End .widget-body -->
 									</div><!-- End .collapse -->
+        						</div><!-- End .widget -->
+                                <div class="widget widget-collapsible">
+    								<h3 class="widget-title">
+									    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
+									        Point
+									    </a>
+									</h3><!-- End .widget-title -->
+
+									<form method="GET" action="{{ url('/home') }}">
+                                        <label for="min_points">Points minimum :</label>
+                                        <input type="range" id="min_points" name="min_points" class="slider" min="0" max="{{ $minPoints }}" oninput="this.nextElementSibling.value = this.value">
+                                        <output>50</output>
+                                        <br>
+                                
+                                        <label for="max_points">Points maximum :</label>
+                                        <input type="range" id="max_points" name="max_points" class="slider" min="{{ $minPoints }}" max="{{ $maxPoints }}" oninput="this.nextElementSibling.value = this.value">
+                                        <output style="position: absolute;">50</output>
+                                        <br>
+                                
+                                        <button type="submit" class="btn btn-primary btn-round btn-shadow">Filtrer</button>
+                                    </form>
         						</div><!-- End .widget -->
                 			</div><!-- End .sidebar sidebar-shop -->
                 		</aside><!-- End .col-lg-3 -->
@@ -194,9 +275,9 @@
         </footer><!-- End .footer -->
     </div><!-- End .page-wrapper -->
 
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <!-- Plugins JS File -->
-    
     <script src="{{asset('assets/user/js/jquery.min.js')}}"></script>
     <script src="{{asset('assets/user/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('assets/user/js/jquery.hoverIntent.min.js')}}"></script>
@@ -209,5 +290,46 @@
     <script src="{{asset('assets/user/js/nouislider.min.js')}}"></script>
     <!-- Main JS File -->
     <script src="{{asset('assets/user/js/main.js')}}"></script>
+    <script src="{{asset('assets/user/js/dropdown.js')}}"></script>
+    <script>
+            var slider = document.getElementById("myRange");
+            var output = document.getElementById("demo");
+            output.innerHTML = slider.value; // Display the default slider value
+
+            // Update the current slider value (each time you drag the slider handle)
+            slider.oninput = function() {
+            output.innerHTML = this.value;
+            }
+            // const dropdowns = document.querySelectorAll('.dropdown');
+            
+            // dropdowns.forEach(dropdown => {
+            //     const select = dropdown.querySelector('.select');
+            //     const caret = dropdown.querySelector('.caret');
+            //     const menua = dropdown.querySelector('.menua');
+            //     const options = dropdown.querySelectorAll('.menua li');
+            //     const selected = dropdown.querySelector('.selected');
+
+            //     select.addEventListener('click', () => {
+            //         select.classList.toggle('select-clicked');
+            //         caret.classList.toggle('.caret-rotate');
+            //         menua.classList.toggle('.menua-open');
+            //     });
+
+            //     options.forEach(option => {
+            //         option.addEventListener('click', () => {
+            //             selected.innerText = option.innerText;
+            //             select.classList.remove('select-clicked ');
+            //             caret.classList.remove('caret-rotate');
+            //             menua.classList.remove('menua-open');
+            //             options.forEach(option => {
+            //                 option.classList.remove('activea');
+            //             });
+            //             option.classList.add('activea');
+            //         });
+            //     });
+            // });
+    </script>
+    
+    
 </body>
 </html>

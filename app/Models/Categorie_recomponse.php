@@ -11,4 +11,9 @@ class Categorie_recomponse extends Model
     protected $fillable = [
         'libelle',
     ];
+
+    public function recompenses()
+    {
+        return $this->hasMany(Recomponse::class, 'id_categorie');
+    }
 }

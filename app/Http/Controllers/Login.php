@@ -9,6 +9,10 @@ use Illuminate\Validation\ValidationException;
 
 class Login extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('guest')->except('logout');
+    // }
     public function login()
     {
         return view('Auth/login');
@@ -42,4 +46,11 @@ class Login extends Controller
 
 
     }
+
+    // public function logout(Request $request)
+    // {
+    //     Auth::guard('web')->logout();
+    //     $request->session()->invalidate();
+    //     return redirect()->route('login');
+    // }
 }

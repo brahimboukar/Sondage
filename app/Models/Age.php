@@ -11,6 +11,8 @@ class Age extends Model
 
     protected $fillable = [
         'libelle',
+        'age_Min',
+        'age_Max'
     ];
 
     public function etudes()

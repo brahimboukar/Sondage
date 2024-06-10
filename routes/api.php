@@ -31,3 +31,4 @@ Route::post('register' , [RegisterController::class, 'register']);
 Route::post('login' , [LoginController::class, 'login']);
 
 Route::post('CategorieRecomponse', [CategorieRecomponseController::class, 'add']);
+Route::get('/categories', [CategorieRecomponseController::class, 'list']);

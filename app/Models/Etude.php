@@ -27,7 +27,7 @@ class Etude extends Model
     }
     public function ages()
     {
-        return $this->belongsToMany(Age::class, 'etude_ages');
+        return $this->belongsToMany(Age::class, 'etude_ages' , 'etude_id', 'age_id');
     }
 
     public function fonctions()

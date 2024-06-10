@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Age;
 use App\Models\Categorie_recomponse;
+use App\Models\Demande_recomponses;
 use App\Models\Etude;
 use App\Models\Etude_fonction;
 use App\Models\Etude_region;
@@ -16,6 +17,7 @@ use App\Models\Region;
 use App\Models\Sexe;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -23,10 +25,10 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
     public function adminDashboread(){
         $user = User::where('type','!=','1')->count();
         $nouveauxUtilisateurs = User::whereDate('created_at', today())->count();
@@ -487,10 +489,35 @@ class AdminController extends Controller
     {
         $etude = Etude::findOrFail($id);
         $etude->sexes()->detach();
+        $etude->ages()->detach();
         $etude->regions()->detach();
         $etude->fonctions()->detach();
         $etude->fonctionDetailes()->detach();
         //$etude->delete();
         return redirect()->route('admin.eduteCible')->with('succ', 'Etude Cible supprimée avec succès');
     }
+
+    public function DemandeRecomponse()
+    {
+        $demandeRec = Demande_recomponses::all();
+        return view('Admin/DemandeRecomponse',[
+            'demandeRec' => $demandeRec
+        ]);
+    }
+
+    public function suppDemandeRecomponse($id)
+    {
+        $demandeRec = Demande_recomponses::findOrFail($id);
+        $demandeRec->delete();
+        return redirect()->route('admin.DemandeRecomponse')->with('succe','Demande Recomponse Supprimer avec succès');
+    }
+
+    // public function logout(Request $request)
+    // {
+    //     Auth::guard('web')->logout();
+ 
+    //     $request->session()->invalidate();
+ 
+    //     return redirect('/login');
+    // }
 }
