@@ -35,6 +35,8 @@ Route::post('register' , [Register::class, 'registerSave'])->name('register.save
 Route::get('login', [Login::class ,'login'])->name('login');
 Route::post('login', [Login::class , 'loginAction'])->name('login.action');
 
+Route::get('/logout' ,[Login::class , 'logout'])->name('logout');
+
 //Route Logout
 //Route::get('logout', [Login::class ,'logout'])->middleware('auth')->name('logout');
 
@@ -51,7 +53,7 @@ Route::post('login', [Login::class , 'loginAction'])->name('login.action');
 // });
 
 //Route Admin
-    Route::middleware(['auth'])->group(function (){
+    Route::middleware(['auth','user-access:admin','noback'])->group(function (){
     Route::get('/admin/Dashboread', [AdminController::class , 'adminDashboread'])->name('admin');
     //Route utlisateur 
     Route::get('/admin/utilisateur', [AdminController::class , 'utilisateur'])->name('admin.utilisateur');
@@ -91,11 +93,13 @@ Route::post('login', [Login::class , 'loginAction'])->name('login.action');
 // Route Demande Recomponse
     Route::get('/admin/DemandeRecomponse', [AdminController::class , 'DemandeRecomponse'])->name('admin.DemandeRecomponse');
     Route::delete('admin.suppDemandeRecomponse/{id}', [AdminController::class , 'suppDemandeRecomponse'])->name('admin.suppDemandeRecomponse');
+
+   
 });
 
 //Route User
 
-Route::middleware(['auth', 'isUser' ])->group(function (){
+Route::middleware(['auth', 'user-access:user','noback'])->group(function (){
     Route::get('/home', [UserController::class , 'user'])->name('home');
     Route::get('/produit', [UserController::class , 'user'])->name('produit');
     Route::get('produitDetailer/{id}',[UserController::class , 'produitDetailer'])->name('produitDetailer');
@@ -110,7 +114,8 @@ Route::middleware(['auth', 'isUser' ])->group(function (){
     Route::get('/etude', [UserController::class , 'etude'])->name('etude');
     Route::get('etudeDetailer/{id}',[UserController::class , 'etudeDetailer'])->name('etudeDetailer');
 
+    Route::post('/EtudeUsers/{etudeId}/user/{userId}/etude/{idEtude}' ,[UserController::class , 'EtudeUsers'])->name('EtudeUsers');
 
-    //Route Logoute
-    Route::get('/logout' ,[UserController::class , 'logout'])->name('logout');
+    
+    
 });

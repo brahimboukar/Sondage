@@ -12,6 +12,7 @@ class Etude extends Model
     protected $fillable = [
         'libelle',
         'description',
+        'lien',
         'durré',
         'point',
     ];

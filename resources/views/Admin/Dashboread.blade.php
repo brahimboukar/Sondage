@@ -145,7 +145,7 @@
                     Setting</a
                   >
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{{ url('/logout') }}"
+                  <a class="dropdown-item" href="{{route('logout')}}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
                   >
                 </ul>

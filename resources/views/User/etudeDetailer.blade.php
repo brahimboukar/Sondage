@@ -146,7 +146,14 @@ ul{
                                 <a href="#" class="blog-title">{{$etude->libelle}}</a>
                                 <span>{{$etude->description}}</span>
                                 <span><i class="fa-solid fa-stopwatch"></i> {{$etude->durré}}min  <i class="me-2 fa-solid fa-award" style="left:100px;position: relative;"></i> <span style="left:100px;position: relative;">{{$etude->point}}</span></span>
-                                <a href=""  class="btn btn-primary btn-round btn-shadow" style="position: relative;top:10px;">Passer</a>
+                                <form method="POST" action="{{route('EtudeUsers',['etudeId' => $etude->id, 'userId' => Auth::id(), 'idEtude' => $etude->id])}}">
+                                    @csrf
+                                    <input type="hidden" name="etude_id" value="{{$etude->id}}" />
+                                    <input type="hidden" name="user_id" value="{{$user->id}}" />
+                                    <input type="hidden" name="lien" value="{{$etude->lien}}" />
+                                <button type="submit" class="btn btn-primary btn-round btn-shadow" style="position: relative;top:10px;">Passer</button>
+                                </form>
+                                {{-- href="{{$etude->lien}}?id={{$user->id}}&&idEtude={{$etude->id}}" --}}
                             </div>
                            
                         </div>

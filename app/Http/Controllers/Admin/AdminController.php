@@ -336,6 +336,7 @@ class AdminController extends Controller
         $etude = Etude::create([
             'libelle' => $request->libelle,
             'description' => $request->description,
+            'lien' => $request->lien,
             'durré' => $request->durré,
             'point' => $request->point,
         ]);
@@ -361,6 +362,7 @@ class AdminController extends Controller
             'description' => 'required',
             'durré' => 'required',
             'point' => 'required',
+            'lien' => 'required',
         ]);
 
             $etude = Etude::where('id',$id)->first();
@@ -368,6 +370,7 @@ class AdminController extends Controller
             $etude->description = $request->description;
             $etude->durré = $request->durré;
             $etude->point = $request->point;
+            $etude->lien = $request->lien;
             $etude->save();
             return redirect()->route('admin.edute')->with('succe','Etude Modifier avec succès');
 
@@ -512,12 +515,5 @@ class AdminController extends Controller
         return redirect()->route('admin.DemandeRecomponse')->with('succe','Demande Recomponse Supprimer avec succès');
     }
 
-    // public function logout(Request $request)
-    // {
-    //     Auth::guard('web')->logout();
- 
-    //     $request->session()->invalidate();
- 
-    //     return redirect('/login');
-    // }
+    
 }

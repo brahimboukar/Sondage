@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserAccess
+class UserMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,11 +15,10 @@ class UserAccess
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $type)
+    public function handle(Request $request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->type == $type){
+        if (Auth::check() && Auth::user()->type === 'user') {
             return $next($request);
         }
-        return redirect()->route('login');
     }
 }

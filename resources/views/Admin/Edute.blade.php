@@ -274,6 +274,10 @@
                   <label>Nombre de Point</label>
                   <input type="number" name="point" class="form-control" placeholder="Saisir Le Nombre de Point" required>
               </div>
+              <div class="form-group" style="width: 40%;position: relative;bottom: 150px;">
+                <label>Lien</label>
+                <textarea type="" name="lien" class="form-control" placeholder="Saisir Le Lien" required></textarea>
+            </div>
              
               <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 100px;width: 90%;left: 20px;">AJOUTER</button>
                       </form>
@@ -312,6 +316,10 @@
                   <label>Nombre de Point</label>
                   <input type="number" name="point" value="{{$etu->point}}" class="form-control" placeholder="Saisir Le Nombre de Point" required>
               </div>
+              <div class="form-group" style="width: 40%;position: relative;bottom: 150px;">
+                <label>Lien</label>
+                <textarea type=""  name="lien" class="form-control" placeholder="Saisir Le Lien" required>{{$etu->lien}}</textarea>
+            </div>
              
               <button type="submit" id="add" class="btn btn-success" style="position: relative;bottom: 100px;width: 90%;left: 20px;">Modifier</button>
                       </form>
@@ -329,6 +337,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Libelle</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Lien</th>
                     <th scope="col">Durré</th>
                     <th scope="col">Point</th>
                     <th scope="col">Action</th>
@@ -340,6 +349,7 @@
                         <th scope="row">{{$etu->id}}</th>
                         <td>{{$etu->libelle}}</td>
                         <td>{{$etu->description}}</td>
+                        <td>{{$etu->lien}}</td>
                         <td>{{$etu->durré}} Min</td>
                         <td>{{$etu->point}}</td>
                         <td>

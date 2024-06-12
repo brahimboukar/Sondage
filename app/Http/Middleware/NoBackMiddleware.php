@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserAccess
+class NoBackMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,11 +15,12 @@ class UserAccess
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $type)
+    public function handle($request, Closure $next)
     {
-        if(Auth::check() && Auth::user()->type == $type){
-            return $next($request);
-        }
-        return redirect()->route('login');
+        $response = $next($request);
+
+        return $response->header('Cache-Control', 'no-cache, no-store, max-age=0, must-revalidate')
+                        ->header('Pragma', 'no-cache')
+                        ->header('Expires', 'Sat, 01 Jan 2000 00:00:00 GMT');
     }
 }

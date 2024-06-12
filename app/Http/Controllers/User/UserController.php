@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Categorie_recomponse;
 use App\Models\Demande_recomponses;
 use App\Models\Etude;
+use App\Models\Etude_users;
 use App\Models\Fonction;
 use App\Models\FonctionDetaile;
 use App\Models\Recomponse;
@@ -195,9 +196,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function logout()
-{
-    Auth::logout();
-    return redirect()->route('login');
-}
+    public function EtudeUsers(Request $request,$id,$userId,$idEtude)
+    {
+        $user = User::findOrFail($request->input('user_id'));
+        $etude = Etude::findOrFail($request->input('etude_id'));
+        //$etudelien = Etude::findOrFail($request->input('lien'));
+        //$etudes = Etude::find($id);
+        $etudeUser = new Etude_users();
+        $etudeUser->user_id = $user->id;
+        $etudeUser->etude_id = $etude->id;
+        $etudeUser->date = now();
+        
+        $etudeUser->save();
+        $redirectUrl = $etude->lien . '?id=' . $userId.'/&&idEtude='.$idEtude;
+        return redirect($redirectUrl);
+    }
+
 }

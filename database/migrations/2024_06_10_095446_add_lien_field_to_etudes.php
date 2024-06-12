@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('etude_ages', function (Blueprint $table) {
-            $table->integer('age_Min');
+        Schema::table('etudes', function (Blueprint $table) {
+            $table->string('lien')->after('description');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('etude_ages', function (Blueprint $table) {
-            $table->dropColumn('age_Min');
+        Schema::table('etudes', function (Blueprint $table) {
+            $table->dropColumn('lien');
         });
     }
 };
