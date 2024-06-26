@@ -41,15 +41,33 @@ class AdminController extends Controller
             'etude' => $etude,
         ]);
     }
-    public function utilisateur(){
-        $user = User::where('type','!=','1')->orderBy('nom')->paginate(4);
+    public function utilisateur(Request $request){
+        $searchTerm = $request->input('searchTerm');
+
+        $query = User::where('type', '!=', '1')->orderBy('nom');
+
+        if (!empty($searchTerm)) {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('nom', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('prenom', 'like', '%' . $searchTerm . '%');
+            });
+        }
+       
+
+        $user = $query->paginate(3);
         $regionData = Region::all();
         $fonctionf = Fonction::all();
+
+        $message = '';
+        if ($user->isEmpty()) {
+            $message = 'Aucun Panéliste trouvé.';
+        }
         return view('Admin/utilisateur',[
             'user' => $user,
             'dataRegion' => $regionData,
             'dataf' => $fonctionf,
-            //'userbySexe' =>$userbySexe
+           'searchTerm' => $searchTerm,
+           'message' => $message,
         ]);
     }
 
@@ -89,7 +107,7 @@ class AdminController extends Controller
             return back()->with('fail','Sommething wrong try again');
         }
     }
-
+    
     public function utilisateurSupp(string $id)
     {
         $user = User::findOrFail($id);
@@ -110,38 +128,25 @@ class AdminController extends Controller
         return redirect()->route('admin.utilisateur')->with('successunbloque', 'Utilisateur débloqué avec succès');
     }
 
-    public function search(Request $request){
-        // $search = $request->search;
-        // $query = User::query();
-        // $query->whereAny(['nom','prenom'],'LIKE',"%$search%");
-        // $users = $query->get();
-        // return view('Admin/utilisateur',[
-        //     'users' => $users
-        // ]);
-        // $dt = $request->input('query');
-        // $regionData = Region::all();
-        // $fonctionf = Fonction::all();
-        // $user = DB::table('users')->where('nom', 'like' , '%' .$dt. '%')->get();
-        // return view('Admin/utilisateur',[
-        //     'user' => $user,
-        //     'dataRegion' => $regionData,
-        //     'dataf' => $fonctionf,
-        // ]);
-        $query = $request->input('query');
-        if($query != ''){
-            $datausers = User::where('nom','like', '%' .$query. '%')
-                           ->orWhere('prenom','like', '%' .$query. '%')
-                           ->paginate(5)
-                           ->setpath();
-                           $datausers->appends(array(
-                            'query' => $request->input('query'),
-                        ));
-                        if(count($datausers)>0){
-                            return view('Admin/utilisateur',compact("datausers"));
-                        }
-                        return view('Admin/utilisateur')->with("message", "aucun résultat trouvé !");            
-        }
-    }
+    // public function search(Request $request)
+    // {
+    //     $searchTerm = $request->input('searchTerm');
+
+    //     // Requête pour filtrer les utilisateurs par nom ou prénom
+    //     $user = User::where('nom', 'LIKE', "%{$searchTerm}%")
+    //                 ->orWhere('prenom', 'LIKE', "%{$searchTerm}%")
+    //                 ->paginate(3);
+    //     $regionData = Region::all();
+    //     $fonctionf = Fonction::all();
+    //     return view('Admin/utilisateur',[
+    //         'user' => $user,
+    //         'dataRegion' => $regionData,
+    //         'dataf' => $fonctionf,
+    //         'user' =>$user
+    //     ]);
+
+    //     return view('Admin/utilisateur', compact('user'));
+    // }
 
     public function categorieRecomponse()
     {

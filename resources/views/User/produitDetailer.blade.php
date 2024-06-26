@@ -40,10 +40,10 @@
                         <nav class="main-nav">
                             <ul class="menu sf-arrows">
                                 <li class="megamenu-container active">
-                                    <a href="#" >Liste Des Produits</a>
+                                    <a href="{{route('produit')}}" >Liste Des Produits</a>
                                 </li>
                                 <li>
-                                    <a href="#" >Liste Des Etudes</a>
+                                    <a href="{{route('etude')}}" >Liste Des Etudes</a>
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -64,7 +64,7 @@
                                     </li>
                                     <li class="compare-product">
                                         <a href="#"  title="Remove Product"></a>
-                                        <h4 class="compare-product-title"><a href="product.html">Logout</a></h4>
+                                        <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
                                 </ul>
                             </div><!-- End .dropdown-menu -->
@@ -117,7 +117,8 @@
     </span>
 
     @if($recomponse->points > $user->points)
-        <button disabled class="btn btn-primary btn-round btn-shadow" style="position: relative; top: 20px; cursor: not-allowed;">Demander</button>
+        <span class="badge bg-danger" style="font-size: 15px;color: wheat;position: relative;right: 120px;top:20px;">votre solde de point n'est pas suffisant </span>
+        <button disabled class="btn btn-primary btn-round btn-shadow" style="position: relative; top: 30px; cursor: not-allowed;">Demander</button>
     @else
     <form action="{{route('DemandeRecomponse')}}" method="POST">
         @csrf
@@ -137,7 +138,7 @@
                                        
                                     </div><!-- End .product-details-action -->
 
-                                    <div class="product-details-footer">
+                                    <div class="product-details-footer" style="position: relative;top: 50px;">
                                         <div class="product-cat">
                                             <span>Category:</span>
                                             <span>{{$recomponse->categorie_recomponse[0]->libelle}}</span>

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Recomponse extends Model
 {
@@ -24,6 +25,16 @@ class Recomponse extends Model
 
     public function demandesRecomponses()
     {
-        return $this->hasMany(Demande_recomponses::class);
+        return $this->hasMany(Demande_recomponses::class,'recomponse_id');
     }
+
+    public function scopeMostDemanded($query)
+{
+    return $query->join('demande_recomponses', 'recomponses.id', '=', 'demande_recomponses.recomponse_id')
+                 ->select('recomponses.*', DB::raw('COUNT(demande_recomponses.id) as demande_recomponses_count'))
+                 ->groupBy('recomponses.id')
+                 ->orderBy('demande_recomponses_count', 'desc');
+}
+    
+   
 }

@@ -116,7 +116,7 @@
                     Setting</a
                   >
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
+                  <a class="dropdown-item" href="{{route('logout')}}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
                   >
                 </ul>
@@ -146,7 +146,7 @@
                   href="{{route('admin.utilisateur')}}"
                   aria-expanded="false"
                   ><i class="me-2 mdi mdi-account"></i
-                  ><span class="hide-menu">Gestion Des Utilisateurs</span></a
+                  ><span class="hide-menu">Gestion Des Panélistes</span></a
                 >
               </li>
               <li class="sidebar-item">

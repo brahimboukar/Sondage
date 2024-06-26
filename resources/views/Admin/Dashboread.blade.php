@@ -43,15 +43,11 @@
       data-header-position="absolute"
       data-boxed-layout="full"
     >
-      <!-- ============================================================== -->
-      <!-- Topbar header - style you can find in pages.scss -->
-      <!-- ============================================================== -->
+      
       <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
           <div class="navbar-header" data-logobg="skin5">
-            <!-- ============================================================== -->
-            <!-- Logo -->
-            <!-- ============================================================== -->
+           
             <a class="navbar-brand">
               <!-- Logo icon -->
               <b class=" logo-icon ">
@@ -62,33 +58,16 @@
                   width="185" 
                 />
               </b>
-              <!--End Logo icon -->
-              <!-- Logo text -->
               
-              <!-- Logo icon -->
-              <!-- <b class="logo-icon"> -->
-              <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-              <!-- Dark Logo icon -->
-              <!-- <img src="../assets/images/logo-text.png" alt="homepage" class="light-logo" /> -->
-
-              <!-- </b> -->
-              <!--End Logo icon -->
             </a>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Toggle which is visible on mobile only -->
-            <!-- ============================================================== -->
+           
             <a
               class="nav-toggler waves-effect waves-light d-block d-md-none"
               href="javascript:void(0)"
               ><i class="ti-menu ti-close"></i
             ></a>
           </div>
-          <!-- ============================================================== -->
-          <!-- End Logo -->
-          <!-- ============================================================== -->
+          
           <div
             class="navbar-collapse collapse"
             id="navbarSupportedContent"
@@ -175,7 +154,7 @@
                   href="{{route('admin.utilisateur')}}"
                   aria-expanded="false"
                   ><i class="me-2 mdi mdi-account"></i
-                  ><span class="hide-menu">Gestion Des Utilisateurs</span></a
+                  ><span class="hide-menu">Gestion Des Panélistes</span></a
                 >
               </li>
               <li class="sidebar-item">

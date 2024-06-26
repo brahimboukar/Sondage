@@ -114,52 +114,68 @@
                                         <a href="{{url('/home?sortBy=points&order=desc')}}"><button class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px;left: 20px;">De + aux - Point</button></a>
                                         <a href="{{url('/home?sortBy=created_at&order=desc')}}"><button class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px;left: 30px;">Le Plus Récent</button></a>
                                         <a href=""><button class="btn btn-primary btn-round btn-shadow" style="position: relative;top: 5px; left: 40px;">Le Plus Demander</button></a> --}}
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                              Dropdown button
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                              <li><a href="{{url('/home?sortBy=points&order=asc')}}">De - aux + Point</a></li>
-                                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                            </ul>
-                                          </div>
+                                        {{-- <div class="dropdowna">
+                                            <input type="text" class="textBox" placeholder="Trier Par : " readonly>
+                                            <div class="option">
+                                                <a href="{{url('/home?sortBy=points&order=asc')}}"><div onclick="show('De - aux + Point')">De - aux + Point</div></a>
+                                                <a href="{{url('/home?sortBy=points&order=desc')}}"><div onclick="show('De + aux - Point')">De + aux - Point</div></a>
+                                                <a href="{{url('/home?sortBy=created_at&order=desc')}}"><div onclick="show('Le Plus Récent')">Le Plus Récent</div></a>
+                                                <a href="{{url('/home?sortBy=demande_count&order=desc')}}"><div onclick="show('Le Plus Demander')">Le Plus Demander</div></a>
+                                            </div>
+                                        </div> --}}
+
+                                        <div class="dropdowna">
+                                            <input type="text" class="textBox" placeholder="Trier Par : " readonly>
+                                            <div class="option">
+                                                <a href="#" data-sort="points" data-order="asc"><div onclick="show('De - aux + Point')">De - aux + Point</div></a>
+                                                <a href="#" data-sort="points" data-order="desc"><div onclick="show('De + aux - Point')">De + aux - Point</div></a>
+                                                <a href="#" data-sort="created_at" data-order="desc"><div onclick="show('Le Plus Récent')">Le Plus Récent</div></a>
+                                                <a href="#" data-sort="demande_recomponses_count" data-order="desc"><div onclick="show('Le Plus Demandé')">Le Plus Demandé</div></a>
+                                            </div>
+                                        </div>
+                                      
                 					</div><!-- End .toolbox-sort -->
                 				</div><!-- End .toolbox-right -->
                 			</div><!-- End .toolbox -->
-
-                            <div class="products mb-3">
+                            
+                            <div class="products mb-3" id="recomponse-container">
                                 <div class="row justify-content-center">
-                                   @foreach($recomponse as $rec)
-                                    <div class="col-6 col-md-4 col-lg-4 col-xl-3">
-                                        <div class="product product-7 text-center">
-                                            <figure class="product-media">
-                                                @if($rec->status ==0)
-                                                <span class="product-label label-out">En rupture de stock</span>
-                                                @endif
-                                                <a href="{{url ('produitDetailer/'.$rec->id.'')}}">
-                                                    <img src="{{ asset($rec->img) }}" alt="Product image" class="product-image">
-                                                </a>
-
-                                                <div class="product-action">
-                                                    <a href="{{url ('produitDetailer/'.$rec->id.'')}}" class="btn-product "><span><i class="bi bi-eye"> </i>Consulter Le Produit</span></a>
-                                                </div><!-- End .product-action -->
-                                            </figure><!-- End .product-media -->
-
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a>{{$rec->categorie_recomponse[0]->libelle}}</a>
-                                                </div><!-- End .product-cat -->
-                                                <h3 class="product-title"><a >{{$rec->libelle}}</a></h3><!-- End .product-title -->
-                                                <div class="product-price">
-                                                <i class="me-2 fa-solid fa-award" style="position: relative;right: 3px;"></i> {{$rec->points}} 
-                                                </div><!-- End .product-price -->
-                                            </div><!-- End .product-body -->
-                                        </div><!-- End .product -->
-                                    </div><!-- End .col-sm-6 col-lg-4 col-xl-3 -->
+                                    @foreach($recomponse as $rec)
+                                        <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                            <div class="product product-7 text-center">
+                                                <figure class="product-media">
+                                                    @if($rec->status ==0)
+                                                        <span class="product-label label-out">En rupture de stock</span>
+                                                    @endif
+                                                    <a href="{{ url('produitDetailer/' . $rec->id) }}">
+                                                        <img src="{{ asset($rec->img) }}" alt="Product image" class="product-image">
+                                                    </a>
+                                                    <div class="product-action">
+                                                        <a href="{{ url('produitDetailer/' . $rec->id) }}" class="btn-product"><span><i class="bi bi-eye"></i> Consulter Le Produit</span></a>
+                                                    </div>
+                                                </figure>
+                                                <div class="product-body">
+                                                    <div class="product-cat">
+                                                        @if (isset($rec->categorie_recomponse[0]))
+                                                            <a>{{ $rec->categorie_recomponse[0]->libelle }}</a>
+                                                        @else
+                                                            <a>Non catégorisé</a>
+                                                        @endif
+                                                    </div>
+                                                    <h3 class="product-title"><a>{{ $rec->libelle }}</a></h3>
+                                                    <div class="product-price">
+                                                        <i class="me-2 fa-solid fa-award" style="position: relative; right: 3px;"></i> {{ $rec->points }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endforeach
-                                </div><!-- End .row -->
-                            </div><!-- End .products -->
+                                </div>
+                            </div>
+                            
+                            
+                            
+                            <!-- End .products -->
                             {{-- @if(isset($recomponses))
                             <div class="products mb-3">
                                 <div class="row justify-content-center">
@@ -239,12 +255,13 @@
         						</div><!-- End .widget -->
                                 <div class="widget widget-collapsible">
     								<h3 class="widget-title">
+                                        
 									    <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
 									        Point
 									    </a>
 									</h3><!-- End .widget-title -->
-
-									<form method="GET" action="{{ url('/home') }}">
+                                    <div class="collapse show" id="widget-5">
+									<form id="filterForm" method="GET" action="{{ url('/home') }}">
                                         <label for="min_points">Points minimum :</label>
                                         <input type="range" id="min_points" name="min_points" class="slider" min="0" max="{{ $minPoints }}" oninput="this.nextElementSibling.value = this.value">
                                         <output>50</output>
@@ -257,6 +274,7 @@
                                 
                                         <button type="submit" class="btn btn-primary btn-round btn-shadow">Filtrer</button>
                                     </form>
+                                </div>
         						</div><!-- End .widget -->
                 			</div><!-- End .sidebar sidebar-shop -->
                 		</aside><!-- End .col-lg-3 -->
@@ -274,6 +292,8 @@
 	        </div><!-- End .footer-bottom -->
         </footer><!-- End .footer -->
     </div><!-- End .page-wrapper -->
+    
+    
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
@@ -288,48 +308,22 @@
     <script src="{{asset('assets/user/js/bootstrap-input-spinner.js')}}"></script>
     <script src="{{asset('assets/user/js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('assets/user/js/nouislider.min.js')}}"></script>
+    <script src="{{asset('assets/user/js/trieMoins.js')}}"></script>
+    <script src="{{asset('assets/user/js/triePlusDem.js')}}"></script>
+    <script src="{{asset('assets/user/js/filter.js')}}"></script>
+    
     <!-- Main JS File -->
     <script src="{{asset('assets/user/js/main.js')}}"></script>
-    <script src="{{asset('assets/user/js/dropdown.js')}}"></script>
     <script>
-            var slider = document.getElementById("myRange");
-            var output = document.getElementById("demo");
-            output.innerHTML = slider.value; // Display the default slider value
-
-            // Update the current slider value (each time you drag the slider handle)
-            slider.oninput = function() {
-            output.innerHTML = this.value;
-            }
-            // const dropdowns = document.querySelectorAll('.dropdown');
-            
-            // dropdowns.forEach(dropdown => {
-            //     const select = dropdown.querySelector('.select');
-            //     const caret = dropdown.querySelector('.caret');
-            //     const menua = dropdown.querySelector('.menua');
-            //     const options = dropdown.querySelectorAll('.menua li');
-            //     const selected = dropdown.querySelector('.selected');
-
-            //     select.addEventListener('click', () => {
-            //         select.classList.toggle('select-clicked');
-            //         caret.classList.toggle('.caret-rotate');
-            //         menua.classList.toggle('.menua-open');
-            //     });
-
-            //     options.forEach(option => {
-            //         option.addEventListener('click', () => {
-            //             selected.innerText = option.innerText;
-            //             select.classList.remove('select-clicked ');
-            //             caret.classList.remove('caret-rotate');
-            //             menua.classList.remove('menua-open');
-            //             options.forEach(option => {
-            //                 option.classList.remove('activea');
-            //             });
-            //             option.classList.add('activea');
-            //         });
-            //     });
-            // });
+        function show(anything){
+            document.querySelector('.textBox').value = anything;
+        }
+        let dropdowna = document.querySelector('.dropdowna');
+        dropdowna.onclick = function(){
+            dropdowna.classList.toggle('active');
+        }
+        
     </script>
-    
     
 </body>
 </html>

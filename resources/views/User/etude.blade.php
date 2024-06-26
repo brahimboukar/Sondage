@@ -37,7 +37,7 @@
                 <div class="container">
                     <div class="header-left">
 
-                        <a href="#" class="logo">
+                        <a href="{{route('home')}}" class="logo">
                             <img src="{{asset('assets/admin/asset/images/terrain360.png')}}" alt="Molla Logo" width="105" height="25">
                         </a>
 
@@ -68,7 +68,7 @@
                                     </li>
                                     <li class="compare-product">
                                         
-                                        <h4 class="compare-product-title"><a href="">Logout</a></h4>
+                                        <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
                                 </ul>
                             </div><!-- End .dropdown-menu -->

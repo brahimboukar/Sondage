@@ -14,64 +14,139 @@ use App\Models\Region;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
-    public function user(Request $request)
+    public function __construct()
     {
-        $CategorieRecomponse = Categorie_recomponse::all();
-        //$rec = Recomponse::all();
-        $minPoints = Recomponse::min('points');
-        $maxPoints = Recomponse::max('points');
-        //$sortBy = $request->get('sortBy', 'desc');
-        // $order = $request->get('order', 'asc');
-        // $recomponse = Recomponse::orderBy('points', $order)->paginate(12);
-        $sortBy = $request->get('sortBy', 'created_at');
-        $order = $request->get('order', 'asc');
-        //filtrage par point
-        $query = Recomponse::query();
-        $min_points = $request->input('min_points');
-        $max_points = $request->input('max_points');
-
-        if (!is_null($min_points)) {
-            $query->where('points', '>=', $min_points);
-        }
-
-        if (!is_null($max_points)) {
-            $query->where('points', '<=', $max_points);
-        }
-        $recomponse = $query->orderBy($sortBy, $order)->get();
-        $recomponseCount = Recomponse::count();
-        $user = Auth::user();
-        $query = Recomponse::query();
-        if($request->id_categorie){
-            $recomponse = $query->where(['id_categorie'=> $request->id_categorie])->paginate(12);
-        }
-
-        // if($request->min_point && $request->max_points){
-        //     $minPoints = $request->input('min_points');
-        //     $maxPoints = $request->input('max_points');
-
-        //     $recomponse = $query->whereBetween('points', [$minPoints, $maxPoints])->get();
-        // }
-
-
-        return view('User/home',[
-            'CatReco' => $CategorieRecomponse,
-            'recomponse' => $recomponse,
-            'recomponseCount' => $recomponseCount,
-            'user' => $user,
-            'minPoints' => $minPoints,
-            'maxPoints' => $maxPoints,
-            'sortBy' => $sortBy,
-            'order' => $order,
-        ]);
+        $this->middleware('auth');
     }
+    // public function user(Request $request)
+    // {
+    //     $CategorieRecomponse = Categorie_recomponse::all();
+    //     //$rec = Recomponse::all();
+    //     $minPoints = Recomponse::min('points');
+    //     $maxPoints = Recomponse::max('points');
+    //     //$sortBy = $request->get('sortBy', 'desc');
+    //     // $order = $request->get('order', 'asc');
+    //     // $recomponse = Recomponse::orderBy('points', $order)->paginate(12);
+    //     // $sortBy = $request->get('sortBy', 'created_at');
+    //     // $order = $request->get('order', 'asc');
+    //     //filtrage par point
+    //     $query = Recomponse::query();
+    //     $min_points = $request->input('min_points');
+    //     $max_points = $request->input('max_points');
+
+    //     if (!is_null($min_points)) {
+    //         $query->where('points', '>=', $min_points);
+    //     }
+
+    //     if (!is_null($max_points)) {
+    //         $query->where('points', '<=', $max_points);
+    //     }
+    //     $recomponse = $query->get();
+    //     $sortBy = $request->get('sortBy', 'points');
+    //     $order = $request->get('order', 'desc');
+
+       
+
+        
+
+    //     $recomponse = Recomponse::orderBy($sortBy, $order)->get();
+
+    //     if ($sortBy === 'demande_recomponses_count') {
+    //         $query->leftJoin('demande_recomponses as d', 'recomponses.id', '=', 'd.recomponse_id')
+    //               ->select('recomponses.*', DB::raw('COUNT(d.id) as demande_recomponses_count'))
+    //               ->groupBy('recomponses.id')
+    //               ->orderBy('demande_recomponses_count', $order);
+    //     } else {
+    //         $query->orderBy($sortBy, $order);
+    //     }
+
+        
+    //     if ($request->ajax()) {
+    //         $recomponse = $query->get();
+    //         return response()->json($recomponse);
+    //     }
+
+       
+    //     $recomponse = $query->get();
+    //     $recomponseCount = Recomponse::count();
+    //     $user = Auth::user();
+    //     $query = Recomponse::query();
+    //     if($request->id_categorie){
+    //         $recomponse = $query->where(['id_categorie'=> $request->id_categorie])->paginate(12);
+    //     }
+
+    //     return view('User/home',[
+    //         'CatReco' => $CategorieRecomponse,
+    //         'recomponse' => $recomponse,
+    //         'recomponseCount' => $recomponseCount,
+    //         'user' => $user,
+    //         'minPoints' => $minPoints,
+    //         'maxPoints' => $maxPoints,
+    //         'sortBy' => $sortBy,
+    //         'order' => $order,
+    //     ]);
+    // }
+    
+    public function user(Request $request)
+{
+    $CategorieRecomponse = Categorie_recomponse::all();
+    $minPoints = Recomponse::min('points');
+    $maxPoints = Recomponse::max('points');
+
+    $query = Recomponse::query();
+    $min_points = $request->input('min_points');
+    $max_points = $request->input('max_points');
+
+    if (!is_null($min_points)) {
+        $query->where('points', '>=', $min_points);
+    }
+
+    if (!is_null($max_points)) {
+        $query->where('points', '<=', $max_points);
+    }
+
+    $sortBy = $request->get('sortBy', 'points');
+    $order = $request->get('order', 'desc');
+
+    if ($sortBy === 'demande_recomponses_count') {
+        $query->leftJoin('demande_recomponses as d', 'recomponses.id', '=', 'd.recomponse_id')
+              ->select('recomponses.*', DB::raw('COUNT(d.id) as demande_recomponses_count'))
+              ->groupBy('recomponses.id')
+              ->orderBy('demande_recomponses_count', $order);
+    } else {
+        $query->orderBy($sortBy, $order);
+    }
+
+    $recomponse = $query->get();
+
+    if ($request->ajax()) {
+        return response()->json($recomponse);
+    }
+
+    $recomponseCount = Recomponse::count();
+    $user = Auth::user();
+
+    if ($request->id_categorie) {
+        $recomponse = $query->where(['id_categorie' => $request->id_categorie])->paginate(12);
+    }
+
+    return view('User/home', [
+        'CatReco' => $CategorieRecomponse,
+        'recomponse' => $recomponse,
+        'recomponseCount' => $recomponseCount,
+        'user' => $user,
+        'minPoints' => $minPoints,
+        'maxPoints' => $maxPoints,
+        'sortBy' => $sortBy,
+        'order' => $order,
+    ]);
+}
 
     public function produitDetailer($id){
         $recomponse = Recomponse::where('id',$id)->first();
@@ -210,6 +285,26 @@ class UserController extends Controller
         $etudeUser->save();
         $redirectUrl = $etude->lien . '?id=' . $userId.'/&&idEtude='.$idEtude;
         return redirect($redirectUrl);
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'current_password' => 'required',
+            'new_password' => 'required|confirmed|min:5',
+        ]);
+
+        $user = User::find($request->id);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->route('profile')->withErrors(['current_password' => 'Mot de passe actuel incorrect']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Mot de passe mis à jour avec succès');
     }
 
 }

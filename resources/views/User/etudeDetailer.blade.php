@@ -126,7 +126,7 @@ ul{
                                     </li>
                                     <li class="compare-product">
                                         <a href="#"  title="Remove Product"></a>
-                                        <h4 class="compare-product-title"><a href="product.html">Logout</a></h4>
+                                        <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
                                 </ul>
                             </div><!-- End .dropdown-menu -->

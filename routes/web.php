@@ -59,11 +59,13 @@ Route::get('/logout' ,[Login::class , 'logout'])->name('logout');
     Route::get('/admin/utilisateur', [AdminController::class , 'utilisateur'])->name('admin.utilisateur');
     Route::post('save', [AdminController::class , 'utilisateurSave'])->name('admin.utilisateurAdd');
     Route::delete('admin.utilisateurSupp/{id}', [AdminController::class , 'utilisateurSupp'])->name('admin.utilisateurSupp');
-    Route::get('/search' , [AdminController::class , 'search'])->name('searchUtilisateur');
+    //Route::post('/search-users', [AdminController::class, 'search'])->name('search.users');
     Route::get('/users/{id}/block', [AdminController::class, 'blockUser'])->name('users.block');
     Route::get('/users/{id}/unblock', [AdminController::class, 'unblockUser'])->name('users.unblock');
     //Route::get('logout', [AdminController::class ,'logout'])->middleware('auth')->name('logout');
 
+    
+    
 
 // Route Catégorie
     Route::get('/categorieRecomponse' , [AdminController::class , 'categorieRecomponse'])->name('admin.categorieRecomponse');
@@ -109,13 +111,18 @@ Route::middleware(['auth', 'user-access:user','noback'])->group(function (){
     Route::get('/home/filterPoint', [UserController::class, 'filterPoint'])->name('filterPoint');
     //Route::get('/logout', [UserController::class, 'logout'])->middleware('auth')->name('logout');
     Route::post('/demande', [UserController::class, 'DemandeRecomponse'])->name('DemandeRecomponse');
+    
+    Route::get('/reponses/plus-demandees', 'ReponseController@plusDemandees')->name('reponses.plus-demandees');
+
+    Route::get('/filter-points', [UserController::class, 'filterPoints']);
+
 
     //Route List Etude
     Route::get('/etude', [UserController::class , 'etude'])->name('etude');
     Route::get('etudeDetailer/{id}',[UserController::class , 'etudeDetailer'])->name('etudeDetailer');
 
     Route::post('/EtudeUsers/{etudeId}/user/{userId}/etude/{idEtude}' ,[UserController::class , 'EtudeUsers'])->name('EtudeUsers');
-
+    Route::post('update-password', [UserController::class, 'updatePassword'])->name('password.update');
     
     
 });

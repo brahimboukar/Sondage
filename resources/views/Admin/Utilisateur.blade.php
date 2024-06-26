@@ -10,6 +10,7 @@
       content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Matrix lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Matrix admin lite design, Matrix admin lite dashboard bootstrap 5 dashboard template"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <meta
       name="description"
@@ -77,7 +78,6 @@
                   ><i class="mdi mdi-menu font-24"></i
                 ></a>
               </li>
-             
               
             </ul>
             <ul class="navbar-nav float-end">
@@ -119,7 +119,7 @@
                     Setting</a
                   >
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
+                  <a class="dropdown-item" href="{{route('logout')}}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
                   >
                 </ul>
@@ -149,7 +149,7 @@
                   href="#"
                   aria-expanded="false"
                   ><i class="me-2 mdi mdi-account"></i
-                  ><span class="hide-menu">Gestion Des Utilisateurs</span></a
+                  ><span class="hide-menu">Gestion Des Panélistes</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -208,33 +208,37 @@
         </div>
         <!-- End Sidebar scroll-->
       </aside>
+      
       <div class="page-wrapper">
+        
         <div class="page-breadcrumb">
+          @if(Session::get('success'))
+          <div class="badge bg-success" style="font-size: 15px;" role="alert" >
+              {{ Session::get('success') }}
+          </div>
+          @endif
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">Gestion Des Utilisateurs</h4>
+              <h4 class="page-title">Gestion Des Panélistes</h4>
             </div>
-                    @if(Session::get('success'))
-                    <div class="alert alert-success" role="alert" >
-                        {{ Session::get('success') }}
-                    </div>
-                    @endif
+                   
 
                     @if(Session::has('fail'))
-                    <div class="alert alert-danger" role="alert">
+                    <div  class="badge bg-danger" style="font-size: 15px;" role="alert">
                         {{ Session::get('fail') }}
                     </div>
                     @endif
                     <!-- suppresion -->
                     @if(Session::get('succe'))
-                    <div class="alert alert-success" role="alert" >
+                    <div class="badge bg-success" style="font-size: 15px;"  role="alert" >
                         {{ Session::get('succe') }}
                     </div>
                     @endif
                     <!-- End suppresion -->
                     <!-- Email Already Exist -->
+
                     @if(Session::has('faile'))
-                    <div class="alert alert-danger" role="alert">
+                    <div class="badge bg-danger" style="font-size: 15px;" role="alert">
                         {{ Session::get('faile') }}
                     </div>
                     @endif 
@@ -245,26 +249,27 @@
             <div class="col-12">
               <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  <i class="bi bi-person-add"></i> Ajouter Un Nouvaux Utlisateur
+  <i class="bi bi-person-add"></i> Ajouter Un Nouvaux Panélistes
 </button>
-<div class="input-group" style="position: absolute;left: 500px;top: 62px;">
-  <form method="POST" role="search" action="{{route('searchUtilisateur')}}">
-    {{csrf_field() }}
+<div class="input-group" style="position: absolute;left: 500px;top: 60px;">
+  <form method="GET" action="{{ route('admin.utilisateur') }}">
+    @csrf
   <div class="form-outline" data-mdb-input-init>
-    <input type="search" id="form1" name="query" class="form-control" placeholder="Chercher Par Nom" />
+    <input type="text" id="searchTerm" name="searchTerm" style="position: relative;width: 250px;right: 30px;" class="form-control" placeholder="Chercher Par Nom ou Prénom" />
     <button type="submit" style="position: relative;left: 182px;bottom: 35px;" class="btn btn-primary" data-mdb-ripple-init>
       <i class="fas fa-search"></i>
     </button>
   </div>
 </form>
 </div>
+<a href="{{route('admin.utilisateur')}}" class="btn btn-primary" style="position: relative;left: 500px;bottom: 2px;">Réinitialiser</a>
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Ajouter Un Nouvaux Utlisateur</h1>
+        <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Ajouter Un Nouvaux Panélistes</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -339,6 +344,11 @@
     </div>
   </div>
 </div>
+@if (!empty($message))
+<div class="alert alert-info" style="font-size: 30px;position: relative;top: 100px;">
+    {{ $message }}
+</div>
+@else
 <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -395,6 +405,7 @@
                   </table>
                 </div>
                   {{$user->links()}}
+                  @endif
                   
             </div>
           </div>
@@ -403,6 +414,8 @@
       
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script>
     jQuery(document).ready(function (){
         jQuery('#fonction').change(function(){
@@ -421,8 +434,21 @@
         
     });
     
-    
 </script>
+                  {{-- @if(Session::has('faile'))
+                  <script>
+                    toastr.options = {
+                      "positionClass": "toast-bottom-left",
+                      "closeButton": true,
+                      "progressBar": true,
+                      "showEasing": "swing",
+                      "hideEasing": "linear",
+                      "showMethod": "fadeIn",
+                      "hideMethod": "fadeOut"
+                    };
+                    toastr.error("{{ Session::get('faile') }}");
+                    </script>                                    
+                  @endif  --}}
     <script src="{{ asset('assets/js/scriptAdminUser.js') }}"></script>
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->

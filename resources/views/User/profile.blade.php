@@ -39,7 +39,7 @@
                                     <a href="{{route('home')}}" >Liste Des Produits</a>
                                 </li>
                                 <li>
-                                    <a href="#" >Liste Des Etudes</a>
+                                    <a href="{{route('etude')}}" >Liste Des Etudes</a>
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -56,11 +56,11 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <ul class="compare-products">
                                     <li class="compare-product">
-                                        <h4 class="compare-product-title"><a href="{{route('profile')}}">Consulter Votre Profil</a></h4>
+                                        <h4 class="compare-product-title"><a href="#">Consulter Votre Profil</a></h4>
                                     </li>
                                     <li class="compare-product">
                                         <a href="#"  title="Remove Product"></a>
-                                        <h4 class="compare-product-title"><a href="product.html">Logout</a></h4>
+                                        <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
                                 </ul>
                             </div><!-- End .dropdown-menu -->
@@ -76,9 +76,9 @@
                 <div class="col-md-3 pt-0">
                     <div class="list-group list-group-flush account-settings-links">
                         <a class="list-group-item list-group-item-action active" data-toggle="list"
-                            href="#account-general">General</a>
+                            href="#account-general">Général</a>
                         <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-change-password">Change password</a>
+                            href="#account-change-password">Changer le mot de passe</a>
                     </div>
                 </div>
                 <div class="col-md-9">
@@ -149,31 +149,51 @@
                                       </select>
                                 </div>
                                 <div class="text-right mt-3">
-                                    <button type="submit" class="btn btn-primary">Save changes</button>&nbsp;
-                                    <button type="button" class="btn btn-default">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Sauvegarder les modifications</button>&nbsp;
+                                    <a href="{{route('home')}}" class="btn btn-default">Annuler</a>
                                 </div>
                             </div>
                             </form>
                         </div>
                         <div class="tab-pane fade" id="account-change-password">
+
+                            <form action="{{ route('password.update') }}" method="POST">
+                                @csrf
                             <div class="card-body pb-2">
+                                <input type="hidden" name="id" value="{{ $user->id }}">
+                                @if ($errors->any())
+                        <div>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
+
+                        @if (session('success'))
+                        <div>
+                            {{ session('success') }}
+                        </div>
+                        @endif
                                 <div class="form-group">
-                                    <label class="form-label">Current password</label>
-                                    <input type="password" class="form-control">
+                                    <label class="form-label">Mot de passe actuel</label>
+                                    <input type="password" name="current_password" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">New password</label>
-                                    <input type="password" class="form-control">
+                                    <label class="form-label">Nouveau mot de passe</label>
+                                    <input type="password" name="new_password" class="form-control" required>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Repeat new password</label>
-                                    <input type="password" class="form-control">
+                                    <label class="form-label">Répété le nouveau mot de passe</label>
+                                    <input type="password" name="new_password_confirmation" class="form-control" required>
                                 </div>
                                 <div class="text-right mt-3">
-                                    <button type="button" class="btn btn-primary">Save changes</button>&nbsp;
-                                    <button type="button" class="btn btn-default">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Sauvegarder les modifications</button>&nbsp;
+                                    <a href="{{route('home')}}" class="btn btn-default">Annuler</a>
                                 </div>
                             </div>
+                        </form>
                         </div>
                     </div>
                 </div>

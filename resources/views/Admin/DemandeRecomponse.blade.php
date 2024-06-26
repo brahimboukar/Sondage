@@ -120,7 +120,7 @@
                     Setting</a
                   >
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="javascript:void(0)"
+                  <a class="dropdown-item" href="{{route('logout')}}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
                   >
                 </ul>
@@ -150,7 +150,7 @@
                   href="{{route('admin.utilisateur')}}"
                   aria-expanded="false"
                   ><i class="me-2 mdi mdi-account"></i
-                  ><span class="hide-menu">Gestion Des Utilisateurs</span></a
+                  ><span class="hide-menu">Gestion Des Panélistes</span></a
                 >
               </li>
               <li class="sidebar-item">
@@ -232,9 +232,11 @@
             <th scope="col">Nom</th>
             <th scope="col">Prenom</th>
             <th scope="col">Email</th>
+            <th scope="col">Libelle</th>
+            <th scope="col">Img</th>
             <th scope="col">Etat</th>
             <th scope="col">Date</th>
-            <th scope="col">lien</th>
+            {{-- <th scope="col">lien</th> --}}
             <th scope="col">Action</th>
           </tr>
         </thead>
@@ -242,12 +244,15 @@
            @foreach($demandeRec as $dem)
             <tr>           
                 <th scope="row">{{$dem->id}}</th>
+                
                 <th>{{$dem->user->nom}}</th>
                 <th>{{$dem->user->prenom}}</th>
                 <th>{{$dem->user->email}}</th>
+                <th>{{$dem->recomponse->libelle}}</th>
+                <td><img src="{{ asset($dem->recomponse->img) }}" style="width: 70px;height: 70px;" alt="Img"/></td>
                 <th>{{$dem->etat}}</th>
                 <td>{{$dem->date->format('d-m-Y') }}</td>
-                <th><a href="{{url('produitDetailer/'.$dem->recomponse->id.'')}}">{{url('produitDetailer/'.$dem->recomponse->id.'')}}</a></th>
+                {{-- <th><a href="{{url('produitDetailer/'.$dem->recomponse->id.'')}}">{{url('produitDetailer/'.$dem->recomponse->id.'')}}</a></th> --}}
                 <th>
                   <form method="POST" action="{{route('admin.suppDemandeRecomponse',$dem->id)}}"  onsubmit="return confirm('Supprimer?')" class="float-right text-red-800">
                     @csrf
