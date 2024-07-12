@@ -46,25 +46,19 @@ $(document).ready(function() {
 
                 // Update pagination links
                 $('#pagination-container').html(response.links);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
             }
         });
     }
 
-    // Initial load with default sort and order
-    fetchRecomponse(1, 'points', 'desc');
-
     $(document).on('click', '.pagination a', function(e) {
         e.preventDefault();
         let page = $(this).attr('href').split('page=')[1];
-        let sortBy = $('.dropdowna .option a.active').data('sort') || 'points';
-        let order = $('.dropdowna .option a.active').data('order') || 'desc';
+        let sortBy = $('.dropdowna .option a.active').data('sort');
+        let order = $('.dropdowna .option a.active').data('order');
         fetchRecomponse(page, sortBy, order);
     });
 
-    $(document).on('click', '.dropdowna .option a', function(e) {
+    $('.dropdowna .option a').on('click', function(e) {
         e.preventDefault();
         $('.dropdowna .option a').removeClass('active');
         $(this).addClass('active');
@@ -72,4 +66,7 @@ $(document).ready(function() {
         let order = $(this).data('order');
         fetchRecomponse(1, sortBy, order);
     });
+
+    // Initial load
+    fetchRecomponse(1, 'points', 'desc');
 });

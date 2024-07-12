@@ -10,12 +10,19 @@ class Etude extends Model
     use HasFactory;
 
     protected $fillable = [
+        'img',
+        'id_categorie',
         'libelle',
         'description',
         'lien',
         'durré',
         'point',
     ];
+
+    public function categorie_etude(){
+        
+        return $this->belongsTo(Categorie_Etudes::class, 'id_categorie');
+    }
 
     public function sexes()
     {

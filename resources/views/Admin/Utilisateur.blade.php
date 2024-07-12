@@ -173,6 +173,15 @@
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.categorieEtude')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa-sharp fa-solid fa-list"></i>
+                  <span class="hide-menu">Gestion Des Catégories Etudes</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin.edute')}}"
                   aria-expanded="false"
                   ><i class="me-2 bi bi-clipboard2-pulse-fill"></i

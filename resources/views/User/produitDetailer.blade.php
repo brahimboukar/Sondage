@@ -141,7 +141,7 @@
                                     <div class="product-details-footer" style="position: relative;top: 50px;">
                                         <div class="product-cat">
                                             <span>Category:</span>
-                                            <span>{{$recomponse->categorie_recomponse[0]->libelle}}</span>
+                                            <span>{{$recomponse->categorie_recomponse->libelle}}</span>
                                         </div><!-- End .product-cat -->
                                     </div><!-- End .product-details-footer -->
                                 </div><!-- End .product-details -->

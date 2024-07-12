@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Categorie_Etudes;
 use App\Models\Categorie_recomponse;
 use App\Models\Demande_recomponses;
 use App\Models\Etude;
@@ -93,22 +94,89 @@ class UserController extends Controller
     //     ]);
     // }
     
-    public function user(Request $request)
+//     public function user(Request $request)
+// {
+//     $CategorieRecomponse = Categorie_recomponse::all();
+//     $minPoints = Recomponse::min('points');
+//     $maxPoints = Recomponse::max('points');
+
+//     $query = Recomponse::with('categorie_recomponse');
+//     $min_points = $request->input('min_points');
+//     $max_points = $request->input('max_points');
+
+//     if (!is_null($min_points)) {
+//         $query->where('points', '>=', $min_points);
+//     }
+//     if (!is_null($max_points)) {
+//         $query->where('points', '<=', $max_points);
+//     }
+
+//     $sortBy = $request->get('sortBy', 'points');
+//     $order = $request->get('order', 'desc');
+
+//     if ($sortBy === 'demande_recomponses_count') {
+//         $query->leftJoin('demande_recomponses as d', 'recomponses.id', '=', 'd.recomponse_id')
+//               ->select('recomponses.*', DB::raw('COUNT(d.id) as demande_recomponses_count'))
+//               ->groupBy('recomponses.id')
+//               ->orderBy('demande_recomponses_count', $order);
+//     } else {
+//         $query->orderBy($sortBy, $order);
+//     }
+
+    
+//     //$recomponse = $query->with('categorie_recomponse')->get();
+//     $recomponse = $query->paginate(8);
+//     if ($request->ajax()) {
+//         //$recomponse = $query->with('categorie_recomponse')->paginate(8);
+//         return response()->json([
+//             'data' => $recomponse->items(),
+//             'links' => (string) $recomponse->links(),
+//             'current_page' => $recomponse->currentPage(),
+//             'last_page' => $recomponse->lastPage()
+//         ]);
+//     }
+//     $recomponse = $query->paginate(8);
+//     $recomponseCount = Recomponse::count();
+//     $user = Auth::user();
+
+//     if ($request->id_categorie) {
+//         $recomponse = $query->where(['id_categorie' => $request->id_categorie])->paginate(12);
+//     }
+
+   
+
+
+
+//     return view('User/home', [
+//         'CatReco' => $CategorieRecomponse,
+//         'recomponse' => $recomponse,
+//         'recomponseCount' => $recomponseCount,
+//         'user' => $user,
+//         'minPoints' => $minPoints,
+//         'maxPoints' => $maxPoints,
+//         'sortBy' => $sortBy,
+//         'order' => $order,
+//     ]);
+// }
+public function user(Request $request)
 {
     $CategorieRecomponse = Categorie_recomponse::all();
     $minPoints = Recomponse::min('points');
     $maxPoints = Recomponse::max('points');
 
-    $query = Recomponse::query();
+    $query = Recomponse::with('categorie_recomponse');
     $min_points = $request->input('min_points');
     $max_points = $request->input('max_points');
+    $id_categories = $request->input('id_categories', []); 
 
     if (!is_null($min_points)) {
         $query->where('points', '>=', $min_points);
     }
-
     if (!is_null($max_points)) {
         $query->where('points', '<=', $max_points);
+    }
+    if (!empty($id_categories)) {
+        $query->whereIn('id_categorie', $id_categories);
     }
 
     $sortBy = $request->get('sortBy', 'points');
@@ -123,18 +191,19 @@ class UserController extends Controller
         $query->orderBy($sortBy, $order);
     }
 
-    $recomponse = $query->get();
+    $recomponse = $query->paginate(12);
 
     if ($request->ajax()) {
-        return response()->json($recomponse);
+        return response()->json([
+            'data' => $recomponse->items(),
+            'links' => (string) $recomponse->links(),
+            'current_page' => $recomponse->currentPage(),
+            'last_page' => $recomponse->lastPage()
+        ]);
     }
 
     $recomponseCount = Recomponse::count();
     $user = Auth::user();
-
-    if ($request->id_categorie) {
-        $recomponse = $query->where(['id_categorie' => $request->id_categorie])->paginate(12);
-    }
 
     return view('User/home', [
         'CatReco' => $CategorieRecomponse,
@@ -147,6 +216,7 @@ class UserController extends Controller
         'order' => $order,
     ]);
 }
+
 
     public function produitDetailer($id){
         $recomponse = Recomponse::where('id',$id)->first();
@@ -241,26 +311,99 @@ class UserController extends Controller
     //     return redirect('/login');
     // }
 
-    public function etude()
+    // public function etude(Request $request, $id = null)
+    // {
+    //     $user = Auth::user();
+    //     $age = $user->age;
+    //     $etudesQuery = Etude::whereHas('sexes', function ($query) use ($user) {
+    //         $query->where('sexe_id', $user->id_sexe);
+    //     })->whereHas('regions', function ($query) use ($user) {
+    //         $query->where('region_id', $user->id_region);
+    //     })->whereHas('ages', function ($q) use ($age) {
+    //         $q->where('ages.age_Min', '<=', $age)->where('ages.age_Max', '>=', $age);
+    //     })->whereHas('fonctions', function ($query) use ($user) {
+    //         $query->where('fonction_id', $user->id_fonction);
+    //     })->whereHas('fonctionDetailes', function ($query) use ($user) {
+    //         $query->where('fonction_detaile_id', $user->id_fonction_details);
+    //     });
+    //     if ($id && $id !== 'all') {
+    //         $etudesQuery->where('id_categorie', $id);
+    //     }
+
+    //     $etudes = $etudesQuery->get();
+
+    //     $categorieEtude = Categorie_Etudes::all();
+
+    //     // dd($etudes);
+
+    //     if ($request->ajax()) {
+    //         dd($etudes);
+    //         return response()->json($etudes);
+    //     }
+    //     return view('User/etude',[
+    //         'user' => $user,
+    //         'etude' => $etudes,
+    //         'categorieEtude' => $categorieEtude,
+    //     ]);
+    // }
+    public function etude(Request $request, $id = null)
     {
         $user = Auth::user();
         $age = $user->age;
-        $etudes = Etude::whereHas('sexes', function ($query) use ($user) {
-            $query->where('sexe_id', $user->id_sexe);
-        })->whereHas('regions', function ($query) use ($user) {
-            $query->where('region_id', $user->id_region);
-        })->whereHas('ages', function ($q) use ($age) {
-            $q->where('ages.age_Min', '<=', $age)->where('ages.age_Max', '>=', $age);
-        })->whereHas('fonctions', function ($query) use ($user) {
-            $query->where('fonction_id', $user->id_fonction);
-        })->whereHas('fonctionDetailes', function ($query) use ($user) {
-            $query->where('fonction_detaile_id', $user->id_fonction_details);
-        })->get();
-        return view('User/etude',[
+
+        $etudesQuery = Etude::with('categorie_etude')
+            ->whereHas('sexes', function ($query) use ($user) {
+                $query->where('sexe_id', $user->id_sexe);
+            })
+            ->whereHas('regions', function ($query) use ($user) {
+                $query->where('region_id', $user->id_region);
+            })
+            ->whereHas('ages', function ($q) use ($age) {
+                $q->where('ages.age_Min', '<=', $age)->where('ages.age_Max', '>=', $age);
+            })
+            ->whereHas('fonctions', function ($query) use ($user) {
+                $query->where('fonction_id', $user->id_fonction);
+            })
+            ->whereHas('fonctionDetailes', function ($query) use ($user) {
+                $query->where('fonction_detaile_id', $user->id_fonction_details);
+            });
+
+        if ($id && $id !== 'all') {
+            $etudesQuery->where('id_categorie', $id);
+        }
+        $min_points = $request->input('min_points');
+        $max_points = $request->input('max_points');
+
+        if (!is_null($min_points)) {
+            $etudesQuery->where('point', '>=', $min_points);
+        }
+
+        if (!is_null($max_points)) {
+            $etudesQuery->where('point', '<=', $max_points);
+        }
+
+        // Handle sorting
+        $sortBy = $request->get('sortBy', 'point');
+        $order = $request->get('order', 'desc');
+
+        $etudes = $etudesQuery->orderBy($sortBy, $order)->get();
+
+        $categorieEtude = Categorie_Etudes::whereIn('id', $etudes->pluck('id_categorie')->unique())->get();
+
+        if ($request->ajax()) {
+            return response()->json($etudes);
+        }
+
+        return view('User.etude', [
             'user' => $user,
             'etude' => $etudes,
+            'categorieEtude' => $categorieEtude,
+            'sortBy' => $sortBy,
+            'order' => $order,
         ]);
     }
+
+    
 
     public function etudeDetailer($id){
         $etude = Etude::where('id',$id)->first();

@@ -15,6 +15,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Plugins CSS File -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/user/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/main.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -23,10 +27,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/user/css/blog.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/etudeDetailer.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/owl-carousel/owl.carousel.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/magnific-popup/magnific-popup.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/nouislider/nouislider.css')}}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+.button_grp {
+    max-height: 300px; /* Ajustez la hauteur en fonction de vos besoins */
+    overflow-y: auto; /* Ajoute une scrollbar verticale lorsque le contenu dépasse la hauteur */
+}
+
+.button_grp ul {
+    list-style: none; /* Supprime les puces des éléments de liste */
+    padding: 0;
+    margin: 0;
+}
+
+.button_grp ul li {
+    background: #fff;
+    margin: 10px;
+    padding: 10px 15px;
+    min-width: 80px;
+    text-align: center;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.125);
+}
+
+.button_grp ul li.active,
+.button_grp ul li:hover {
+    background: #A6C76C;
+    color: #fff;
+}
+
+
+    </style>
 </head>
 
 <body>
@@ -87,26 +125,59 @@
         	</div><!-- End .page-header -->
 
             <div class="page-content">
+
+                <div class="button_grp">
+                    <ul>
+                        <li data-li="all" class="btn">Tout</li>
+                        @foreach($categorieEtude as $cat)
+                        <li data-li="{{ $cat->id }}" class="btn">{{ $cat->libelle }}</li>
+                        @endforeach
+                    </ul>
+                </div>
                 
                 	@if($etude->count() ==0)
                 		<h1><span> Aucun Etude correspand Pour Votre profile</span></h1>
-                    @endif        
-                			<section id="blog">
-
-                                <div class="blog-container">
-                                    @foreach($etude as $etu)
-                                    <div class="blog-box">
-                                        <div class="blog-text">
-                                            <a href="#" class="blog-title">{{$etu->libelle}}</a>
-                                            <span><i class="fa-solid fa-stopwatch"></i> {{$etu->durré}}min  <i class="me-2 fa-solid fa-award" style="left:100px;position: relative;"></i> <span style="left:100px;position: relative;">{{$etu->point}}</span></span>
-                                            <a href="{{url ('etudeDetailer/'.$etu->id.'')}}"  class="btn btn-primary btn-round btn-shadow" style="position: relative;top:10px;">Voire Les Détails</a>
-                                        </div>
-                                       
-                                    </div>
-                                    @endforeach
+                    @endif
+                   
+                    <section id="blog">
+                        <div class="dropdowna" style="position: relative;left: 980px;">
+                            <input type="text" class="textBox" placeholder="Trier Par : " readonly>
+                            <div class="option">
+                                <a href="#" data-sort="point" data-order="asc"><div onclick="show('De - aux + Point')">De - aux + Point</div></a>
+                                <a href="#" data-sort="point" data-order="desc"><div onclick="show('De + aux - Point')">De + aux - Point</div></a>
+                                <a href="#" data-sort="durré" data-order="asc"><div onclick="show('De - aux + Durré')">De - aux + Durré</div></a>
+                                <a href="#" data-sort="durré" data-order="desc"><div onclick="show('De + aux - Durré')">De + aux - Durré</div></a>
+                                <a href="#" data-sort="created_at" data-order="asc"><div onclick="show('La Date De Publication')">La Date De Publication</div></a>
+                            </div>
+                        </div>
+                        <div class="blog-heading"></div>
+                        <div class="blog-container" id="blog-container">
+                            @foreach($etude as $etu)
+                            <div class="blog-box">
+                                <div class="blog-img">
+                                    <a href="{{ url('etudeDetailer/'.$etu->id) }}">
+                                        <img src="{{ $etu->img }}" alt="">
+                                    </a>
                                 </div>
-                                
-                            </section>
+                                <div class="blog-text">
+                                    <span>
+                                        <i class="fa-solid fa-calendar-days"></i> {{ $etu->created_at->locale('fr')->translatedFormat('d F Y') }}
+                                        <i class="bi bi-alarm" style="position: relative;left: 60px;"> {{ $etu->durré }} Minute</i>
+                                        <i class="fa-solid fa-award" style="position: relative;left: 100px;"> {{ $etu->durré }}</i>
+                                    </span>
+                                    <a href="{{ url('etudeDetailer/'.$etu->id) }}" class="blog-title">
+                                        {{ $etu->libelle }}
+                                        @if($etu->categorie_etude)
+                                        <span class="badge">{{ $etu->categorie_etude->libelle }}</span>
+                                        @endif
+                                    </a>
+                                    <p>{{ Str::limit($etu->description, 100) }}</p>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </section>
+                     
 
                 			
                 		
@@ -139,8 +210,22 @@
     <script src="{{asset('assets/user/js/bootstrap-input-spinner.js')}}"></script>
     <script src="{{asset('assets/user/js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('assets/user/js/nouislider.min.js')}}"></script>
+    <script src="{{asset('assets/user/js/etudeFilter.js')}}"></script>
+    <script src="{{asset('assets/user/js/trieEtude.js')}}"></script>
+    
+    
     <!-- Main JS File -->
     <script src="{{asset('assets/user/js/main.js')}}"></script>
+    <script>
+        function show(anything){
+            document.querySelector('.textBox').value = anything;
+        }
+        let dropdowna = document.querySelector('.dropdowna');
+        dropdowna.onclick = function(){
+            dropdowna.classList.toggle('active');
+        }
+        
+    </script>
     
     
     

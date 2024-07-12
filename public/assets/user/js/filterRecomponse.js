@@ -1,12 +1,24 @@
 $(document).ready(function() {
-    function fetchRecomponse(page, sortBy, order) {
+    // Fonction pour récupérer les récomponses avec les filtres
+    function fetchRecompenses() {
+        let minPoints = $('#min_points').val();
+        let maxPoints = $('#max_points').val();
+        let sortBy = $('#sortBy').val();
+        let order = $('#order').val();
+        let categoryIds = [];
+        $('.category-filter:checked').each(function() {
+            categoryIds.push($(this).val());
+        });
+
         $.ajax({
             url: '/home',
-            method: 'GET',
+            type: 'GET',
             data: {
-                page: page,
+                min_points: minPoints,
+                max_points: maxPoints,
                 sortBy: sortBy,
                 order: order,
+                id_categories: categoryIds, // Passer le tableau des ids de catégorie
                 ajax: true
             },
             success: function(response) {
@@ -17,22 +29,20 @@ $(document).ready(function() {
                     let statusLabel = rec.status == 0 ? '<span class="product-label label-out">En rupture de stock</span>' : '';
                     let categoryLabel = rec.categorie_recomponse ? rec.categorie_recomponse.libelle : 'Non catégorisé';
                     recompensesContainer.append(`
-                        <div class="col-6 col-md-4 col-lg-4 col-xl-3 recomponse-item">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                             <div class="product product-7 text-center">
                                 <figure class="product-media">
                                     ${statusLabel}
-                                    <a href="produitDetailer/${rec.id}">
+                                    <a href="/produitDetailer/${rec.id}">
                                         <img src="${rec.img}" alt="Product image" class="product-image">
                                     </a>
                                     <div class="product-action">
-                                        <a href="produitDetailer/${rec.id}" class="btn-product">
-                                            <span><i class="bi bi-eye"></i>Consulter Le Produit</span>
-                                        </a>
+                                        <a href="/produitDetailer/${rec.id}" class="btn-product"><span><i class="bi bi-eye"></i> Consulter Le Produit</span></a>
                                     </div>
                                 </figure>
                                 <div class="product-body">
                                     <div class="product-cat">
-                                        <a>${categoryLabel}</a>
+                                        <a class="badge">${categoryLabel}</a>
                                     </div>
                                     <h3 class="product-title"><a>${rec.libelle}</a></h3>
                                     <div class="product-price">
@@ -44,32 +54,32 @@ $(document).ready(function() {
                     `);
                 });
 
-                // Update pagination links
                 $('#pagination-container').html(response.links);
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
             }
         });
     }
 
-    // Initial load with default sort and order
-    fetchRecomponse(1, 'points', 'desc');
-
-    $(document).on('click', '.pagination a', function(e) {
-        e.preventDefault();
-        let page = $(this).attr('href').split('page=')[1];
-        let sortBy = $('.dropdowna .option a.active').data('sort') || 'points';
-        let order = $('.dropdowna .option a.active').data('order') || 'desc';
-        fetchRecomponse(page, sortBy, order);
+    // Écoute les changements des cases à cocher pour le filtrage par catégorie
+    $(document).on('change', '.category-filter', function() {
+        fetchRecompenses();
     });
 
-    $(document).on('click', '.dropdowna .option a', function(e) {
+    // Déclenche la soumission du formulaire lors du changement des filtres
+    $('#filterForm').on('submit', function(e) {
         e.preventDefault();
-        $('.dropdowna .option a').removeClass('active');
-        $(this).addClass('active');
-        let sortBy = $(this).data('sort');
-        let order = $(this).data('order');
-        fetchRecomponse(1, sortBy, order);
+        fetchRecompenses();
     });
+
+    // Écoute les changements du tri
+    $('#sortBy, #order').on('change', function() {
+        fetchRecompenses();
+    });
+
+    // Écoute les changements des curseurs
+    $('#min_points, #max_points').on('input', function() {
+        $(this).next('output').text($(this).val());
+    });
+
+    // Déclenche le filtrage au chargement initial
+    fetchRecompenses();
 });

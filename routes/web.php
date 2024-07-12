@@ -79,10 +79,15 @@ Route::get('/logout' ,[Login::class , 'logout'])->name('logout');
     Route::delete('admin.recomponseSupp/{id}', [AdminController::class , 'recomponseSupp'])->name('admin.recomponseSupp');
     Route::get('recomponse/{id}/edit',[AdminController::class , 'recomponsedit']);
     Route::put('recomponse/{id}/update',[AdminController::class , 'updateReco']);
-
+// Route Categorie Etude
+    Route::get('/categorieEtude' , [AdminController::class , 'categorieEtude'])->name('admin.categorieEtude');
+    Route::post('/createCategorieEtude', [AdminController::class , 'createCategorieEtude'])->name('admin.createCategorieEtude');
+    Route::delete('admin.categorieEtudeSupp/{id}', [AdminController::class ,'categorieEtudeSupp'])->name('admin.categorieEtudeSupp');
+    Route::put('categorieEtude/{id}/update', [AdminController::class , 'updateCategorieEtude'])->name('admin.updateCategorieEtude');
+    
 // Route Edute
     Route::get('/admin/etude', [AdminController::class , 'edute'])->name('admin.edute');
-    Route::post('addEdute', [AdminController::class , 'createEdute'])->name('admin.createEdute');
+    Route::post('/createEdute', [AdminController::class , 'createEdute'])->name('admin.createEdute');
     Route::delete('admin.etudeSupp/{id}', [AdminController::class , 'eduteSupp'])->name('admin.etudeSupp');
     Route::put('etude/{id}/update', [AdminController::class , 'updateEtude']);
 
@@ -120,6 +125,7 @@ Route::middleware(['auth', 'user-access:user','noback'])->group(function (){
     //Route List Etude
     Route::get('/etude', [UserController::class , 'etude'])->name('etude');
     Route::get('etudeDetailer/{id}',[UserController::class , 'etudeDetailer'])->name('etudeDetailer');
+    Route::get('/etudes/filter/{id}', [UserController::class, 'etude'])->name('etudes.filter');
 
     Route::post('/EtudeUsers/{etudeId}/user/{userId}/etude/{idEtude}' ,[UserController::class , 'EtudeUsers'])->name('EtudeUsers');
     Route::post('update-password', [UserController::class, 'updatePassword'])->name('password.update');

@@ -18,7 +18,7 @@ class Recomponse extends Model
     ];
 
     public function categorie_recomponse(){
-        return $this->hasMany('App\Models\Categorie_recomponse','id','id_categorie');
+        return $this->belongsTo(Categorie_recomponse::class,'id_categorie');
     }
 
     protected $dates = ['created_at', 'updated_at'];

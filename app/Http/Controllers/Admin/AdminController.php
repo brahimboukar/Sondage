@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Age;
+use App\Models\Categorie_Etudes;
 use App\Models\Categorie_recomponse;
 use App\Models\Demande_recomponses;
 use App\Models\Etude;
@@ -321,37 +322,95 @@ class AdminController extends Controller
               return redirect()->route('admin.recomponse')->with('status','Récomponse Modifier avec succès');
     }
 
+    public function categorieEtude()
+    {
+        $categorieEtude = Categorie_Etudes::paginate(3);
+        return view('Admin/EtudeCategorie',[
+            'categorieEtude' => $categorieEtude,
+        ]);
+    }
+
+    public function createCategorieEtude (Request $request)
+    {
+        $request->validate([
+            'libelle' => 'required',
+        ]);
+
+        
+        $categorieEtude = Categorie_Etudes::create([
+            'libelle' => $request->libelle,
+        ]);
+        if($categorieEtude){
+            return redirect()->route('admin.categorieEtude')->with('success','Catégorie créé avec succès');
+        }
+        else{
+            return back()->with('fail','Sommething wrong try again');
+        }
+    }
+
+    public function categorieEtudeSupp(string $id)
+    {
+        $categorieEtude = Categorie_Etudes::findOrFail($id);
+        $categorieEtude->delete();
+        return redirect()->route('admin.categorieEtude')->with('succe','Catégorie Supprimer avec succès');
+    }
+
+    public function updateCategorieEtude(Request $request, int $id)
+    {
+        $request->validate([
+            'libelle' => 'required',
+        ]);
+
+            $categorieEtude = Categorie_Etudes::where('id',$id)->first();
+            $categorieEtude->libelle = $request->libelle;      
+            $categorieEtude->save();
+            return redirect()->route('admin.categorieEtude')->with('status','Catégorie Modifier avec succès');
+
+
+    }
+
 
     public function edute(){
         $etude = Etude::orderBy('point','DESC')->paginate(3);
         $etudes = Etude::all();
+        $categorieEtudes = Categorie_Etudes::all();
         return view('Admin/Edute',[
             'etude' => $etude,
             'etudes'=> $etudes,
+            'categorieEtudes' => $categorieEtudes,
         ]);
     }
     public function createEdute(Request $request)
     {
-        $request->validate([
-            'libelle' => 'required',
-            'description' => 'required',
-            'durré' => 'required',
-            'point' => 'required',
-        ]);
+
+    if ($request->hasFile('img')) {
+        $file = $request->file('img');
+        $extension = $file->getClientOriginalExtension();
+        
+        $filename = time().'.'.$extension;
+
+        $path = 'uploads/etude/';
+        $file->move($path , $filename);
+    }
         $etude = Etude::create([
+            'img' => $path.$filename,
+            'id_categorie' => $request->id_categorie,
             'libelle' => $request->libelle,
             'description' => $request->description,
             'lien' => $request->lien,
             'durré' => $request->durré,
             'point' => $request->point,
         ]);
-        if($etude){
-            return redirect()->route('admin.edute')->with('success','Etude créé avec succès');
+
+        if ($etude) {
+            return redirect()->route('admin.edute')->with('success', 'Etude créée avec succès');
+        } else {
+            return redirect()->route('admin.edute')->with('fail', 'Quelque chose a mal tourné, essayez encore');
         }
-        else{
-            return back()->with('fail','Sommething wrong try again');
-        }
-    }
+        
+    
+}
+
 
     public function eduteSupp(string $id)
     {

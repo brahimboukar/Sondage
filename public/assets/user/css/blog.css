@@ -1,0 +1,81 @@
+#blog {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.blog-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.blog-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+}
+
+.blog-box {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+    width: calc(33.333% - 20px);
+    box-sizing: border-box;
+    max-height: 300px; /* Adjust the height as needed */
+    overflow: hidden;
+}
+
+.blog-img img {
+    width: 100%;
+    height: 150px; /* Set a fixed height for the image */
+    object-fit: cover; /* Ensure the image covers the container without stretching */
+}
+
+.blog-text {
+    padding: 10px;
+    flex: 1; /* Allows the text to take the remaining space */
+}
+
+.blog-text span {
+    display: block;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px; /* Reduce the margin */
+}
+
+.blog-text .blog-title {
+    font-size: 16px; /* Reduce the font size */
+    color: #ff0505;
+    text-decoration: solid;
+    margin-bottom: 5px; /* Reduce the margin */
+    display: block;
+}
+
+.blog-text .blog-title .badge {
+    display: inline-block;
+    position: relative;
+    left: 20px;
+    background-color: #A6C76C;
+    color: #fff; 
+    padding: 2px 8px;
+    font-size: 12px;
+    border-radius: 12px;
+    margin-right: 8px; 
+}
+
+.blog-text p {
+    font-size: 14px; /* Reduce the font size */
+    color: #666;
+    margin-bottom: 5px; /* Reduce the margin */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.blog-text a {
+    font-size: 12px; /* Reduce the font size */
+    color: #0066cc;
+    text-decoration: none;
+    margin-top: auto; /* Push the link to the bottom if needed */
+}

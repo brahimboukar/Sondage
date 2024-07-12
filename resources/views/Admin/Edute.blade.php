@@ -172,6 +172,15 @@
               </li>
               <li class="sidebar-item">
                 <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.categorieEtude')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa-sharp fa-solid fa-list"></i>
+                  <span class="hide-menu">Gestion Des Catégories Etudes</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
                   class="sidebar-link waves-effect waves-dark sidebar-link active"
                   href="#"
                   aria-expanded="false"
@@ -256,31 +265,53 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      <form method="POST" action="{{route('admin.createEdute')}}">
+                      <form method="POST" action="{{ route('admin.createEdute') }}" enctype="multipart/form-data">
                         @csrf
-                      <div class="form-group" style="width: 40%">
-                        <label>Libelle</label>
-                      <input type="text" name="libelle" class="form-control" placeholder="Saisir Libelle" required>
-                    </div>
-                    <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
-                      <label>Description</label>
-                      <textarea type="" name="description" class="form-control" placeholder="Saisir Description" required></textarea>
-                  </div>
-                  <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
-                    <label>Durré</label>
-                  <input type="number" name="durré" class="form-control" placeholder="Saisir La Durré" required>
-                </div>
-                <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
-                  <label>Nombre de Point</label>
-                  <input type="number" name="point" class="form-control" placeholder="Saisir Le Nombre de Point" required>
-              </div>
-              <div class="form-group" style="width: 40%;position: relative;bottom: 150px;">
-                <label>Lien</label>
-                <textarea type="" name="lien" class="form-control" placeholder="Saisir Le Lien" required></textarea>
-            </div>
-             
-              <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 100px;width: 90%;left: 20px;">AJOUTER</button>
-                      </form>
+                        <div class="form-group" style="width: 40%">
+                            <label>Libelle</label>
+                            <input type="text" name="libelle" class="form-control" placeholder="Saisir Libelle" required>
+                        </div>
+                        <div class="form-group" style="width: 40%; position: relative; left: 400px; bottom: 78px;">
+                            <label>Description</label>
+                            <textarea name="description" class="form-control" placeholder="Saisir Description" required></textarea>
+                        </div>
+                        <div class="form-group" style="width: 40%; position: relative; bottom: 80px;">
+                            <label>Durée</label>
+                            <input type="number" name="durré" class="form-control" placeholder="Saisir La Durée" required>
+                        </div>
+                        <div class="form-group" style="width: 40%; position: relative; left: 400px; bottom: 160px;">
+                            <label>Nombre de Point</label>
+                            <input type="number" name="point" class="form-control" placeholder="Saisir Le Nombre de Point" required>
+                        </div>
+                        <div class="form-group" style="width: 40%; position: relative; bottom: 150px;">
+                            <label>Lien</label>
+                            <textarea name="lien" class="form-control" placeholder="Saisir Le Lien" required></textarea>
+                        </div>
+                        <div class="form-group" style="width: 40%; position: relative; bottom: 150px;">
+                            <label>Categorie</label>
+                            <select class="form-select form-select-sm" name="id_categorie" required>
+                                <option selected disabled></option>
+                                @foreach($categorieEtudes as $row)
+                                    <option value="{{ $row->id }}">{{ $row->libelle }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- image -->
+                      <label style="position: relative;bottom: 150px;">Image</label>
+                      <div class="containner">
+                        <div class="img-area">
+                          <i class="bi bi-cloud-plus-fill icon"></i>
+                          <h3>Inserer Image</h3>
+                          <p>Image size must be less than <span>2MB</span></p>
+                        </div>
+                        <div class="file btn btn-lg btn-primary" style=" position: relative;width: 210px;overflow: hidden;bottom: 105px;">
+                          <i class="bi bi-cloud-arrow-up-fill icon"></i> Choissir Image
+                          <input class="select-image" style="position: absolute;font-size: 100px;opacity: 0;right: 0;top: 0;" type="file" id="img" name="img" required/>
+                        </div>
+                      </div>
+                        <button type="submit" class="btn btn-primary" style="position: relative; bottom: 100px; width: 90%; left: 20px;">AJOUTER</button>
+                    </form>
+                    
                     </div>
                    
                   </div>
@@ -336,6 +367,8 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Libelle</th>
+                    <th scope="col">Img</th>
+                    <th scope="col">Categorie</th>
                     <th scope="col">Description</th>
                     <th scope="col">Lien</th>
                     <th scope="col">Durré</th>
@@ -348,7 +381,9 @@
                     <tr>           
                         <th scope="row">{{$etu->id}}</th>
                         <td>{{$etu->libelle}}</td>
-                        <td>{{$etu->description}}</td>
+                        <td><img src="{{ asset($etu->img) }}" style="width: 70px;height: 70px;" alt="Img"/></td>
+                        <td>{{$etu->categorie_etude->libelle}}</td>
+                        <td>{{ Str::limit($etu->description, 50) }}</td>
                         <td>{{$etu->lien}}</td>
                         <td>{{$etu->durré}} Min</td>
                         <td>{{$etu->point}}</td>

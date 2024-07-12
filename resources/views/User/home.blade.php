@@ -93,8 +93,8 @@
                 		<div class="col-lg-9">
                 			<div class="toolbox">
                 				<div class="toolbox-left">
-                					<div class="toolbox-info">
-                						Affichage de <span>{{$recomponseCount}} sur {{$recomponseCount}}</span>
+                					<div class="toolbox-info" style="position: relative;margin-top: 57px;">
+                						Affichage de <span>12 sur {{$recomponseCount}}</span> Produit
                 					</div><!-- End .toolbox-info -->
                 				</div><!-- End .toolbox-left -->
 
@@ -124,7 +124,7 @@
                                             </div>
                                         </div> --}}
 
-                                        <div class="dropdowna">
+                                        <div class="dropdowna" style="position: relative;margin-top: 50px;">
                                             <input type="text" class="textBox" placeholder="Trier Par : " readonly>
                                             <div class="option">
                                                 <a href="#" data-sort="points" data-order="asc"><div onclick="show('De - aux + Point')">De - aux + Point</div></a>
@@ -139,12 +139,12 @@
                 			</div><!-- End .toolbox -->
                             
                             <div class="products mb-3" id="recomponse-container">
-                                <div class="row justify-content-center">
+                                <div class="row justify-content-start">
                                     @foreach($recomponse as $rec)
-                                        <div class="col-6 col-md-4 col-lg-4 col-xl-3">
+                                        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                                             <div class="product product-7 text-center">
                                                 <figure class="product-media">
-                                                    @if($rec->status ==0)
+                                                    @if($rec->status == 0)
                                                         <span class="product-label label-out">En rupture de stock</span>
                                                     @endif
                                                     <a href="{{ url('produitDetailer/' . $rec->id) }}">
@@ -156,11 +156,7 @@
                                                 </figure>
                                                 <div class="product-body">
                                                     <div class="product-cat">
-                                                        @if (isset($rec->categorie_recomponse[0]))
-                                                            <a>{{ $rec->categorie_recomponse[0]->libelle }}</a>
-                                                        @else
-                                                            <a>Non catégorisé</a>
-                                                        @endif
+                                                        <a class="badge">{{ $rec->categorie_recomponse->libelle }}</a>
                                                     </div>
                                                     <h3 class="product-title"><a>{{ $rec->libelle }}</a></h3>
                                                     <div class="product-price">
@@ -172,6 +168,12 @@
                                     @endforeach
                                 </div>
                             </div>
+                            <div id="pagination-container">
+                                {{ $recomponse->links() }}
+                            </div>
+                            
+                            
+                            
                             
                             
                             
@@ -218,11 +220,11 @@
 							</nav>
                 		</div><!-- End .col-lg-9 -->
                 		<aside class="col-lg-3 order-lg-first">
-                			<div class="sidebar sidebar-shop">
+                			<div class="sidebar sidebar-shop" style="position: relative;margin-top: 50px;">
                 				<div class="widget widget-clean">
                 					<label>Filtrer Par :</label>
                 					{{-- <a href="{{ route('profile') }}" class="sidebar-filter-clear">Nettoie tout</a> --}}
-                                    <a href="{{url ('/produit')}}">Nettoie tout</a>
+                                    <a href="{{url ('/home')}}">Nettoie tout</a>
                 				</div><!-- End .widget widget-clean -->
                 				<div class="widget widget-collapsible">
     								<h3 class="widget-title">
@@ -230,28 +232,27 @@
 									        Categorie
 									    </a>
 									</h3><!-- End .widget-title -->
-
+                                    
 									<div class="collapse show" id="widget-1">
-										<div class="widget-body">
-											<div class="filter-items filter-items-count">
-                                                
-												<div class="filter-item">
-                                                    <ul>
-                                                    @foreach($CatReco as $cat)
-													<div class="custom-control custom-checkbox">
-                                                        <li><a href="{{route('home', ['id_categorie' => $cat->id]) }}">{{$cat->libelle}}</a></li>
-														{{-- <input type="checkbox" class="custom-control-input" name="categorie_ids[]" id="{{$cat->libelle}}" value="{{$cat->id}}">
-														<label class="custom-control-label" for="{{$cat->libelle}}">{{$cat->libelle}}</label> --}}
-                                                        <span class="item-count" style="position: absolute;left: 250px;">{{$cat->recompenses->count()}}</span>
-													</div><!-- End .custom-checkbox -->
-													{{-- <span class="item-count">3</span> --}}
-                                                    @endforeach
+                                        <div class="widget-body">
+                                            <div class="filter-items filter-items-count">
+                                                <div class="filter-item">
+                                                    <ul class="list-unstyled">
+                                                        @foreach($CatReco as $cat)
+                                                            <div class="custom-control custom-checkbox">
+                                                                <li>
+                                                                    <input type="checkbox" class="custom-control-input category-filter" id="category_{{ $cat->id }}" value="{{ $cat->id }}">
+                                                                    <label class="custom-control-label" for="category_{{ $cat->id }}">{{ $cat->libelle }}</label>
+                                                                    <span class="item-count" style="position: absolute; left: 250px;">{{ $cat->recompenses->count() }}</span>
+                                                                </li>
+                                                            </div><!-- End .custom-checkbox -->
+                                                        @endforeach
                                                     </ul>
-												</div><!-- End .filter-item -->
-			
-											</div><!-- End .filter-items -->
-										</div><!-- End .widget-body -->
-									</div><!-- End .collapse -->
+                                                </div><!-- End .filter-item -->
+                                            </div><!-- End .filter-items -->
+                                        </div><!-- End .widget-body -->
+                                    </div>
+                                    <!-- End .collapse -->
         						</div><!-- End .widget -->
                                 <div class="widget widget-collapsible">
     								<h3 class="widget-title">
@@ -261,20 +262,20 @@
 									    </a>
 									</h3><!-- End .widget-title -->
                                     <div class="collapse show" id="widget-5">
-									<form id="filterForm" method="GET" action="{{ url('/home') }}">
-                                        <label for="min_points">Points minimum :</label>
-                                        <input type="range" id="min_points" name="min_points" class="slider" min="0" max="{{ $minPoints }}" oninput="this.nextElementSibling.value = this.value">
-                                        <output>50</output>
-                                        <br>
-                                
-                                        <label for="max_points">Points maximum :</label>
-                                        <input type="range" id="max_points" name="max_points" class="slider" min="{{ $minPoints }}" max="{{ $maxPoints }}" oninput="this.nextElementSibling.value = this.value">
-                                        <output style="position: absolute;">50</output>
-                                        <br>
-                                
-                                        <button type="submit" class="btn btn-primary btn-round btn-shadow">Filtrer</button>
-                                    </form>
-                                </div>
+                                        <form id="filterForm" method="GET" action="{{ url('/home') }}">
+                                            <label for="min_points">Points minimum :</label>
+                                            <input type="range" id="min_points" name="min_points" class="slider" min="0" max="{{ $minPoints }}" value="0" oninput="this.nextElementSibling.value = this.value">
+                                            <output>0</output>
+                                            <br>
+                                            
+                                            <label for="max_points">Points maximum :</label>
+                                            <input type="range" id="max_points" name="max_points" class="slider" min="{{ $minPoints }}" max="{{ $maxPoints }}" value="{{ $maxPoints }}" oninput="this.nextElementSibling.value = this.value">
+                                            <output style="position: absolute;">{{ $maxPoints }}</output>
+                                            <br>
+                                            
+                                            <button type="submit" class="btn btn-primary btn-round btn-shadow">Filtrer</button>
+                                        </form>
+                                    </div>
         						</div><!-- End .widget -->
                 			</div><!-- End .sidebar sidebar-shop -->
                 		</aside><!-- End .col-lg-3 -->
@@ -309,8 +310,8 @@
     <script src="{{asset('assets/user/js/jquery.magnific-popup.min.js')}}"></script>
     <script src="{{asset('assets/user/js/nouislider.min.js')}}"></script>
     <script src="{{asset('assets/user/js/trieMoins.js')}}"></script>
-    <script src="{{asset('assets/user/js/triePlusDem.js')}}"></script>
     <script src="{{asset('assets/user/js/filter.js')}}"></script>
+    <script src="{{asset('assets/user/js/filterRecomponse.js')}}"></script>
     
     <!-- Main JS File -->
     <script src="{{asset('assets/user/js/main.js')}}"></script>
