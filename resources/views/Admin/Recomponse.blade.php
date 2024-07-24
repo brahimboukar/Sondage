@@ -345,7 +345,7 @@
                 <th scope="row">{{$rec->id}}</th>
                 <td><img src="{{ asset($rec->img) }}" style="width: 70px;height: 70px;" alt="Img"/></td>
                 <td>{{$rec->libelle}}</td>
-                <td>{{$rec->categorie_recomponse[0]->libelle}}</td>
+                <td>{{$rec->categorie_recomponse->libelle}}</td>
                 <td>{{$rec->points}}</td>
                 {{-- <td>{{$rec->status}}</td> --}}
                 <td>

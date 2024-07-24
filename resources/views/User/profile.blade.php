@@ -59,6 +59,9 @@
                                         <h4 class="compare-product-title"><a href="#">Consulter Votre Profil</a></h4>
                                     </li>
                                     <li class="compare-product">
+                                        <h4 class="compare-product-title"><a href="{{route('produitCart')}}">Panier Mes Produit</a></h4>
+                                    </li>
+                                    <li class="compare-product">
                                         <a href="#"  title="Remove Product"></a>
                                         <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>

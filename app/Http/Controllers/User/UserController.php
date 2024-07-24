@@ -450,4 +450,16 @@ public function user(Request $request)
         return redirect()->route('profile')->with('success', 'Mot de passe mis à jour avec succès');
     }
 
+    public function produitCart()
+    {
+        $user = Auth::user();
+        $demandes = Demande_recomponses::with('recomponse')
+            ->where('user_id', $user->id)->get();
+        return view('User/produitCart',[
+            'user' => $user,
+            'demandes' => $demandes,
+        ]);
+
+    }
+
 }

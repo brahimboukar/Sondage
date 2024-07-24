@@ -84,6 +84,12 @@ ul{
     color: #f33c3c;
     transition: all ease 0.3s;
 }
+.img-fluid{
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
     </style>
 </head>
 
@@ -125,6 +131,9 @@ ul{
                                         <h4 class="compare-product-title"><a href="{{route('profile')}}">Consulter Votre Profil</a></h4>
                                     </li>
                                     <li class="compare-product">
+                                        <h4 class="compare-product-title"><a href="{{route('produitCart')}}">Panier Mes Produit</a></h4>
+                                    </li>
+                                    <li class="compare-product">
                                         <a href="#"  title="Remove Product"></a>
                                         <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
@@ -138,7 +147,7 @@ ul{
         <main class="main">
             <div class="page-content">
         
-                <section id="blog">
+                {{-- <section id="blog">
 
                     <div class="blog-container">
                         <div class="blog-box">
@@ -154,12 +163,123 @@ ul{
                                 <button type="submit" class="btn btn-primary btn-round btn-shadow" style="position: relative;top:10px;">Passer</button>
                                 </form>
                                 {{-- href="{{$etude->lien}}?id={{$user->id}}&&idEtude={{$etude->id}}" --}}
-                            </div>
+                            {{-- </div> --}}
                            
-                        </div>
-                    </div>
+                        {{-- </div> --}}
+                    {{-- </div> --}}
                     
-                </section>
+                {{-- </section>  --}}
+
+                 <!-- Page content-->
+        {{-- <div class="container mt-7">
+            <div class="row">
+                <div class="col-lg-15">
+                    <!-- Post content-->
+                    <article>
+                        <!-- Post header-->
+                        <header class="mb-4">
+                            <!-- Preview image figure-->
+                        <figure class="mb-4"><img class="img-fluid rounded" src="{{ asset($etude->img) }}" /></figure>
+                            <!-- Post title-->
+                            <h1 class="fw-bolder mb-1">{{$etude->libelle}}</h1>
+                            <!-- Post meta content-->
+                            <div class="text-muted fst-italic mb-2">Publier en {{ $etude->created_at->locale('fr')->translatedFormat('d F Y') }}</div>
+                            <!-- Post categories-->
+                            <a class="badge bg-secondary" href="#!">{{ $etude->categorie_etude->libelle }}</a>
+                            
+                        </header>
+                        
+                        <!-- Post content-->
+                        <section class="mb-5">
+                            <p class="fs-5 mb-4">{{$etude->description}}</p>
+                            
+                            
+                        </section>
+                    </article>
+                    <!-- Comments section-->
+                    
+                </div>
+                <!-- Side widgets-->
+              
+            </div>
+        </div> --}}
+        <section class="section-sm">
+            <div class="container">
+              <div class="row">
+                <div class="col-12 mb-4">
+                  <!-- course thumb -->
+                  <img src="{{ asset($etude->img) }}" class="img-fluid w-100">
+                  
+                </div>
+              </div>
+              <!-- course info -->
+              <div class="row align-items-center mb-5">
+                <div class="col-xl-3 order-1 col-sm-6 mb-4 mb-xl-0">
+                  <h2>{{$etude->libelle}}</h2>
+                </div>
+                <div class="col-xl-6 order-sm-3 order-xl-2 col-12 order-2">
+                  <ul class="list-inline text-xl-center">
+                    <li class="list-inline-item mr-4 mb-3 mb-sm-0">
+                      <div class="d-flex align-items-center">
+                        <i class="ti-book text-primary icon-md mr-2"></i>
+                        <div class="text-left">
+                          <h6 class="mb-0">CATÉGORIE</h6>
+                          <p class="mb-0">{{ $etude->categorie_etude->libelle }}</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-inline-item mr-4 mb-3 mb-sm-0">
+                      <div class="d-flex align-items-center">
+                        <i class="ti-alarm-clock text-primary icon-md mr-2"></i>
+                        <div class="text-left">
+                          <h6 class="mb-0">DURRÉ</h6>
+                          <p class="mb-0">{{$etude->durré}} Minute</p>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="list-inline-item mr-4 mb-3 mb-sm-0">
+                      <div class="d-flex align-items-center">
+                        <i class="ti-wallet text-primary icon-md mr-2"></i>
+                        <div class="text-left">
+                          <h6 class="mb-0">POINT</h6>
+                          <p class="mb-0">{{$etude->point}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-xl-3 text-sm-right text-left order-sm-2 order-3 order-xl-3 col-sm-6 mb-4 mb-xl-0">
+                    <form method="POST" action="{{route('EtudeUsers',['etudeId' => $etude->id, 'userId' => Auth::id(), 'idEtude' => $etude->id])}}">
+                        @csrf
+                        <input type="hidden" name="etude_id" value="{{$etude->id}}" />
+                        <input type="hidden" name="user_id" value="{{$user->id}}" />
+                        <input type="hidden" name="lien" value="{{$etude->lien}}" />
+                    <button type="submit" class="btn btn-primary">Passer Maintenant</button>
+                    </form>
+                  {{-- <a href="course-single.html" class="btn btn-primary">Passer Maintenant</a> --}}
+                </div>
+                
+                <!-- border -->
+                <div class="col-12 mt-4 order-4">
+                    <div class="text-muted fst-italic mb-2">Publier en {{ $etude->created_at->locale('fr')->translatedFormat('d F Y') }}</div>
+                  <div class="border-bottom border-primary"></div>
+                </div>
+              </div>
+              <!-- course details -->
+              <div class="row">
+                <div class="col-12 mb-4">
+                  <h3>Description</h3>
+                  <p>{{$etude->description}}</p>
+                </div>
+                
+                
+                
+                <!-- teacher -->
+                
+              </div>
+            </div>
+          </section>
+        
                   
             </div><!-- End .page-content -->
         </main><!-- End .main -->

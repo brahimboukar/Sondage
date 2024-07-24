@@ -63,6 +63,9 @@
                                         <h4 class="compare-product-title"><a href="{{route('profile')}}">Consulter Votre Profil</a></h4>
                                     </li>
                                     <li class="compare-product">
+                                        <h4 class="compare-product-title"><a href="{{route('produitCart')}}">Panier Mes Produit</a></h4>
+                                    </li>
+                                    <li class="compare-product">
                                         
                                         <h4 class="compare-product-title"><a href="{{route('logout')}}">Logout</a></h4>
                                     </li>
@@ -168,7 +171,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <div id="pagination-container">
+                            <div id="pagination-container" class="d-flex justify-content-center">
                                 {{ $recomponse->links() }}
                             </div>
                             
@@ -239,14 +242,18 @@
                                                 <div class="filter-item">
                                                     <ul class="list-unstyled">
                                                         @foreach($CatReco as $cat)
-                                                            <div class="custom-control custom-checkbox">
-                                                                <li>
-                                                                    <input type="checkbox" class="custom-control-input category-filter" id="category_{{ $cat->id }}" value="{{ $cat->id }}">
-                                                                    <label class="custom-control-label" for="category_{{ $cat->id }}">{{ $cat->libelle }}</label>
-                                                                    <span class="item-count" style="position: absolute; left: 250px;">{{ $cat->recompenses->count() }}</span>
-                                                                </li>
+                                                            <div class="checkbox-wrapper-21">
+                                                                
+                                                                    <input type="checkbox"  class="category-filter" id="category_{{ $cat->id }}" value="{{ $cat->id }}" />
+                                                                    
+                                                                    <label  for="category_{{ $cat->id }}">{{ $cat->libelle }}</label>
+                                                                    
+                                                                    <span  style="position: absolute; left: 250px;">{{ $cat->recompenses->count() }}</span>
+                                                                
                                                             </div><!-- End .custom-checkbox -->
                                                         @endforeach
+                                                        
+                                                          
                                                     </ul>
                                                 </div><!-- End .filter-item -->
                                             </div><!-- End .filter-items -->

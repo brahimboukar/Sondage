@@ -129,6 +129,11 @@ Route::middleware(['auth', 'user-access:user','noback'])->group(function (){
 
     Route::post('/EtudeUsers/{etudeId}/user/{userId}/etude/{idEtude}' ,[UserController::class , 'EtudeUsers'])->name('EtudeUsers');
     Route::post('update-password', [UserController::class, 'updatePassword'])->name('password.update');
+
+
+    //Route produitCart
+    Route::get('/produitCart', [UserController::class , 'produitCart'])->name('produitCart');
+    
     
     
 });

@@ -240,7 +240,7 @@
                 <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 78px;">
                   <label>Categorie</label>
                   <select class="form-select form-select-sm" name="id_categorie" aria-label="Small select example" required>
-                    <option selected value="{{$recomponse->id_categorie}}">{{$recomponse->categorie_recomponse[0]->libelle}}</option>
+                    <option selected value="{{$recomponse->id_categorie}}">{{$recomponse->categorie_recomponse->libelle}}</option>
                     @foreach($cat as $row)
                     <option value="{{$row->id}}">{{$row->libelle}}</option>
                     @endforeach

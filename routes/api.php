@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategorieRecomponseController;
 use App\Http\Controllers\Api\LoginController;
+use App\Http\Controllers\Api\RecomponseController;
 use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +32,6 @@ Route::post('register' , [RegisterController::class, 'register']);
 Route::post('login' , [LoginController::class, 'login']);
 
 Route::post('CategorieRecomponse', [CategorieRecomponseController::class, 'add']);
-Route::get('/categories', [CategorieRecomponseController::class, 'list']);
+Route::get('/categoriesRecomponse', [CategorieRecomponseController::class, 'list']);
+
+Route::get('/recomponse', [RecomponseController::class, 'list']);

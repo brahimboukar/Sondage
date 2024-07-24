@@ -210,6 +210,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        //'Hashids' => Vinkla\Hashids\Facades\Hashids::class,
     ])->toArray(),
 
+    'Hashids' => \Vinkla\Hashids\Facades\Hashids::class,
 ];
