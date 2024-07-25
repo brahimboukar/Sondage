@@ -18,8 +18,11 @@ class Register extends Controller
     // }
     public function register()
     {
+        
         $regionData = Region::all();
         $fonctionf = Fonction::all();
+        
+        
         return view("Auth/register", [
             'data' => $regionData,
             'dataf' => $fonctionf
@@ -34,18 +37,22 @@ class Register extends Controller
 
     public function registerSave(Request $request)
     {
-        Validator::make($request->all(),[
+        $validator = Validator::make($request->all(),[
             'nom' => 'required',
             'prenom' => 'required',
-            'email' => 'required|email',
-            'age' => 'required',
+            'email' => 'required|email|unique:users,email',
             'telephone' => 'required',
             'id_sexe' => 'required',
             'id_region' => 'required',
             'id_fonction' => 'required',
             'id_fonction_details' => 'required',
             'password' => 'required',
-        ])->validate();
+        ]);
+        if ($validator->fails()) {
+            return redirect()->route('register')->with('faile','Email que vous allez saissir existe déjà');
+        }
+
+
 
         $user = User::create([
             'nom' => $request->nom,

@@ -52,6 +52,8 @@ class AuthController extends Controller
     }
     public function register()
     {
+        
+        
         $regionData = Region::all();
         $fonctionf = Fonction::all();
         return view("Auth/register", [
