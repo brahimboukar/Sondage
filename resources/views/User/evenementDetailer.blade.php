@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/nouislider/nouislider.css')}}">
     <style>
         a{
@@ -110,8 +112,8 @@ ul{
                                 <li>
                                     <a href="{{route('home')}}" >Liste Des Produits</a>
                                 </li>
-                                <li class="megamenu-container active">
-                                    <a href="#" >Liste Des Etudes</a>
+                                <li class="megamenu-container">
+                                    <a href="{{route('etude')}}" >Liste Des Etudes</a>
                                 </li>
                                 <li>
                                     <a href="{{route('evenement')}}" >Liste Des Evenements</a>
@@ -149,7 +151,11 @@ ul{
         </header><!-- End .header -->
         <main class="main">
             <div class="page-content">
-        
+                @if(Session::get('success'))
+                <div class="alert alert-success" role="alert" >
+                    {{ Session::get('success') }}
+                </div>
+                @endif
                 {{-- <section id="blog">
 
                     <div class="blog-container">
@@ -211,32 +217,34 @@ ul{
               <div class="row">
                 <div class="col-12 mb-4">
                   <!-- course thumb -->
-                  <img src="{{ asset($etude->img) }}" class="img-fluid w-100">
+                  <img src="{{ asset($evenement->img) }}" class="img-fluid w-100">
                   
                 </div>
               </div>
               <!-- course info -->
               <div class="row align-items-center mb-5">
                 <div class="col-xl-3 order-1 col-sm-6 mb-4 mb-xl-0">
-                  <h2>{{$etude->libelle}}</h2>
+                  <h2>{{$evenement->libelle}}</h2>
                 </div>
                 <div class="col-xl-6 order-sm-3 order-xl-2 col-12 order-2">
                   <ul class="list-inline text-xl-center">
                     <li class="list-inline-item mr-4 mb-3 mb-sm-0">
                       <div class="d-flex align-items-center">
                         <i class="ti-book text-primary icon-md mr-2"></i>
-                        <div class="text-left">
+                        {{-- <div class="text-left">
                           <h6 class="mb-0">CATÉGORIE</h6>
                           <p class="mb-0">{{ $etude->categorie_etude->libelle }}</p>
-                        </div>
+                        </div> --}}
                       </div>
                     </li>
                     <li class="list-inline-item mr-4 mb-3 mb-sm-0">
                       <div class="d-flex align-items-center">
                         <i class="ti-alarm-clock text-primary icon-md mr-2"></i>
+                        
                         <div class="text-left">
-                          <h6 class="mb-0">DURRÉ</h6>
-                          <p class="mb-0">{{$etude->durré}} Minute</p>
+                            
+                          <h6 class="mb-0">Date Debut</h6>
+                          <p class="mb-0">{{Carbon\Carbon::parse($evenement->date_Debut)->locale('fr')->translatedFormat('d F Y')}}</p>
                         </div>
                       </div>
                     </li>
@@ -244,27 +252,41 @@ ul{
                       <div class="d-flex align-items-center">
                         <i class="ti-wallet text-primary icon-md mr-2"></i>
                         <div class="text-left">
-                          <h6 class="mb-0">POINT</h6>
-                          <p class="mb-0">{{$etude->point}}</p>
+                          <h6 class="mb-0">Date Fin</h6>
+                          <p class="mb-0">{{Carbon\Carbon::parse($evenement->date_Fin)->locale('fr')->translatedFormat('d F Y')}}</p>
                         </div>
                       </div>
                     </li>
                   </ul>
                 </div>
                 <div class="col-xl-3 text-sm-right text-left order-sm-2 order-3 order-xl-3 col-sm-6 mb-4 mb-xl-0">
-                    <form method="POST" action="{{route('EtudeUsers',['etudeId' => $etude->id, 'userId' => Auth::id(), 'idEtude' => $etude->id])}}">
+                    
+
+                    @if($evenement->lien === null)
+                    <form method="POST" action="{{route('send.email')}}">
                         @csrf
-                        <input type="hidden" name="etude_id" value="{{$etude->id}}" />
+                        <input type="hidden" name="libelle" value="{{$evenement->libelle}}" />
+                        <input type="hidden" name="evenement_id" value="{{$evenement->id}}" />
                         <input type="hidden" name="user_id" value="{{$user->id}}" />
-                        <input type="hidden" name="lien" value="{{$etude->lien}}" />
-                    <button type="submit" class="btn btn-primary">Passer Maintenant</button>
+                        <button type="submit" class="btn btn-primary">Participer</button>
                     </form>
+                    @endif
+                    @if($evenement->lien != null)
+                    <form method="POST" action="{{route('evenementUser')}}">
+                        @csrf
+                        <input type="hidden" name="evenement_id" value="{{$evenement->id}}" />
+                        <input type="hidden" name="user_id" value="{{$user->id}}" />
+                        <input type="hidden" name="lien" value="{{$evenement->lien}}" />
+                    <button type="submit" class="btn btn-primary">Rejoindre</button>
+                    </form>
+                    @endif
+                    
                   {{-- <a href="course-single.html" class="btn btn-primary">Passer Maintenant</a> --}}
                 </div>
                 
                 <!-- border -->
                 <div class="col-12 mt-4 order-4">
-                    <div class="text-muted fst-italic mb-2">Publier en {{ $etude->created_at->locale('fr')->translatedFormat('d F Y') }}</div>
+                    <div class="text-muted fst-italic mb-2">Publier en {{ $evenement->created_at->locale('fr')->translatedFormat('d F Y') }}</div>
                   <div class="border-bottom border-primary"></div>
                 </div>
               </div>
@@ -272,12 +294,12 @@ ul{
               <div class="row">
                 <div class="col-12 mb-4">
                   <h3>Description</h3>
-                  <p>{{$etude->description}}</p>
+                  <p>{{$evenement->description}}</p>
                 </div>
                 
                 
                 
-                <!-- teacher -->
+                
                 
               </div>
             </div>
@@ -298,18 +320,20 @@ ul{
     </div><!-- End .page-wrapper -->
 
     <!-- Plugins JS File -->
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/jquery.hoverIntent.min.js"></script>
-    <script src="assets/js/jquery.waypoints.min.js"></script>
-    <script src="assets/js/superfish.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/bootstrap-input-spinner.js"></script>
-    <script src="assets/js/jquery.elevateZoom.min.js"></script>
-    <script src="assets/js/bootstrap-input-spinner.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.hoverIntent.min.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.waypoints.min.js')}}"></script>
+    <script src="{{asset('assets/js/superfish.min.js')}}"></script>
+    <script src="{{asset('assets/js/owl.carousel.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap-input-spinner.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.elevateZoom.min.js')}}"></script>
+    <script src="{{asset('assets/js/bootstrap-input-spinner.js')}}"></script>
+    <script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
     <!-- Main JS File -->
-    <script src="assets/js/main.js"></script>
+    <script src="{{asset('assets/js/main.js')}}"></script>
+    {{-- <script src="{{asset('assets/js/gmail.js')}}"></script> --}}
+    
 </body>
 
 

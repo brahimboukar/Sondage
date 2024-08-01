@@ -45,6 +45,9 @@
                                 <li>
                                     <a href="{{route('etude')}}" >Liste Des Etudes</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('evenement')}}" >Liste Des Evenements</a>
+                                </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-left -->
@@ -81,10 +84,10 @@
         	<div class="page-header text-center" style="background-image: url('{{('assets/user/images/page-header-bg.jpg')}}')">
         		<div class="container">
                     @if(Session::get('succ'))
-                                <div class="alert alert-success" role="alert" >
-                                    {{ Session::get('succ') }}
-                                </div>
-                                @endif
+                    <div class="alert alert-success" role="alert" >
+                        {{ Session::get('succ') }}
+                    </div>
+                    @endif
         			<h1 class="page-title">Liste Des Produits<span>Boutique</span></h1>
                     {{-- <img src="{{ asset($recomponse->img) }}" alt="Product image" class="product-image"> --}}
         		</div><!-- End .container -->

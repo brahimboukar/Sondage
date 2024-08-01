@@ -45,6 +45,9 @@
                                 <li>
                                     <a href="{{route('etude')}}" >Liste Des Etudes</a>
                                 </li>
+                                <li>
+                                    <a href="{{route('evenement')}}" >Liste Des Evenements</a>
+                                </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
                     </div><!-- End .header-left -->

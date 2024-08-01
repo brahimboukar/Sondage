@@ -25,6 +25,7 @@ class User extends Authenticatable
         'prenom',
         'email',
         'age',
+        'dateNaissance',
         'telephone',
         'points',
         'blocked',
@@ -86,5 +87,10 @@ class User extends Authenticatable
     public function demandesRecomponses()
     {
         return $this->hasMany(Demande_recomponses::class);
+    }
+
+    public function evenements()
+    {
+        return $this->belongsToMany(evenements::class, 'evenement_users', 'user_id', 'evenement_id')->withPivot('date');
     }
 }

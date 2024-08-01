@@ -8,6 +8,8 @@ use App\Models\Categorie_recomponse;
 use App\Models\Demande_recomponses;
 use App\Models\Etude;
 use App\Models\Etude_users;
+use App\Models\evenement_users;
+use App\Models\evenements;
 use App\Models\Fonction;
 use App\Models\FonctionDetaile;
 use App\Models\Recomponse;
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -462,4 +465,160 @@ public function user(Request $request)
 
     }
 
+    public function evenement()
+    {
+        $user = Auth::user();
+        $evenement = evenements::all();
+
+        return view('User/evenement',[
+            'user' => $user,
+            'evenement' => $evenement,
+        ]);
+    }
+
+    public function evenementDetailer($id){
+        $evenement = evenements::where('id',$id)->first();
+        $user = Auth::user();
+        return view('User/evenementDetailer',[
+            'evenement' => $evenement,
+            'user' => $user,
+        ]);
+    }
+
+    // public function sendEmail(Request $request)
+    // {
+    //     if($this->isOnline()){
+    //        $user = Auth::user();
+    //        $mail_data = [
+    //         'recipient' => 'boukarb925@gmail.com',
+    //         'fromEmail' => $user->email,
+    //         'fromName' => $user->nom . ' ' . $user->prenom,
+    //         'subject' => 'Invitation évenement',
+    //         'body' => 'Vous Invieter cette évenement'
+    //        ];
+    //        Mail::send('User/email-template',$mail_data, function($message) use ($mail_data){
+    //         $message->to($mail_data['recipient'])
+    //         ->from($mail_data['fromEmail'],$mail_data['fromName'])
+    //         ->subject($mail_data['subject']);
+    //        });
+    //        return redirect()->back()->with('success','Votre Demande à envoyer!!');
+    //     }
+    //     else {
+    //         return 'No Connect';
+    //     }
+    // }
+    // public function sendEmail(Request $request)
+    // {
+    //     if($this->isOnline()){
+    //         $user = Auth::user();
+    //         $fullName = $user->nom . ' ' . $user->prenom;
+    //         $libelle = $request->input('libelle');
+            
+    //         $mail_data = [
+    //             'recipient' => 'boukarb925@gmail.com',
+    //             'fromEmail' => $user->email,
+    //             'fromName' => $fullName,
+    //             'subject' => 'Demande d\'invitation à cet événement : ',
+    //             'body' => '',
+    //             'id_user' => $user->id,
+    //             'nom' => $user->nom,
+    //             'prenom' => $user->prenom,
+    //             'email' => $user->email,
+    //             'libelle' => $libelle,
+    //             'tele' => $user->telephone,
+    //         ];
+
+    //         Mail::send('User/email-template', $mail_data, function($message) use ($mail_data) {
+    //             $message->to($mail_data['recipient'])
+    //                     ->from($mail_data['fromEmail'], $mail_data['fromName'])
+    //                     ->subject($mail_data['subject'])
+    //                     ->replyTo($mail_data['fromEmail'], $mail_data['fromName']);
+    //         });
+
+    //         // Insertion dans la table evenement_users
+    //         $usera = User::findOrFail($user->id);
+    //         $evenement = evenements::findOrFail($request->input('evenement_id'));
+    //         $evenementUser = new evenement_users();
+    //         $evenementUser->user_id = $usera->id;
+    //         $evenementUser->evenement_id = $evenement->id;
+    //         $evenementUser->date = now();
+    //         $evenementUser->save();
+
+    //         return redirect()->back()->with('success', 'Votre demande a été envoyée et enregistrée avec succès !');
+    //     } else {
+    //         return 'Pas de connexion';
+    //     }
+    // }
+    public function sendEmail(Request $request)
+{
+    if ($this->isOnline()) {
+        $user = Auth::user();
+        $fullName = $user->nom . ' ' . $user->prenom;
+        $libelle = $request->input('libelle');
+
+        $mail_data = [
+            'recipient' => 'boukarb925@gmail.com', // Remplacez par l'email de l'administrateur
+            'fromEmail' => $user->email,
+            'fromName' => $fullName,
+            'subject' => 'Demande d\'invitation à cet événement : ',
+            'body' => '',
+            'id_user' => $user->id,
+            'nom' => $user->nom,
+            'prenom' => $user->prenom,
+            'email' => $user->email,
+            'libelle' => $libelle,
+            'tele' => $user->telephone,
+        ];
+
+        Mail::send('User/email-template', $mail_data, function ($message) use ($mail_data) {
+            $message->to($mail_data['recipient'])
+                    ->from('noreply@monentreprise.com', $mail_data['fromName']) // Remplacez par votre adresse email
+                    ->subject($mail_data['subject'])
+                    ->replyTo($mail_data['fromEmail'], $mail_data['fromName']);
+        });
+
+        // Insertion dans la table evenement_users
+        $usera = User::findOrFail($user->id);
+        $evenement = evenements::findOrFail($request->input('evenement_id'));
+        $evenementUser = new evenement_users();
+        $evenementUser->user_id = $usera->id;
+        $evenementUser->evenement_id = $evenement->id;
+        $evenementUser->date = now();
+        $evenementUser->save();
+
+        return redirect()->back()->with('success', 'Votre demande a été envoyée et enregistrée avec succès !');
+    } else {
+        return 'Pas de connexion';
+    }
+}
+
+
+
+    public function isOnline($site = "https://www.youtube.com/") {
+        if(@fopen($site, 'r')){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    public function evenementUser(Request $request)
+    {
+        $user = User::findOrFail($request->input('user_id'));
+        $evenement = evenements::findOrFail($request->input('evenement_id'));
+        //$etudelien = Etude::findOrFail($request->input('lien'));
+        //$etudes = Etude::find($id);
+        $evenementUser = new evenement_users();
+        $evenementUser->user_id = $user->id;
+        $evenementUser->evenement_id = $evenement->id;
+        $evenementUser->date = now();
+        
+        $evenementUser->save();
+        //. '?id=' . $userId.'/&&idEtude='.$idEtude
+        $redirectUrl = $evenement->lien ;
+
+        return redirect($redirectUrl);
+    }
 }

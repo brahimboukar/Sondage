@@ -84,11 +84,11 @@
                                 <li>
                                     <a href="{{route('home')}}" >Liste Des Produits</a>
                                 </li>
-                                <li class="megamenu-container active">
-                                    <a href="#" >Liste Des Etudes</a>
-                                </li>
                                 <li>
-                                    <a href="{{route('evenement')}}" >Liste Des Evenements</a>
+                                    <a href="{{route('etude')}}" >Liste Des Etudes</a>
+                                </li>
+                                <li class="megamenu-container active">
+                                    <a href="#" >Liste Des Événements</a>
                                 </li>
                             </ul><!-- End .menu -->
                         </nav><!-- End .main-nav -->
@@ -125,28 +125,28 @@
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('{{('assets/user/images/page-header-bg.jpg')}}')">
         		<div class="container">
-        			<h1 class="page-title">Liste Des Etude<span>Correspand De Votre Profile</span></h1>
+        			<h1 class="page-title">Liste Des Événements<span>Disponible</span></h1>
                     {{-- <img src="{{ asset($recomponse->img) }}" alt="Product image" class="product-image"> --}}
         		</div><!-- End .container -->
         	</div><!-- End .page-header -->
 
             <div class="page-content">
 
-                <div class="button_grp" >
+                {{-- <div class="button_grp" >
                     <ul class="d-flex justify-content-center">
                         <li data-li="all" class="btn">Tout</li>
                         @foreach($categorieEtude as $cat)
                         <li data-li="{{ $cat->id }}" class="btn">{{ $cat->libelle }}</li>
                         @endforeach
                     </ul>
-                </div>
+                </div> --}}
                 
-                	@if($etude->count() ==0)
+                	{{-- @if($etude->count() ==0)
                 		<h1><span> Aucun Etude correspand Pour Votre profile</span></h1>
-                    @endif
+                    @endif --}}
                    
                     <section id="blog">
-                        <div class="dropdowna" style="position: relative;left: 980px;">
+                        {{-- <div class="dropdowna" style="position: relative;left: 980px;">
                             <input type="text" class="textBox" placeholder="Trier Par : " readonly>
                             <div class="option">
                                 <a href="#" data-sort="point" data-order="asc"><div onclick="show('De - aux + Point')">De - aux + Point</div></a>
@@ -155,29 +155,24 @@
                                 <a href="#" data-sort="durré" data-order="desc"><div onclick="show('De + aux - Durré')">De + aux - Durré</div></a>
                                 <a href="#" data-sort="created_at" data-order="asc"><div onclick="show('La Date De Publication')">La Date De Publication</div></a>
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="blog-heading"></div>
                         <div class="blog-container" id="blog-container">
-                            @foreach($etude as $etu)
+                            @foreach($evenement as $eve)
                             <div class="blog-box">
                                 <div class="blog-img">
-                                    <a href="{{ url('etudeDetailer/'.$etu->id) }}">
-                                        <img src="{{ $etu->img }}" alt="">
+                                    <a href="{{ url('evenementDetailer/'.$eve->id) }}">
+                                        <img src="{{ $eve->img }}" alt="">
                                     </a>
                                 </div>
                                 <div class="blog-text">
                                     <span>
-                                        <i class="fa-solid fa-calendar-days"></i> {{ $etu->created_at->locale('fr')->translatedFormat('d F Y') }}
-                                        <i class="bi bi-alarm" style="position: relative;left: 60px;"> {{ $etu->durré }} Minute</i>
-                                        <i class="fa-solid fa-award" style="position: relative;left: 100px;"> {{ $etu->durré }}</i>
+                                        <i class="fa-solid fa-calendar-days"></i> {{ $eve->created_at->locale('fr')->translatedFormat('d F Y') }}
                                     </span>
-                                    <a href="{{ url('etudeDetailer/'.$etu->id) }}" class="blog-title">
-                                        {{ $etu->libelle }}
-                                        @if($etu->categorie_etude)
-                                        <span class="badge">{{ $etu->categorie_etude->libelle }}</span>
-                                        @endif
+                                    <a href="{{ url('evenementDetailer/'.$eve->id) }}" class="blog-title">
+                                        {{ $eve->libelle }}
                                     </a>
-                                    <p>{{ Str::limit($etu->description, 100) }}</p>
+                                    <p>{{ Str::limit($eve->description, 100) }}</p>
                                 </div>
                             </div>
                             @endforeach

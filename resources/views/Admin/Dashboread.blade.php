@@ -212,6 +212,24 @@
                   <span class="hide-menu">Gestion Des Demandes</span></a
                 >
               </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.evenement')}}"
+                  aria-expanded="false"
+                  ><i class="fas fa-calendar-day"></i>
+                  <span class="hide-menu">Gestion Des Événements</span></a
+                >
+              </li>
+              <li class="sidebar-item">
+                <a
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.ParticipantEvenement')}}"
+                  aria-expanded="false"
+                  ><i class="me-2 fa-solid fa-users"></i>
+                  <span class="hide-menu">Gestion Des Participants</span></a
+                >
+              </li>
               
               
               

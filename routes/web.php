@@ -101,6 +101,18 @@ Route::get('/logout' ,[Login::class , 'logout'])->name('logout');
     Route::get('/admin/DemandeRecomponse', [AdminController::class , 'DemandeRecomponse'])->name('admin.DemandeRecomponse');
     Route::delete('admin.suppDemandeRecomponse/{id}', [AdminController::class , 'suppDemandeRecomponse'])->name('admin.suppDemandeRecomponse');
 
+    // Route Evenement
+    Route::get('/admin/Evenement', [AdminController::class , 'evenement'])->name('admin.evenement');
+    Route::post('/admin/addEvenement', [AdminController::class , 'addEvenement'])->name('admin.addEvenement');
+    Route::delete('admin/suppEvenement/{id}', [AdminController::class , 'evenementSupp'])->name('admin.evenementSupp');
+    Route::put('evenement/{id}/update', [AdminController::class , 'updateEvenement']);
+
+
+    //Route Participant evenement
+    Route::get('/admin/participantEvenement', [AdminController::class , 'participantEvenement'])->name('admin.ParticipantEvenement');
+    Route::delete('/admin/participant/{user_id}/{evenement_id}', [AdminController::class, 'participantSupp'])->name('admin.participantSupp');
+
+
    
 });
 
@@ -134,6 +146,14 @@ Route::middleware(['auth', 'user-access:user','noback'])->group(function (){
     //Route produitCart
     Route::get('/produitCart', [UserController::class , 'produitCart'])->name('produitCart');
     
-    
-    
+    // Evenement 
+    Route::get('/evenement', [UserController::class , 'evenement'])->name('evenement');
+    Route::get('/evenementDetailer/{id}',[UserController::class , 'evenementDetailer'])->name('evenementDetailer');
+
+    // envoyer email 
+    Route::post('/send-email', [UserController::class, 'sendEmail'])->name('send.email');
+
+    //Route Redirection vers lien evenement
+
+    Route::post('/evenementUser' ,[UserController::class , 'evenementUser'])->name('evenementUser');
 });

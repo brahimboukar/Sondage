@@ -197,6 +197,11 @@ margin-top: 1rem; /* Optionnel : espace au-dessus de l'alerte */
                                 
                                 </div>
                                 <div class="flex flex-wrap gap-4 mb-6">
+                                    <div class="field">
+                                        <label for="dateNaissance" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date De Naissance</label>
+                                        <input type="date" name="dateNaissance" id="dateNaissance" class="w-72 p-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                                    </div>
+                                    
                                     @error('password')
                                     <div class="alert alert-danger" role="alert">
                                         <span class="text-red-600">{{$message}}</span>
@@ -273,6 +278,6 @@ margin-top: 1rem; /* Optionnel : espace au-dessus de l'alerte */
     
 </script>
 <script src="{{ asset('assets/js/script.js') }}"></script>
-<script src="{{ asset('assets/js/tele.js') }}"></script>
+{{-- <script src="{{ asset('assets/js/tele.js') }}"></script> --}}
     </body>
     </html>        

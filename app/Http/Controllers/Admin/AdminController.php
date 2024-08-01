@@ -11,6 +11,8 @@ use App\Models\Etude;
 use App\Models\Etude_fonction;
 use App\Models\Etude_region;
 use App\Models\Etude_sexe;
+use App\Models\evenement_users;
+use App\Models\evenements;
 use App\Models\Fonction;
 use App\Models\FonctionDetaile;
 use App\Models\Recomponse;
@@ -577,6 +579,95 @@ class AdminController extends Controller
         $demandeRec = Demande_recomponses::findOrFail($id);
         $demandeRec->delete();
         return redirect()->route('admin.DemandeRecomponse')->with('succe','Demande Recomponse Supprimer avec succès');
+    }
+
+
+    public function evenement(){
+        $evenement = evenements::all();
+        return view('Admin/evenementAdmin',[
+            'evenement' => $evenement,
+        ]);
+    }
+
+    public function addEvenement(Request $request)
+    {
+        if ($request->hasFile('img')) {
+            $file = $request->file('img');
+            $extension = $file->getClientOriginalExtension();
+            
+            $filename = time().'.'.$extension;
+    
+            $path = 'uploads/evenement/';
+            $file->move($path , $filename);
+        }
+            $evenement = evenements::create([
+                'img' => $path.$filename,
+                'libelle' => $request->libelle,
+                'description' => $request->description,
+                'date_Debut' => $request->date_Debut,
+                'date_Fin' => $request->date_Fin,
+                'lien' => $request->lien,
+
+            ]);
+    
+            if ($evenement) {
+                return redirect()->route('admin.evenement')->with('success', 'Événement créée avec succès');
+            } else {
+                return redirect()->route('admin.evenement')->with('fail', 'Quelque chose a mal tourné, essayez encore');
+            }
+    }
+
+    public function evenementSupp(string $id)
+    {
+        $evenement = evenements::findOrFail($id);
+        $evenement->delete();
+        return redirect()->route('admin.evenement')->with('succe','Événement Supprimer avec succès');
+    }
+
+
+    public function updateEvenement(Request $request, int $id)
+    {
+        $request->validate([
+            'libelle' => 'required',
+            'description' => 'required',
+            'date_Debut' => 'required',
+            'date_Fin' => 'required',
+        ]);
+
+            $evenement = evenements::where('id',$id)->first();
+            $evenement->libelle = $request->libelle;      
+            $evenement->description = $request->description;
+            $evenement->date_Debut = $request->date_Debut;
+            $evenement->date_Fin = $request->date_Fin;
+            $evenement->save();
+            return redirect()->route('admin.evenement')->with('succe','Événement Modifier avec succès');
+
+
+    }
+
+
+
+
+    public function ParticipantEvenement()
+    {
+        $evenements = evenements::with('utilisateurs')->get();
+        return view('Admin/ParticipantEvenement',[
+            'evenements' => $evenements,
+        ]);
+    }
+
+    public function participantSupp($user_id, $evenement_id)
+    {
+        $evenementUser = evenement_users::where('user_id', $user_id)
+                                       ->where('evenement_id', $evenement_id)
+                                       ->first();
+
+        if ($evenementUser) {
+            $evenementUser->delete();
+            return redirect()->back()->with('success', 'Participant supprimé avec succès.');
+        } else {
+            return redirect()->back()->with('error', 'Participant non trouvé.');
+        }
     }
 
     
