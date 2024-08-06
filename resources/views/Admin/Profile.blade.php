@@ -9,6 +9,7 @@
       name="keywords"
       content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 5 admin, bootstrap 5, css3 dashboard, bootstrap 5 dashboard, Matrix lite admin bootstrap 5 dashboard, frontend, responsive bootstrap 5 admin template, Matrix admin lite design, Matrix admin lite dashboard bootstrap 5 dashboard template"
     />
+    <link rel="stylesheet" href="{{asset('assets/user/css/styles.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -103,8 +104,8 @@
                   aria-labelledby="navbarDropdown"
                 >
 				  <div class="dropdown-divider"></div>
-                  
-                  <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                 
+                  <a class="dropdown-item" href="#">
                     <i class="fa fa-user-circle fa-stack" aria-hidden="true"></i> Consulter Le Profile
                 </a>
                   <div class="dropdown-divider"></div>
@@ -143,8 +144,8 @@
               </li>
               <li class="sidebar-item">
                 <a
-                  class="sidebar-link waves-effect waves-dark sidebar-link active"
-                  href="#"
+                  class="sidebar-link waves-effect waves-dark sidebar-link"
+                  href="{{route('admin.categorieRecomponse')}}"
                   aria-expanded="false"
                   ><i class="me-2 fa-sharp fa-solid fa-list"></i>
                   <span class="hide-menu">Gestion Des Catégories</span></a
@@ -186,7 +187,7 @@
                   <span class="hide-menu">Gestion Des Etudes Cible</span></a
                 >
               </li>
-              
+
               <li class="sidebar-item">
                 <a
                   class="sidebar-link waves-effect waves-dark sidebar-link"
@@ -215,7 +216,6 @@
                 >
               </li>
               
-              
             </ul>
           </nav>
           <!-- End Sidebar navigation -->
@@ -226,113 +226,119 @@
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">Gestion Des Catégories De Récomponse</h4>
+              {{-- <h4 class="page-title">Gestion Des Demandes Récomponse</h4> --}}
             </div>
             @if(Session::get('success'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('success') }}
-            </div>
-            @endif
-            <!-- suppresion -->
-            @if(Session::get('succe'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('succe') }}
-            </div>
-            @endif
-            <!-- End suppresion -->
-             @if(Session::get('status'))
-             <div class="alert alert-success" role="alert" >
-                 {{ Session::get('status') }}
-             </div>
-             @endif
+                <div class="alert alert-success" role="alert" >
+                    {{ Session::get('success') }}
+                </div>
+                @endif
+                @if(Session::get('succe'))
+                <div class="alert alert-success" role="alert" >
+                    {{ Session::get('succe') }}
+                </div>
+                @endif
           </div>
         </div>
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-                 <!-- Button trigger modal -->
-                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Catégories De Récomponse
-                  </button>
-  <hr style="position: relative;bottom: 10px;">
-<!-- ajoute Modal -->
-<div class="modal fade" id="exampleModal" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" style="position: relative;left: 200px;" id="exampleModalLabel">Ajouter Un Nouvaux Catégories De Récomponse</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form method="POST" action="{{route('admin.addcategorieRecomponse')}}">
-            @csrf
-          <div class="form-group" style="width: 40%">
-            <label>Libelle</label>
-          <input type="text" name="libelle" class="form-control" placeholder="Saisir Libelle" required>
-        </div>
-  <button type="submit" id="add" class="btn btn-primary" style="position: relative;width: 40%;">AJOUTER</button>
-          </form>
-        </div>
-       
-      </div>
-    </div>
-  </div>
-  <!-- End Ajoute -->
-  <!-- modification -->
-  @foreach($categorieRecomponse as $catre)
-  <div class="modal fade" id="modificationModal{{$catre->id}}" style="min-height: 550px;" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Modifier Un Etude</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form method="POST" action="/categorieRecomponse/{{ $catre->id }}/update">
-            @csrf
-            @method('PUT')
-          <div class="form-group" style="width: 40%">
-            <label>Libelle</label>
-          <input type="text" name="libelle" value="{{$catre->libelle}}" class="form-control" placeholder="Saisir Libelle" required>
-        </div>
- 
-  <button type="submit" id="add" class="btn btn-success" style="position: relative;width: 90%;left: 20px;">Modifier</button>
-          </form>
-        </div>
-       
-      </div>
-    </div>
-  </div>
-  @endforeach
-  <!-- End modification -->
-  <div class="table-responsive" style="position: relative;bottom: 30px;">
-    <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Libelle</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody id="tbody">
-            @foreach($categorieRecomponse as $catre)
-            <tr>           
-                <th scope="row">{{$catre->id}}</th>
-                <td>{{$catre->libelle}}</td>
-                <td>
-                  <form method="POST" action="{{route('admin.categorieRecomponseSupp',$catre->id)}}"  onsubmit="return confirm('Supprimer?')" class="float-right text-red-800">
-                    @csrf
-                    @method('DELETE')
-                    <button><i class="bi bi-x-lg"></i></button>
-                  </form>
-                  <a href="" data-bs-toggle="modal" data-bs-target="#modificationModal{{$catre->id}}" style="position: relative;left: 40px;bottom: 33px;font-size: 27px;"><i class="bi bi-pencil-square" style="color: darkolivegreen"></i></a>
-                </td>
-              </tr>
-          @endforeach
-        </tbody>
-      </table>
-    </div>
-    {{$categorieRecomponse->links()}}
+              <div class="container light-style flex-grow-1 container-p-y">
+                <div class="card overflow-hidden">
+                    <div class="row no-gutters row-bordered row-border-light">
+                        <div class="col-md-3 pt-0">
+                            <div class="list-group list-group-flush account-settings-links">
+                                <a class="list-group-item list-group-item-action active" data-toggle="list"
+                                    href="#account-general">Général</a>
+                                <a class="list-group-item list-group-item-action" data-toggle="list"
+                                    href="#account-change-password">Changer le mot de passe</a>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="account-general">
+                                    <form method="POST" action="/profile/{{ $user->id }}/updateProfileAdmin">
+                                        @csrf
+                                        @method('PUT')
+                                    <hr class="border-light m-0">
+                                    <div class="card-body">
+                                        @if(Session::get('success'))
+                                        <div class="alert alert-success" role="alert" >
+                                            {{ Session::get('success') }}
+                                        </div>
+                                        @endif
+                                        <div class="form-group">
+                                            <label class="form-label">Nom</label>
+                                            <input type="text" name="nom" class="form-control mb-1" value="{{ $user->nom }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Prenom</label>
+                                            <input type="text" name="prenom" class="form-control" value="{{ $user->prenom }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">E-mail</label>
+                                            <input type="text" name="email" class="form-control mb-1" value="{{ $user->email }}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Numero Telephone</label>
+                                            <input type="number" name="telephone" class="form-control" value="{{ $user->telephone }}">
+                                        </div>
+                                        
+                                       
+                                       
+                                       
+                                        <div class="text-right mt-3">
+                                            <button type="submit" class="btn btn-primary">Sauvegarder les modifications</button>&nbsp;
+                                            <a href="{{route('admin')}}" class="btn btn-default">Annuler</a>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="account-change-password">
+        
+                                    <form action="{{ route('updatePasswordAdmin') }}" method="POST">
+                                        @csrf
+                                    <div class="card-body pb-2">
+                                        <input type="hidden" name="id" value="{{ $user->id }}">
+                                        @if ($errors->any())
+                                <div>
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+        
+                                @if (session('success'))
+                                <div>
+                                    {{ session('success') }}
+                                </div>
+                                @endif
+                                        <div class="form-group">
+                                            <label class="form-label">Mot de passe actuel</label>
+                                            <input type="password" name="current_password" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Nouveau mot de passe</label>
+                                            <input type="password" name="new_password" class="form-control" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">Répété le nouveau mot de passe</label>
+                                            <input type="password" name="new_password_confirmation" class="form-control" required>
+                                        </div>
+                                        <div class="text-right mt-3">
+                                            <button type="submit" class="btn btn-primary">Sauvegarder les modifications</button>&nbsp;
+                                            <a href="{{route('home')}}" class="btn btn-default">Annuler</a>
+                                        </div>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
                   
             </div>
           </div>
@@ -342,6 +348,9 @@
     </div>
     {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
     {{-- <script src="{{ asset('assets/js/filterScript.js') }}"></script> --}}
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{asset('assets/admin/asset/libs/jquery/dist/jquery.min.js')}}"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{asset('assets/admin/asset/libs/bootstrap/dist/js/bootstrap.bundle.min.js')}}"></script>

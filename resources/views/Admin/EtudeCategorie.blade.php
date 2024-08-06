@@ -96,29 +96,17 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <img
-                    src="{{asset('assets/admin/asset/images/users/1.jpg')}}"
-                    alt="user"
-                    class="rounded-circle"
-                    width="31"
-                  />
+                <i class="fa fa-user-circle fa-stack-2x" style="position: relative;top: 10px;" aria-hidden="true" ></i>
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-end user-dd animated"
                   aria-labelledby="navbarDropdown"
                 >
 				  <div class="dropdown-divider"></div>
-                  <div class="ps-4 p-10">
-                    <a
-                      href="javascript:void(0)"
-                      class="btn btn-sm btn-success btn-rounded text-white"
-                      >View Profile</a
-                    >
-                  </div>
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="mdi mdi-settings me-1 ms-1"></i> Account
-                    Setting</a
-                  >
+                  
+          <a class="dropdown-item" href="{{ route('admin.profile') }}">
+            <i class="fa fa-user-circle fa-stack" aria-hidden="true"></i> Consulter Le Profile
+        </a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{{route('logout')}}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
@@ -204,7 +192,7 @@
                   class="sidebar-link waves-effect waves-dark sidebar-link"
                   href="{{route('admin.DemandeRecomponse')}}"
                   aria-expanded="false"
-                  ><i class="me-2 fa fa-pie-chart" aria-hidden="true"></i>
+                  ><i class="me-2 fa-solid fa-paper-plane" aria-hidden="true"></i>
                   <span class="hide-menu">Gestion Des Demandes</span></a
                 >
               </li>

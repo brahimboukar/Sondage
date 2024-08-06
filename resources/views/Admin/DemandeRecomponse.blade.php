@@ -96,29 +96,17 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  <img
-                    src="{{asset('assets/admin/asset/images/users/1.jpg')}}"
-                    alt="user"
-                    class="rounded-circle"
-                    width="31"
-                  />
+                <i class="fa fa-user-circle fa-stack-2x" style="position: relative;top: 10px;" aria-hidden="true" ></i>
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-end user-dd animated"
                   aria-labelledby="navbarDropdown"
                 >
 				  <div class="dropdown-divider"></div>
-                  <div class="ps-4 p-10">
-                    <a
-                      href="javascript:void(0)"
-                      class="btn btn-sm btn-success btn-rounded text-white"
-                      >View Profile</a
-                    >
-                  </div>
-                  <a class="dropdown-item" href="javascript:void(0)"
-                    ><i class="mdi mdi-settings me-1 ms-1"></i> Account
-                    Setting</a
-                  >
+                  
+          <a class="dropdown-item" href="{{ route('admin.profile') }}">
+            <i class="fa fa-user-circle fa-stack" aria-hidden="true"></i> Consulter Le Profile
+        </a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="{{route('logout')}}"
                     ><i class="fa fa-power-off me-1 ms-1"></i> Logout</a
@@ -239,6 +227,11 @@
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Gestion Des Demandes Récomponse</h4>
             </div>
+            @if(Session::get('success'))
+                <div class="alert alert-success" role="alert" >
+                    {{ Session::get('success') }}
+                </div>
+                @endif
                 @if(Session::get('succe'))
                 <div class="alert alert-success" role="alert" >
                     {{ Session::get('succe') }}
@@ -276,7 +269,19 @@
                 <th>{{$dem->user->email}}</th>
                 <th>{{$dem->recomponse->libelle}}</th>
                 <td><img src="{{ asset($dem->recomponse->img) }}" style="width: 70px;height: 70px;" alt="Img"/></td>
-                <th>{{$dem->etat}}</th>
+                <td>
+                  @if($dem->etat === 0)
+                      <form method="POST" action="{{ route('admin.changeEtat', ['id' => $dem->id, 'etat' => 1]) }}">
+                          @csrf
+                          <button type="submit" class="btn btn-primary btn-sm">En cours</button>
+                      </form>
+                  @elseif($dem->etat === 1)
+                      <form method="POST" action="{{ route('admin.changeEtat', ['id' => $dem->id, 'etat' => 0]) }}">
+                          @csrf
+                          <button type="submit" class="btn btn-success btn-sm">Livré</button>
+                      </form>
+                  @endif
+              </td>
                 <td>{{$dem->date->format('d-m-Y') }}</td>
                 {{-- <th><a href="{{url('produitDetailer/'.$dem->recomponse->id.'')}}">{{url('produitDetailer/'.$dem->recomponse->id.'')}}</a></th> --}}
                 <th>

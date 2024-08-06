@@ -581,6 +581,16 @@ class AdminController extends Controller
         return redirect()->route('admin.DemandeRecomponse')->with('succe','Demande Recomponse Supprimer avec succès');
     }
 
+    public function changeEtat($id, $etat)
+    {
+        $demandeRecomponse = Demande_recomponses::find($id);
+        $demandeRecomponse->etat = $etat;
+        $demandeRecomponse->save();
+
+        return redirect()->back()->with('success', 'Etat changé avec succès');
+    }
+
+
 
     public function evenement(){
         $evenement = evenements::all();
@@ -668,6 +678,56 @@ class AdminController extends Controller
         } else {
             return redirect()->back()->with('error', 'Participant non trouvé.');
         }
+    }
+
+
+    public function AdminProfile()
+    {
+        $user = Auth::user();
+        $region = Region::all();
+        $fonction = Fonction::all();
+        $fonctionDetailer = FonctionDetaile::take(6)->get();
+        return view('Admin/Profile', [
+            'user' => $user,
+            'region' => $region,
+            'fonction' => $fonction,
+            'fonctionDetailer' => $fonctionDetailer
+        ]);
+    }
+
+    public function updateProfileAdmin(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        
+
+        $user->update([
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+        ]);
+
+        return redirect()->route('admin.profile')->with('success', 'Profil mis à jour avec succès.');
+    }
+    public function updatePasswordAdmin(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|exists:users,id',
+            'current_password' => 'required',
+            'new_password' => 'required|confirmed|min:5',
+        ]);
+
+        $user = User::find($request->id);
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->route('admin.profile')->withErrors(['current_password' => 'Mot de passe actuel incorrect']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('admin.profile')->with('success', 'Mot de passe mis à jour avec succès');
     }
 
     

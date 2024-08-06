@@ -100,6 +100,8 @@ Route::get('/logout' ,[Login::class , 'logout'])->name('logout');
 // Route Demande Recomponse
     Route::get('/admin/DemandeRecomponse', [AdminController::class , 'DemandeRecomponse'])->name('admin.DemandeRecomponse');
     Route::delete('admin.suppDemandeRecomponse/{id}', [AdminController::class , 'suppDemandeRecomponse'])->name('admin.suppDemandeRecomponse');
+    Route::post('/change-etat/{id}/{etat}', [AdminController::class, 'changeEtat'])->name('admin.changeEtat');
+
 
     // Route Evenement
     Route::get('/admin/Evenement', [AdminController::class , 'evenement'])->name('admin.evenement');
@@ -112,7 +114,9 @@ Route::get('/logout' ,[Login::class , 'logout'])->name('logout');
     Route::get('/admin/participantEvenement', [AdminController::class , 'participantEvenement'])->name('admin.ParticipantEvenement');
     Route::delete('/admin/participant/{user_id}/{evenement_id}', [AdminController::class, 'participantSupp'])->name('admin.participantSupp');
 
-
+    Route::get('/AdminProfile', [AdminController::class, 'AdminProfile'])->name('admin.profile');
+    Route::put('profile/{id}/updateProfileAdmin', [AdminController::class , 'updateProfileAdmin']);
+    Route::post('update-password-admin', [AdminController::class, 'updatePasswordAdmin'])->name('updatePasswordAdmin');
    
 });
 
