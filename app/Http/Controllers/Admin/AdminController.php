@@ -19,6 +19,7 @@ use App\Models\Recomponse;
 use App\Models\Region;
 use App\Models\Sexe;
 use App\Models\User;
+use App\Rules\ContainsLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class AdminController extends Controller
         if ($user->isEmpty()) {
             $message = 'Aucun Panéliste trouvé.';
         }
-        return view('Admin/utilisateur',[
+        return view('Admin/Utilisateur',[
             'user' => $user,
             'dataRegion' => $regionData,
             'dataf' => $fonctionf,
@@ -86,6 +87,12 @@ class AdminController extends Controller
             // 'id_fonction' => 'required',
             // 'id_fonction_details' => 'required',
             // 'password' => 'required',
+            'age' => 'required|integer|min:1|max:90',
+            'email' => ['required', 'email', 'unique:users,email'],
+        ],[
+            'email.required' => 'L\'adresse email est requise.',
+        'email.email' => 'Veuillez entrer une adresse email valide.',
+        'email.unique' => 'Cette adresse email est déjà utilisée.',
         ]);
         if ($validator->fails()) {
             return redirect()->route('admin.utilisateur')->with('faile','Email existe déjà');
@@ -104,7 +111,7 @@ class AdminController extends Controller
             'type' => "0"
         ]);
         if($user){
-            return redirect()->route('admin.utilisateur')->with('success','Utlisateur créé avec succès');
+            return redirect()->route('admin.utilisateur')->with('success','Panéliste créé avec succès');
         }
         else{
             return back()->with('fail','Sommething wrong try again');
@@ -115,20 +122,20 @@ class AdminController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('admin.utilisateur')->with('succe','Utlisateur Supprimer avec succès');
+        return redirect()->route('admin.utilisateur')->with('succe','Panéliste Supprimer avec succès');
     }
     public function blockUser($id)
     {
         $user = User::findOrFail($id);
         $user->block();
-        return redirect()->route('admin.utilisateur')->with('successbloque', 'Utilisateur bloqué avec succès');
+        return redirect()->route('admin.utilisateur')->with('successbloque', 'Panéliste bloqué avec succès');
     }
 
     public function unblockUser($id)
     {
         $user = User::findOrFail($id);
         $user->unblock();
-        return redirect()->route('admin.utilisateur')->with('successunbloque', 'Utilisateur débloqué avec succès');
+        return redirect()->route('admin.utilisateur')->with('successunbloque', 'Panéliste débloqué avec succès');
     }
 
     // public function search(Request $request)
@@ -159,21 +166,48 @@ class AdminController extends Controller
         ]);
     }
 
+    // public function addcategorieRecomponse(Request $request)
+    // {
+    //     $request->validate([
+    //         'libelle' => 'required',
+    //     ]);
+    //     $categorieRecomponse = Categorie_recomponse::create([
+    //         'libelle' => $request->libelle,
+    //     ]);
+    //     if($categorieRecomponse){
+    //         return redirect()->route('admin.categorieRecomponse')->with('success','Catégorie créé avec succès');
+    //     }
+    //     else{
+    //         return back()->with('fail','Sommething wrong try again');
+    //     }
+    // }
     public function addcategorieRecomponse(Request $request)
-    {
-        $request->validate([
-            'libelle' => 'required',
-        ]);
-        $categorieRecomponse = Categorie_recomponse::create([
-            'libelle' => $request->libelle,
-        ]);
-        if($categorieRecomponse){
-            return redirect()->route('admin.categorieRecomponse')->with('success','Catégorie créé avec succès');
-        }
-        else{
-            return back()->with('fail','Sommething wrong try again');
-        }
+{
+    $request->validate([
+        'libelle' => 'required',
+    ]);
+
+    // if déja trouver dans DB
+    $existingCategorie = Categorie_recomponse::where('libelle', $request->libelle)->first();
+
+    if ($existingCategorie) {
+        // if déja trouver dans DB returner message error 
+        return back()->with('fail', 'Cette catégorie a déjà été insérée.');
     }
+
+    // si n'est pas trouver dans DB
+    $categorieRecomponse = Categorie_recomponse::create([
+        'libelle' => $request->libelle,
+    ]);
+
+    if($categorieRecomponse){
+        return redirect()->route('admin.categorieRecomponse')->with('success', 'Catégorie créée avec succès');
+    }
+    else{
+        return back()->with('fail', 'Quelque chose a mal tourné, réessayez.');
+    }
+}
+
     public function categorieRecomponseSupp(string $id)
     {
         $categorieRecomponse = Categorie_recomponse::findOrFail($id);
@@ -241,7 +275,7 @@ class AdminController extends Controller
             'img' => $path.$filename,
         ]);
         if($recomponse){
-            return redirect()->route('admin.recomponse')->with('success','Récomponse créé avec succès');
+            return redirect()->route('admin.recomponse')->with('success','Récompense créé avec succès');
         }
         else{
             return back()->with('fail','Sommething wrong try again');
@@ -251,7 +285,7 @@ class AdminController extends Controller
     {
         $recomponse = Recomponse::findOrFail($id);
         $recomponse->delete();
-        return redirect()->route('admin.recomponse')->with('succe','Utlisateur Supprimer avec succès');
+        return redirect()->route('admin.recomponse')->with('succe','Récompense Supprimer avec succès');
     }
     public function recomponsedit($id){
         $recomponse = Recomponse::where('id',$id)->first();
@@ -338,7 +372,12 @@ class AdminController extends Controller
             'libelle' => 'required',
         ]);
 
+        $existingCategorie = Categorie_Etudes::where('libelle', $request->libelle)->first();
         
+        if ($existingCategorie) {
+            return back()->with('fail', 'Cette catégorie a déjà été insérée.');
+        }
+
         $categorieEtude = Categorie_Etudes::create([
             'libelle' => $request->libelle,
         ]);
@@ -384,6 +423,12 @@ class AdminController extends Controller
     }
     public function createEdute(Request $request)
     {
+        $request->validate([
+            'lien' => ['required', 'string', 'regex:/\bhttps?:\/\/\S+\b/'],
+        ], [
+            'lien.required' => 'Le champ textarea est requis.',
+            'lien.regex' => 'Le champ doit contenir un lien valide (URL).',
+        ]);
 
     if ($request->hasFile('img')) {
         $file = $request->file('img');

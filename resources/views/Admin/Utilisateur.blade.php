@@ -26,6 +26,74 @@
     />
     <!-- Custom CSS -->
     <link href="{{asset('assets/admin/dist/css/style.min.css')}}" rel="stylesheet" />
+    <style>
+    /* Snackbar base style */
+#snackbar {
+    visibility: hidden; /* Hidden by default */
+    min-width: 250px; /* Set a default minimum width */
+    max-width: 400px; /* Set a maximum width */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
+    background-color: #333; /* Background color */
+    color: #fff; /* Text color */
+    text-align: center; /* Center text */
+    border-radius: 5px; /* Rounded corners */
+    padding: 16px; /* Padding */
+    position: fixed; /* Fixed position */
+    z-index: 1; /* Ensure it appears above other content */
+    left: 50%; /* Center horizontally */
+    bottom: 30px; /* Position at the bottom */
+    font-size: 17px; /* Font size */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+    word-wrap: break-word; /* Allow long words to break onto the next line */
+}
+
+/* Show the snackbar when active */
+#snackbar.show {
+    visibility: visible; /* Show snackbar */
+    animation: fadein 0.5s, fadeout 0.5s 2.5s; /* Animation */
+}
+
+/* Fade-in animation */
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+/* Fade-out animation */
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+/* Optional close button */
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+    </style>
   </head>
 
   <body>
@@ -227,36 +295,65 @@
       <div class="page-wrapper">
         
         <div class="page-breadcrumb">
-          @if(Session::get('success'))
-          <div class="badge bg-success" style="font-size: 15px;" role="alert" >
-              {{ Session::get('success') }}
-          </div>
-          @endif
+          
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Gestion Des Panélistes</h4>
             </div>
-                   
+            @if(Session::get('success'))
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('success') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
+            </div>
+            @endif
+            {{-- message bloqué --}}
+            @if(Session::get('successbloque'))
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('successbloque') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
+            </div>
+            @endif
+            {{-- message débloqué --}}
+            @if(Session::get('successunbloque'))
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('successunbloque') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
+            </div>
+            @endif
 
                     @if(Session::has('fail'))
-                    <div  class="badge bg-danger" style="font-size: 15px;" role="alert">
-                        {{ Session::get('fail') }}
+                    <div id="snackbar" class="snackbar">
+                      <i style="position: relative;right: 5px;" class="fa-solid fa-triangle-exclamation"></i> {{ Session::get('fail') }}
+                        <button class="close-btn" onclick="hideSnackbar()">×</button>
                     </div>
                     @endif
                     <!-- suppresion -->
                     @if(Session::get('succe'))
-                    <div class="badge bg-success" style="font-size: 15px;"  role="alert" >
-                        {{ Session::get('succe') }}
+                    <div id="snackbar" class="snackbar">
+                      <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('succe') }}
+                        <button class="close-btn" onclick="hideSnackbar()">×</button>
                     </div>
                     @endif
                     <!-- End suppresion -->
                     <!-- Email Already Exist -->
 
-                    @if(Session::has('faile'))
+                    {{-- @if(Session::has('faile'))
                     <div class="badge bg-danger" style="font-size: 15px;" role="alert">
                         {{ Session::get('faile') }}
                     </div>
-                    @endif 
+                    @endif  --}}
+                    @if(Session::has('faile'))
+                    <div id="snackbar" class="snackbar">
+                      <i style="position: relative;right: 5px;" class="fa-solid fa-triangle-exclamation"></i> {{ Session::get('faile') }}
+                        <button class="close-btn" onclick="hideSnackbar()">×</button>
+                    </div>
+                    @endif
+                    <!-- Affichage des messages d'erreur pour le champ email -->
+                    @if ($errors->has('email'))
+                    <div class="alert alert-danger">
+                        {{ $errors->first('email') }}
+                    </div>
+                    @endif
           </div>
         </div>
         <div class="container-fluid">
@@ -304,7 +401,18 @@
   </div>
   <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
     <label>Telephone</label>
-  <input type="text" name="telephone" class="form-control" placeholder="Saisir Telephone" required>
+    <input
+        type="tel"
+        name="telephone"
+        id="telephone"
+        class="form-control"
+        placeholder="+33 6 70 41 12 41"
+        pattern="\+33\s6\s[0-9]{2}\s[0-9]{2}\s[0-9]{2}\s[0-9]{2}"
+        title="Numéro de téléphone français, format: +33 6 70 41 12 41"
+        required
+    >
+
+
 </div>
         @error('id_sexe')
         <div class="alert alert-danger" role="alert">
@@ -350,7 +458,7 @@
 </div>
 <div class="form-group" id="age" style="width: 40%;position: relative;left: 400px;bottom: 310px;">
   <label>Age</label>
-<input type="number" class="form-control" name="age" placeholder="Saisir Age" required>
+<input type="number" class="form-control" name="age" min="1" max="90" placeholder="Saisir Age" required>
 </div>
 <button type="submit" id="add" class="btn btn-primary" style="position: relative;bottom: 300px;width: 100%;">AJOUTER</button>
         </form>
@@ -448,6 +556,24 @@
 
         
     });
+    document.addEventListener("DOMContentLoaded", function() {
+    var snackbar = document.getElementById("snackbar");
+    
+    if (snackbar) {
+        // Add the "show" class to display the snackbar
+        snackbar.className = "snackbar show";
+    }
+});
+
+function hideSnackbar() {
+    var snackbar = document.getElementById("snackbar");
+    if (snackbar) {
+        // Remove the "show" class to hide the snackbar
+        snackbar.className = snackbar.className.replace("show", "");
+    }
+}
+
+
     
 </script>
                   {{-- @if(Session::has('faile'))

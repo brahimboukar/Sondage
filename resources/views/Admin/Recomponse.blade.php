@@ -227,7 +227,7 @@
         <div class="page-breadcrumb">
           <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">Gestion Des Récomponse</h4>
+              <h4 class="page-title">Gestion Des Récompenses</h4>
             </div>
             @if(Session::get('success'))
             <div class="alert alert-success" role="alert" >
@@ -259,7 +259,7 @@
             <div class="col-12">
                  <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Récomponse
+    <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Récompense
   </button>
   <form method="GET" action="{{url('admin/recomponse')}}">
     <div class="col-md-3">
@@ -280,7 +280,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Ajouter Un Nouvaux Récomponse</h1>
+          <h1 class="modal-title fs-5" style="position: relative;left: 300px;" id="exampleModalLabel">Ajouter Un Nouvaux Récompense</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

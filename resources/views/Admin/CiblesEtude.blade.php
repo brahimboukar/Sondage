@@ -231,6 +231,16 @@
             <div class="col-12 d-flex no-block align-items-center">
               <h4 class="page-title">Gestion Des Etudes Cible</h4>
             </div>
+            @if(Session::get('success'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('success') }}
+            </div>
+            @endif
+            @if(Session::get('succ'))
+            <div class="alert alert-success" role="alert" >
+                {{ Session::get('succ') }}
+            </div>
+            @endif
             @if(Session::has('error'))
             <div class="alert alert-danger" role="alert">
                 {{ Session::get('error') }}
@@ -289,34 +299,28 @@
                             </div>
                             <div class="row-1" id="theSelect">
                               <label for="" style="position: relative;bottom: 450px;left: 330px;font-size: 17px;">Fonction</label>
-                            <div class="form-check" style="position: relative;left: 330px;bottom: 445px;">
-                              @foreach($fonctions as $fon)
-                                  @if($fon->id == 1 || $fon->id == 2)
-                                    <input class="form-check-input fcd-show" name="fonctions[]" type="checkbox" value="{{$fon->id}}" >
-                                
-                                    {{$fon->libelle}}<br>
-                              
-                                  @else
-                                    <input class="form-check-input fcd-hide" name="fonctions[]" type="checkbox" value="{{$fon->id}}" >
-                                
-                                    {{$fon->libelle}}<br>
-                                  @endif
-                                  
-                              @endforeach
+                              <div class="form-check" style="position: relative;left: 330px;bottom: 445px;">
+                                @foreach($fonctions as $fon)
+                                    @if($fon->id == 1 || $fon->id == 2)
+                                        <input class="form-check-input fcd-show" name="fonctions[]" type="checkbox" value="{{$fon->id}}">
+                                        {{$fon->libelle}}<br>
+                                    @else
+                                        <input class="form-check-input fcd-hide" name="fonctions[]" type="checkbox" value="{{$fon->id}}">
+                                        {{$fon->libelle}}<br>
+                                    @endif
+                                @endforeach
                             </div>
                             </div>
                             <div id="fonctionDetails">
                               <label for="" style="position: relative;bottom: 445px;left: 310px;font-size: 17px;">Fonction Détailer</label>
                               <div class="form-check" style="position: relative;left: 310px;bottom: 455px;">
-                                @foreach($foncDe as $fond)
-                                  <input class="form-check-input" name="fonctionDetailes[]" type="checkbox" value="{{$fond->id}}" >
-                                  
-                                  {{$fond->libelle}}<br>
-                                  
-                        
-                              @endforeach
+                                  @foreach($foncDe as $fond)
+                                      <input class="form-check-input" name="fonctionDetailes[]" type="checkbox" value="{{$fond->id}}">
+                                      {{$fond->libelle}}<br>
+                                  @endforeach
                               </div>
-                            </div>
+                          </div>
+                          
 
                             <div>
                               <label for="" id="age" style="position: relative;bottom: 320px;left: 35px;font-size: 17px;">Age</label>
@@ -456,5 +460,6 @@
     <script src="{{asset('assets/admin/dist/js/sidebarmenu.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('assets/admin/dist/js/custom.min.js')}}"></script>
+    <script src="{{asset('assets/admin/dist/js/fonction.js')}}"></script>
   </body>
 </html>

@@ -245,6 +245,12 @@
                  {{ Session::get('status') }}
              </div>
              @endif
+             <!-- Si Déja inserer -->
+             @if(Session::get('fail'))
+             <div class="alert alert-danger" role="alert" >
+                 {{ Session::get('fail') }}
+             </div>
+             @endif
           </div>
         </div>
         <div class="container-fluid">

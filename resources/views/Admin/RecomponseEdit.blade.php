@@ -226,11 +226,13 @@
       <div class="page-wrapper">
         <div class="page-breadcrumb">
           <div class="row">
-            <div class="col-12 d-flex no-block align-items-center">
-              <h4 class="page-title">Modifier  Récomponse</h4>
-            </div>
+            <a href="{{ route('admin.recomponse')}}"><i class="fa-solid fa-arrow-left" style="font-size: 25px;"></i></a>
+              <div class="col-12 d-flex justify-content-center align-items-center">
+                  <h2 class="page-title ml-2">Modifier Récompense</h2>
+              </div>
           </div>
-        </div>
+      </div>
+      
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">

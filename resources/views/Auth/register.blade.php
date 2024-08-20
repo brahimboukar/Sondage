@@ -114,7 +114,7 @@ margin-top: 1rem; /* Optionnel : espace au-dessus de l'alerte */
 
                             <div class="field">
                                 <label for="age" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Âge</label>
-                                <input type="number" name="age" id="age"
+                                <input type="number" name="age" min="1" max="90" id="age"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="20" required>
                             </div>
@@ -125,9 +125,19 @@ margin-top: 1rem; /* Optionnel : espace au-dessus de l'alerte */
                             @enderror
                             <div class="field">
                                 <label for="telephone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Téléphone</label>
-                                <input type="tel" name="telephone" id="telephone"
+                                {{-- <input type="tel" name="telephone" id="telephone"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 phone-input"
-                                    placeholder="Votre téléphone" required>
+                                    placeholder="Votre téléphone" required> --}}
+                                    <input
+        type="tel"
+        name="telephone"
+        id="telephone"
+        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 phone-input"
+        placeholder="+33 6 70 41 12 41"
+        pattern="\+33\s6\s[0-9]{2}\s[0-9]{2}\s[0-9]{2}\s[0-9]{2}"
+        title="Numéro de téléphone français, format: +33 6 70 41 12 41"
+        required
+    >
                                 <span class="error" id="phoneError" style="display:none; color: red;">Numéro de téléphone invalide</span>
                             </div>
                             

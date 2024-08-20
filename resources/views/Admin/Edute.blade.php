@@ -252,6 +252,12 @@
                   {{ Session::get('status') }}
               </div>
               @endif
+              <!-- Affichage des messages d'erreur pour le textarea -->
+              @if ($errors->has('lien'))
+              <div class="alert alert-danger">
+                  {{ $errors->first('lien') }}
+              </div>
+              @endif
           </div>
         </div>
         <div class="container-fluid">
@@ -283,15 +289,15 @@
                         </div>
                         <div class="form-group" style="width: 40%; position: relative; bottom: 80px;">
                             <label>Durée</label>
-                            <input type="number" name="durré" class="form-control" placeholder="Saisir La Durée" required>
+                            <input type="number" name="durré" min="1" class="form-control" placeholder="Saisir La Durée" required>
                         </div>
                         <div class="form-group" style="width: 40%; position: relative; left: 400px; bottom: 160px;">
                             <label>Nombre de Point</label>
-                            <input type="number" name="point" class="form-control" placeholder="Saisir Le Nombre de Point" required>
+                            <input type="number" name="point" min="1" class="form-control" placeholder="Saisir Le Nombre de Point" required>
                         </div>
                         <div class="form-group" style="width: 40%; position: relative; bottom: 150px;">
                             <label>Lien</label>
-                            <textarea name="lien" class="form-control" placeholder="Saisir Le Lien" required></textarea>
+                            <input type="url" id="url" name="lien" class="form-control" placeholder="https://example.com" required>
                         </div>
                         <div class="form-group" style="width: 40%; position: relative; bottom: 150px;">
                             <label>Categorie</label>
@@ -355,7 +361,8 @@
               </div>
               <div class="form-group" style="width: 40%;position: relative;bottom: 150px;">
                 <label>Lien</label>
-                <textarea type=""  name="lien" class="form-control" placeholder="Saisir Le Lien" required>{{$etu->lien}}</textarea>
+                {{-- <textarea type=""  name="lien" class="form-control" placeholder="Saisir Le Lien" required></textarea> --}}
+                <input type="url" id="url" name="lien" value="{{$etu->lien}}" class="form-control" placeholder="https://example.com" required>
             </div>
              
               <button type="submit" id="add" class="btn btn-success" style="position: relative;bottom: 100px;width: 90%;left: 20px;">Modifier</button>
