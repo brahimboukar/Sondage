@@ -132,7 +132,11 @@
                               <td class="border-0 align-middle"><strong>{{ $demande->recomponse->libelle }}</strong></td>
                               <td class="border-0 align-middle">{{ $demande->recomponse->categorie_recomponse->libelle }}</td>
                               <td class="border-0 align-middle">{{ $demande->recomponse->points }}</td>
-                              <td class="border-0 align-middle">{{ $demande->etat }}</td>
+                              @if($demande->etat === 0)
+                              <td class="border-0 align-middle">En cours</td>
+                              @elseif($demande->etat === 1)
+                              <td class="border-0 align-middle">Livré</td>
+                              @endif
                               <td class="border-0 align-middle"><strong>{{ $demande->date->locale('fr')->translatedFormat('d F Y') }}</td>
                             </tr>
                             @endforeach

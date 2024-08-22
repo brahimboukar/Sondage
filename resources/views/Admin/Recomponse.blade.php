@@ -26,6 +26,7 @@
     />
     <!-- Custom CSS -->
     <link href="{{asset('assets/admin/dist/css/style.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('assets/css/snack-bar.css')}}" rel="stylesheet" />
   </head>
 
   <body>
@@ -230,26 +231,30 @@
               <h4 class="page-title">Gestion Des Récompenses</h4>
             </div>
             @if(Session::get('success'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('success') }}
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('success') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
             </div>
             @endif
 
             @if(Session::has('fail'))
-            <div class="alert alert-danger" role="alert">
-                {{ Session::get('fail') }}
-            </div>
-            @endif
+             <div id="snackbar" class="snackbar">
+               <i style="position: relative;right: 5px;" class="fa-solid fa-triangle-exclamation"></i> {{ Session::get('fail') }}
+                 <button class="close-btn" onclick="hideSnackbar()">×</button>
+             </div>
+             @endif
             <!-- suppresion -->
             @if(Session::get('succe'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('succe') }}
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('succe') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
             </div>
             @endif
             <!-- End suppresion -->
             @if(Session::get('status'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('status') }}
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('status') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
             </div>
             @endif
           </div>
@@ -301,7 +306,7 @@
       </div>
       <div class="form-group" style="width: 40%;position: relative;bottom: 80px;">
         <label>Point</label>
-      <input type="number" name="points" class="form-control" placeholder="Saisir Point" required>
+      <input type="number" name="points" min="1" class="form-control" placeholder="Saisir Point" required>
     </div>
     <div class="form-group" style="width: 40%;position: relative;left: 400px;bottom: 160px;">
       <label>Status</label>
@@ -397,5 +402,6 @@
     <script src="{{asset('assets/admin/dist/js/sidebarmenu.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('assets/admin/dist/js/custom.min.js')}}"></script>
+    <script src="{{asset('assets/js/snack.js')}}"></script>
   </body>
 </html>

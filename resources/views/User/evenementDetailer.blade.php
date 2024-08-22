@@ -151,11 +151,7 @@ ul{
         </header><!-- End .header -->
         <main class="main">
             <div class="page-content">
-                @if(Session::get('success'))
-                <div class="alert alert-success" role="alert" >
-                    {{ Session::get('success') }}
-                </div>
-                @endif
+                
                 {{-- <section id="blog">
 
                     <div class="blog-container">

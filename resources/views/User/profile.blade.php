@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/user/css/snack.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/owl-carousel/owl.carousel.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/magnific-popup/magnific-popup.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/nouislider/nouislider.css')}}">
@@ -96,8 +97,9 @@
                             <hr class="border-light m-0">
                             <div class="card-body">
                                 @if(Session::get('success'))
-                                <div class="alert alert-success" role="alert" >
-                                    {{ Session::get('success') }}
+                                <div id="snackbar" class="snackbar">
+                                <i style="position: relative;right: 5px;color: #34d30cb6;font-size: 25px;" class="me-2 bi bi-check2-circle"></i> {{ Session::get('success') }} <i class="bi bi-hand-thumbs-up-fill" style="position: relative;left: 2px;font-size: 18px;"></i>
+                                    <button class="close-btn" onclick="hideSnackbar()">×</button>
                                 </div>
                                 @endif
                                 <div class="form-group">
@@ -114,7 +116,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Numero Telephone</label>
-                                    <input type="number" name="telephone" class="form-control" value="{{ $user->telephone }}">
+                                    {{-- <input type="tel" name="telephone" class="form-control" value="{{ $user->telephone }}"> --}}
+                                    <input
+                                    type="tel"
+                                    name="telephone" value="{{ $user->telephone }}"
+                                    id="telephone" class="form-control"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 phone-input"
+                                    placeholder="+33 6 70 41 12 41"
+                                    pattern="\+33\s6\s[0-9]{2}\s[0-9]{2}\s[0-9]{2}\s[0-9]{2}"
+                                    title="Numéro de téléphone français, format: +33 6 70 41 12 41"
+                                    required
+                                >
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Sexe</label>
@@ -209,6 +221,7 @@
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('assets/js/snack.js')}}"></script>
     <script>
         jQuery(document).ready(function (){
             jQuery('#fonction').change(function(){

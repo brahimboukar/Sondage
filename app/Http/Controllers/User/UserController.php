@@ -268,7 +268,7 @@ public function user(Request $request)
             'id_fonction_details' => $request->id_fonction_details
         ]);
 
-        return redirect()->route('profile')->with('success', 'Profil mis à jour avec succès.');
+        return redirect()->route('profile')->with('success', 'Votre Profil mis à jour avec succès.');
     }
 
     public function filter(Request $request)
@@ -450,7 +450,7 @@ public function user(Request $request)
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->route('profile')->with('success', 'Mot de passe mis à jour avec succès');
+        return redirect()->route('profile')->with('success', 'Votre Mot de passe mis à jour avec succès');
     }
 
     public function produitCart()
@@ -586,7 +586,7 @@ public function user(Request $request)
         $evenementUser->date = now();
         $evenementUser->save();
 
-        return redirect()->back()->with('success', 'Votre demande a été envoyée et enregistrée avec succès !');
+        return redirect()->route('evenement')->with('success', 'Votre Demande à envoyée et enregistrée avec succès');
     } else {
         return 'Pas de connexion';
     }

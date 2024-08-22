@@ -613,7 +613,7 @@ class AdminController extends Controller
 
     public function DemandeRecomponse()
     {
-        $demandeRec = Demande_recomponses::all();
+        $demandeRec = Demande_recomponses::paginate(3);
         return view('Admin/DemandeRecomponse',[
             'demandeRec' => $demandeRec
         ]);
@@ -623,7 +623,7 @@ class AdminController extends Controller
     {
         $demandeRec = Demande_recomponses::findOrFail($id);
         $demandeRec->delete();
-        return redirect()->route('admin.DemandeRecomponse')->with('succe','Demande Recomponse Supprimer avec succès');
+        return redirect()->route('admin.DemandeRecomponse')->with('succe','Demande Supprimer avec succès');
     }
 
     public function changeEtat($id, $etat)
@@ -638,7 +638,7 @@ class AdminController extends Controller
 
 
     public function evenement(){
-        $evenement = evenements::all();
+        $evenement = evenements::paginate(3);
         return view('Admin/evenementAdmin',[
             'evenement' => $evenement,
         ]);
@@ -646,6 +646,12 @@ class AdminController extends Controller
 
     public function addEvenement(Request $request)
     {
+        $request->validate([
+            'lien' => ['required', 'string', 'regex:/\bhttps?:\/\/\S+\b/'],
+        ], [
+            'lien.required' => 'Le champ textarea est requis.',
+            'lien.regex' => 'Le champ doit contenir un lien valide (URL).',
+        ]);
         if ($request->hasFile('img')) {
             $file = $request->file('img');
             $extension = $file->getClientOriginalExtension();

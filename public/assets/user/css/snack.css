@@ -1,0 +1,65 @@
+/* Snackbar base style */
+#snackbar {
+    visibility: hidden; /* Hidden by default */
+    min-width: 420px; /* Set a default minimum width */
+    max-width: 570px; /* Set a maximum width */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
+    background-color: #333; /* Background color */
+    color: #fff; /* Text color */
+    text-align: center; /* Center text */
+    border-radius: 5px; /* Rounded corners */
+    padding: 16px; /* Padding */
+    position: fixed; /* Fixed position */
+    z-index: 1; /* Ensure it appears above other content */
+    left: 50%; /* Center horizontally */
+    bottom: 30px; /* Position at the bottom */
+    font-size: 17px; /* Font size */
+    display: flex; /* Flexbox for centering content */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    transform: translateX(-50%); /* Center horizontally */
+    word-wrap: break-word; /* Allow long words to break onto the next line */
+}
+
+/* Show the snackbar when active */
+#snackbar.show {
+    visibility: visible; /* Show snackbar */
+    animation: fadein 0.5s, fadeout 0.5s 2.5s; /* Animation */
+}
+
+/* Fade-in animation */
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+/* Fade-out animation */
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
+    }
+}
+
+/* Optional close button */
+.close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 2px;
+    right: 10px;
+}

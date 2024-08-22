@@ -26,6 +26,7 @@
     />
     <!-- Custom CSS -->
     <link href="{{asset('assets/admin/dist/css/style.min.css')}}" rel="stylesheet" />
+    <link href="{{asset('assets/css/snack-bar.css')}}" rel="stylesheet" />
   </head>
 
   <body>
@@ -228,15 +229,17 @@
               <h4 class="page-title">Gestion Des Demandes Récomponse</h4>
             </div>
             @if(Session::get('success'))
-                <div class="alert alert-success" role="alert" >
-                    {{ Session::get('success') }}
-                </div>
-                @endif
-                @if(Session::get('succe'))
-                <div class="alert alert-success" role="alert" >
-                    {{ Session::get('succe') }}
-                </div>
-                @endif
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('success') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
+            </div>
+            @endif
+            @if(Session::get('succe'))
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('succe') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
+            </div>
+            @endif
           </div>
         </div>
         <div class="container-fluid">
@@ -295,6 +298,7 @@
           @endforeach
         </tbody>
       </table>
+      {{$demandeRec->links()}}
     </div>
                   
             </div>
@@ -317,5 +321,6 @@
     <script src="{{asset('assets/admin/dist/js/sidebarmenu.js')}}"></script>
     <!--Custom JavaScript -->
     <script src="{{asset('assets/admin/dist/js/custom.min.js')}}"></script>
+    <script src="{{asset('assets/js/snack.js')}}"></script>
   </body>
 </html>

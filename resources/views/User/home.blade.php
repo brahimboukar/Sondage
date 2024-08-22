@@ -19,10 +19,11 @@
     <link rel="stylesheet" href="{{asset('assets/user/css/main.min.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Main CSS File -->
-    <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}"> 
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/owl-carousel/owl.carousel.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/magnific-popup/magnific-popup.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/nouislider/nouislider.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/user/css/snack.css')}}">
 </head>
 
 <body>
@@ -84,8 +85,9 @@
         	<div class="page-header text-center" style="background-image: url('{{('assets/user/images/page-header-bg.jpg')}}')">
         		<div class="container">
                     @if(Session::get('succ'))
-                    <div class="alert alert-success" role="alert" >
-                        {{ Session::get('succ') }}
+                    <div id="snackbar" class="snackbar">
+                    <i style="position: relative;right: 5px;color: #34d30cb6;font-size: 25px;" class="me-2 bi bi-check2-circle"></i> {{ Session::get('succ') }} <i class="bi bi-hand-thumbs-up-fill" style="position: relative;left: 2px;font-size: 18px;"></i>
+                        <button class="close-btn" onclick="hideSnackbar()">×</button>
                     </div>
                     @endif
         			<h1 class="page-title">Liste Des Produits<span>Boutique</span></h1>
@@ -322,6 +324,7 @@
     <script src="{{asset('assets/user/js/trieMoins.js')}}"></script>
     <script src="{{asset('assets/user/js/filter.js')}}"></script>
     <script src="{{asset('assets/user/js/filterRecomponse.js')}}"></script>
+    <script src="{{asset('assets/js/snack.js')}}"></script>
     
     <!-- Main JS File -->
     <script src="{{asset('assets/user/js/main.js')}}"></script>

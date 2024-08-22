@@ -27,6 +27,7 @@
     <!-- Custom CSS -->
     <link href="{{asset('assets/admin/dist/css/style.min.css')}}" rel="stylesheet" />
     <link href="{{ asset('assets/css/styles.css') }}" rel="stylesheet">
+    <link href="{{asset('assets/css/snack-bar.css')}}" rel="stylesheet" />
   </head>
 
   <body>
@@ -232,18 +233,21 @@
               <h4 class="page-title">Gestion Des Etudes Cible</h4>
             </div>
             @if(Session::get('success'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('success') }}
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('success') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
             </div>
-            @endif
+            @endif 
             @if(Session::get('succ'))
-            <div class="alert alert-success" role="alert" >
-                {{ Session::get('succ') }}
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-circle-check"></i> {{ Session::get('succ') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
             </div>
-            @endif
+            @endif 
             @if(Session::has('error'))
-            <div class="alert alert-danger" role="alert">
-                {{ Session::get('error') }}
+            <div id="snackbar" class="snackbar">
+              <i style="position: relative;right: 5px;" class="fa-solid fa-triangle-exclamation"></i> {{ Session::get('error') }}
+                <button class="close-btn" onclick="hideSnackbar()">×</button>
             </div>
             @endif
           </div>
@@ -461,5 +465,6 @@
     <!--Custom JavaScript -->
     <script src="{{asset('assets/admin/dist/js/custom.min.js')}}"></script>
     <script src="{{asset('assets/admin/dist/js/fonction.js')}}"></script>
+    <script src="{{asset('assets/js/snack.js')}}"></script>
   </body>
 </html>

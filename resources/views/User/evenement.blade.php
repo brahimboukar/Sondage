@@ -27,6 +27,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <!-- Main CSS File -->
     <link rel="stylesheet" href="{{asset('assets/user/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/user/css/snack.css')}}">
+    
     <link rel="stylesheet" href="{{asset('assets/user/css/blog.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/etudeDetailer.css')}}">
     <link rel="stylesheet" href="{{asset('assets/user/css/plugins/owl-carousel/owl.carousel.css')}}">
@@ -125,6 +127,12 @@
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('{{('assets/user/images/page-header-bg.jpg')}}')">
         		<div class="container">
+                    @if(Session::get('success'))
+                    <div id="snackbar" class="snackbar">
+                    <i style="position: relative;right: 5px;color: #34d30cb6;font-size: 25px;" class="me-2 bi bi-check2-circle"></i> {{ Session::get('success') }} <i class="bi bi-hand-thumbs-up-fill" style="position: relative;left: 2px;font-size: 18px;"></i>
+                        <button class="close-btn" onclick="hideSnackbar()">×</button>
+                    </div>
+                    @endif
         			<h1 class="page-title">Liste Des Événements<span>Disponible</span></h1>
                     {{-- <img src="{{ asset($recomponse->img) }}" alt="Product image" class="product-image"> --}}
         		</div><!-- End .container -->
@@ -213,6 +221,7 @@
     <script src="{{asset('assets/user/js/nouislider.min.js')}}"></script>
     <script src="{{asset('assets/user/js/etudeFilter.js')}}"></script>
     <script src="{{asset('assets/user/js/trieEtude.js')}}"></script>
+    <script src="{{asset('assets/js/snack.js')}}"></script>
     
     
     <!-- Main JS File -->
