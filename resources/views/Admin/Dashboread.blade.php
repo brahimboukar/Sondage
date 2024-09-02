@@ -264,7 +264,7 @@
                   <h1 class="font-light text-white">
                     <i class="mdi mdi-account fs-3 mb-1 font-16"></i>
                   </h1>
-                  <h6 class="text-white">Total Des Utilisateurs</h6>
+                  <h6 class="text-white">Total Des Panélistes</h6>
                   <h2 class="text-white">{{$user}}</h2>
                 </div>
               </div>
@@ -276,7 +276,7 @@
                   <h1 class="font-light text-white">
                     <i class="mdi mdi-plus fs-3 font-16"></i>
                   </h1>
-                  <h6 class="text-white">Nouveaux Des Utilisateurs</h6>
+                  <h6 class="text-white">Nouveaux Des Panélistes</h6>
                   <h2 class="text-white">{{$nouveauxUtilisateurs}}</h2>
                 </div>
               </div>

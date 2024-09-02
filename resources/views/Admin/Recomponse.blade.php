@@ -267,17 +267,18 @@
     <i class="bi bi-patch-plus"></i> Ajouter Un Nouvaux Récompense
   </button>
   <form method="GET" action="{{url('admin/recomponse')}}">
-    <div class="col-md-3">
-    <select class="form-select form-select-sm" style="position: relative;left:400px;bottom: 35px;" name="id_categorie" id="categorie" aria-label="Small select example" required>
+    <div class="form-outline" data-mdb-input-init>
+    <select class="form-select form-select-sm" style="position: relative;left:400px;bottom: 35px;width: 250px;" name="id_categorie" id="categorie" aria-label="Small select example" required>
             <option selected disabled>--- Filter By Categorie ---</option>
             @foreach($cat as $row)
             <option value="{{$row->id}}">{{$row->libelle}}</option>
             @endforeach
           </select>
+          <button type="submit" style="position: relative;left:650px;bottom: 68px;" class="btn btn-primary">Filter</button>
     </div>
-    <div class="col-md-3" style="position: relative;left:650px;bottom: 68px;">
-      <button type="submit" class="btn btn-primary">Filter</button>
-    </div>
+    
+      
+ 
   </form>
   <hr style="position: relative;bottom: 70px;">
 <!-- ajoute Modal -->
